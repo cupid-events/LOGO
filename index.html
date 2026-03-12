@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לוגו - יאר ישראל  </title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+
+        /* סרגל עליון קבוע */
+        .navbar {
+            display: flex;
+            align-items: center;
+            padding: 10px 30px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain; /* שומר על פרופורציות הלוגו */
+            border-radius: 5px;
+            margin-left: 20px;
+            border: 1px solid #ddd;
+            background-color: #eee;
+        }
+
+        /* כותרת האתר */
+        .title {
+            font-size: 1.4rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* הגלריה במרכז הדף */
+        .gallery-container {
+            margin-top: 120px; /* רווח מהסרגל העליון */
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        /* חלון הגדלה (Lightbox) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+
+        .modal-content {
+            max-width: 85%;
+            max-height: 85%;
+            border: 5px solid white;
+            border-radius: 8px;
+            animation: zoomEffect 0.3s ease;
+        }
+
+        @keyframes zoomEffect {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <img src="A1.png" alt="Logo" class="logo" id="mainLogo">
+        <div class="title">הגלריה האישית שלי</div>
+    </nav>
+
+    <div class="gallery-container">
+        <img src="A1.png" class="gallery-item" onclick="expandAndChange(this)">
+        <img src="A2.png" class="gallery-item" onclick="expandAndChange(this)">
+        <img src="A3.png" class="gallery-item" onclick="expandAndChange(this)">
+        <img src="A4.png" class="gallery-item" onclick="expandAndChange(this)">
+        <img src="A5.png" class="gallery-item" onclick="expandAndChange(this)">
+        <img src="A6.png" class="gallery-item" onclick="expandAndChange(this)">
+        <img src="A7.png" class="gallery-item" onclick="expandAndChange(this)">
+        <img src="A8.png" class="gallery-item" onclick="expandAndChange(this)">
+        <img src="A9.png" class="gallery-item" onclick="expandAndChange(this)">
+    </div>
+
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="fullImg">
+    </div>
+
+    <script>
+        const mainLogo = document.getElementById('mainLogo');
+        const modal = document.getElementById('imageModal');
+        const fullImg = document.getElementById('fullImg');
+
+        // פונקציה שמגדילה את התמונה וגם משנה את הלוגו למעלה
+        function expandAndChange(el) {
+            modal.style.display = "flex";
+            fullImg.src = el.src;   // מציג את התמונה שלחצת עליה
+            mainLogo.src = el.src; // מחליף את הלוגו לתמונה שלחצת עליה
+        }
+
+        // פונקציה לסגירת המודאל
+        function closeModal() {
+            modal.style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
