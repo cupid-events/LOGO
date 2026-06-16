@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>יואב – ניהול בדיקות</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f5;--surface:#fff;--border:rgba(0,0,0,.08);--border-strong:rgba(0,0,0,.15);
+  --text:#111827;--muted:#6b7280;--light:#9ca3af;
+  --accent:#2563eb;--accent-light:#eff6ff;
+  --navy:#1e2d4a;--radius:12px;--rsm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md:0 4px 16px rgba(0,0,0,.12);
+}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s}
+#loader.fade-out{opacity:0;pointer-events:none}
+.ld-logo{font-size:34px;font-weight:700;color:#fff;margin-bottom:6px}
+.ld-sub{font-size:13px;color:rgba(255,255,255,.45);margin-bottom:40px}
+.spinner{width:44px;height:44px;border:3px solid rgba(255,255,255,.15);border-top-color:#60a5fa;border-radius:50%;animation:spin .8s linear infinite}
+.ld-msg{margin-top:18px;font-size:12px;color:rgba(255,255,255,.4)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HEADER */
+header{background:var(--navy);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.logo{font-size:20px;font-weight:700;color:#fff;display:flex;align-items:center;gap:9px}
+.logo-badge{background:var(--accent);color:#fff;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px}
+.hdr-right{display:flex;gap:8px;align-items:center}
+.sync-status{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.5)}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#6b7280}
+.sync-dot.ok{background:#22c55e}.sync-dot.err{background:#ef4444}
+.sync-dot.loading{background:#f59e0b;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* BUTTONS */
+button{cursor:pointer;border:none;border-radius:var(--rsm);padding:8px 15px;font-size:13px;font-family:inherit;font-weight:500;transition:all .15s;line-height:1}
+.btn-ghost{background:rgba(255,255,255,.09);color:rgba(255,255,255,.8)}
+.btn-ghost:hover{background:rgba(255,255,255,.17);color:#fff}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 1px 3px rgba(37,99,235,.35)}
+.btn-primary:hover{background:#1d4ed8}
+.btn-outline{background:var(--surface);color:var(--text);border:1px solid var(--border-strong)}
+.btn-outline:hover{background:var(--bg)}
+.btn-danger{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca}
+.btn-danger:hover{background:#fecaca}
+
+/* MAIN */
+.main{padding:1.5rem;max-width:1400px;margin:0 auto}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+.stat-card{background:var(--surface);border-radius:var(--radius);padding:1rem 1.2rem;box-shadow:var(--shadow);border:1px solid var(--border);position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%}
+.stat-card:nth-child(1)::before{background:#2563eb}
+.stat-card:nth-child(2)::before{background:#7c3aed}
+.stat-card:nth-child(3)::before{background:#059669}
+.stat-card:nth-child(4)::before{background:#d97706}
+.stat-label{font-size:12px;color:var(--muted);margin-bottom:5px;font-weight:500}
+.stat-value{font-size:28px;font-weight:700;line-height:1}
+.stat-sub{font-size:11px;color:var(--light);margin-top:3px}
+
+/* TABS */
+.tabs{display:flex;gap:2px;margin-bottom:1.25rem;background:var(--surface);border-radius:var(--radius);padding:4px;box-shadow:var(--shadow);border:1px solid var(--border);width:fit-content}
+.tab{padding:8px 20px;font-size:13px;font-weight:500;border:none;background:none;color:var(--muted);border-radius:var(--rsm);transition:all .15s}
+.tab.active{background:var(--navy);color:#fff}
+.tab:hover:not(.active){background:var(--bg);color:var(--text)}
+.tab-content{display:none}.tab-content.active{display:block}
+
+/* GANTT LAYOUT */
+.gantt-layout{display:grid;grid-template-columns:240px 1fr;gap:16px;align-items:start}
+
+/* MINI CALENDAR */
+.mini-cal{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;user-select:none}
+.mc-header{background:var(--navy);padding:13px 14px;display:flex;align-items:center;justify-content:space-between}
+.mc-header .mc-title{color:#fff;font-size:14px;font-weight:600}
+.mc-nav{background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:16px;padding:0;cursor:pointer}
+.mc-nav:hover{background:rgba(255,255,255,.2)}
+.mc-grid{padding:10px}
+.cal-dnames{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px}
+.cal-dname{text-align:center;font-size:10px;font-weight:600;color:var(--muted);padding:3px 0}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12px;border-radius:6px;cursor:pointer;color:var(--text);transition:all .12s;position:relative}
+.cal-day:hover{background:var(--accent-light);color:var(--accent)}
+.cal-day.other{color:var(--light)}
+.cal-day.is-today{background:var(--accent-light);color:var(--accent);font-weight:700}
+.cal-day.selected{background:var(--navy);color:#fff;font-weight:600}
+.cal-day.has-ev::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:var(--accent)}
+.cal-day.selected::after{background:rgba(255,255,255,.6)}
+.cal-day.weekend{color:#dc2626}
+.cal-day.selected.weekend{background:var(--navy);color:#fca5a5}
+.mc-footer{padding:9px 10px;border-top:1px solid var(--border)}
+.today-btn{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:var(--rsm);padding:7px;font-size:12px;font-weight:500}
+.today-btn:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* GANTT CARD */
+.gantt-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+.gantt-top{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:#f8fafc;flex-wrap:wrap;gap:8px}
+.gantt-title{font-size:15px;font-weight:700;color:var(--navy)}
+.gantt-filters{display:flex;gap:8px;flex-wrap:wrap}
+.gantt-filters select{border:1px solid var(--border-strong);border-radius:var(--rsm);padding:6px 10px;font-size:12px;font-family:inherit;background:#fff;color:var(--text)}
+.gantt-scroll{overflow-x:auto}
+.gantt-table{width:100%;border-collapse:collapse}
+.day-head{min-width:52px;width:52px;text-align:center;font-size:11px;font-weight:600;color:var(--muted);border-left:1px solid var(--border);padding:8px 2px;background:#f8fafc}
+.day-head.today-h{background:var(--accent-light);color:var(--accent)}
+.day-head.wknd-h{background:#fafafa;color:var(--light)}
+.day-head .dn{font-size:14px;font-weight:700;display:block}
+.day-head .dd{font-size:10px;opacity:.7}
+.gcell{min-width:52px;width:52px;height:110px;border-left:1px solid var(--border);border-bottom:1px solid var(--border);vertical-align:top;padding:4px 3px;cursor:pointer;transition:background .1s;position:relative}
+.gcell:hover{background:#f0f7ff}
+.gcell.today-col{background:rgba(37,99,235,.03);border-left-color:rgba(37,99,235,.25)}
+.gcell.wknd-col{background:#fafafa}
+
+/* EVENT CARD */
+.ev-card{border-radius:6px;padding:4px 6px;margin-bottom:3px;font-size:10px;line-height:1.35;cursor:pointer;transition:transform .1s,box-shadow .1s;color:#fff;overflow:hidden}
+.ev-card:hover{transform:scale(1.03);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.ev-bld{font-weight:700;font-size:11px}
+.ev-crew{opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* LEGEND */
+.gantt-legend{display:flex;gap:18px;padding:11px 16px;border-top:1px solid var(--border);flex-wrap:wrap;align-items:center;background:#f8fafc}
+.leg-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);font-weight:500}
+.leg-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0}
+.leg-tip{margin-right:auto;font-size:11px;color:var(--light);font-style:italic}
+
+/* LIST */
+.list-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden}
+.list-table{width:100%;border-collapse:collapse}
+.list-table th{text-align:right;padding:11px 14px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);background:#f8fafc}
+.list-table td{padding:10px 14px;font-size:13px;border-bottom:1px solid var(--border)}
+.list-table tr:last-child td{border-bottom:none}
+.list-table tr:hover td{background:#f8fafc}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;color:#fff}
+
+/* MODAL BASE */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:center;justify-content:center;backdrop-filter:blur(2px);padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--radius);padding:1.5rem;width:500px;max-width:100%;box-shadow:var(--shadow-md);border:1px solid var(--border);animation:slideUp .2s ease;max-height:90vh;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.modal-hdr h2{font-size:17px;font-weight:700}
+.modal-close{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;padding:0 4px}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.form-group input,.form-group select{width:100%;border:1.5px solid var(--border-strong);border-radius:var(--rsm);padding:9px 11px;font-size:13px;font-family:inherit;background:var(--surface);color:var(--text);transition:border-color .15s}
+.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--accent)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--border)}
+
+/* STAFF PICKER */
+.staff-picker{border:1.5px solid var(--border-strong);border-radius:var(--rsm);overflow:hidden}
+.staff-search-wrap{padding:8px;border-bottom:1px solid var(--border);background:#f8fafc}
+.staff-search{width:100%;border:1px solid var(--border-strong);border-radius:6px;padding:7px 10px;font-size:13px;font-family:inherit;background:#fff}
+.staff-search:focus{outline:none;border-color:var(--accent)}
+.staff-list{max-height:160px;overflow-y:auto}
+.staff-opt{padding:9px 12px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .1s;border-bottom:1px solid var(--border)}
+.staff-opt:last-child{border-bottom:none}
+.staff-opt:hover{background:var(--accent-light)}
+.staff-opt.selected{background:#eff6ff}
+.staff-name{font-size:13px;font-weight:500}
+.staff-domain{font-size:11px;color:var(--muted)}
+.staff-email{font-size:11px;color:var(--light);direction:ltr}
+
+/* SELECTED TAGS */
+.selected-staff{display:flex;flex-wrap:wrap;gap:6px;min-height:34px;padding:4px 0}
+.staff-tag{display:inline-flex;align-items:center;gap:6px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:500}
+.staff-tag .remove{cursor:pointer;font-size:14px;line-height:1;color:#93c5fd;font-weight:700}
+.staff-tag .remove:hover{color:#1d4ed8}
+.no-staff{color:var(--light);font-size:13px;padding:6px 0}
+
+/* DETAIL POPUP */
+.detail-popup{display:none;position:fixed;z-index:400;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-md);border:1px solid var(--border);min-width:260px;max-width:320px;animation:slideUp .15s ease}
+.detail-popup.open{display:block}
+.dp-header{background:var(--navy);color:#fff;padding:12px 14px;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;justify-content:space-between}
+.dp-title{font-size:13px;font-weight:700}
+.dp-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:18px;cursor:pointer;padding:0}
+.dp-body{padding:12px 14px}
+.dp-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:9px;font-size:13px}
+.dp-row:last-child{margin-bottom:0}
+.dp-icon{font-size:15px;flex-shrink:0;margin-top:1px}
+.dp-val{color:var(--text);line-height:1.4}
+.dp-val small{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+.dp-crew-item{background:#f8fafc;border-radius:6px;padding:7px 10px;margin-bottom:6px;border:1px solid var(--border)}
+.dp-crew-item:last-child{margin-bottom:0}
+.dp-crew-name{font-weight:600;font-size:13px}
+.dp-crew-email{font-size:11px;color:var(--muted);direction:ltr}
+
+/* TOOLTIP */
+.tooltip{position:fixed;background:var(--navy);color:#fff;padding:7px 11px;border-radius:var(--rsm);font-size:12px;line-height:1.6;pointer-events:none;z-index:500;white-space:nowrap;display:none;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+
+/* MOBILE */
+@media(max-width:768px){
+  .main{padding:1rem}
+  header{padding:0 1rem;height:54px}
+  .logo{font-size:18px}
+  .logo-badge{display:none}
+  .hdr-right .sync-status{display:none}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1rem}
+  .stat-value{font-size:22px}
+  .tabs{width:100%}
+  .tab{flex:1;text-align:center;padding:8px 10px}
+  .gantt-layout{grid-template-columns:1fr}
+  .mini-cal{display:none}
+  .gantt-top{flex-direction:column;align-items:flex-start}
+  .gcell{min-width:44px;width:44px;height:90px}
+  .day-head{min-width:44px;width:44px}
+  .list-table th:nth-child(3),.list-table td:nth-child(3),
+  .list-table th:nth-child(6),.list-table td:nth-child(6){display:none}
+  .form-row{grid-template-columns:1fr}
+  .modal{padding:1.2rem}
+  .detail-popup{min-width:90vw;max-width:95vw;left:50%!important;transform:translateX(-50%)!important}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr 1fr}
+  .stat-card{padding:.75rem 1rem}
+  .gantt-filters select{font-size:11px;padding:5px 7px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-logo">יואב</div>
+  <div class="ld-sub">מערכת ניהול בדיקות</div>
+  <div class="spinner"></div>
+  <div class="ld-msg" id="ldMsg">טוען נתונים...</div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">יואב <span class="logo-badge">ניהול בדיקות</span></div>
+  <div class="hdr-right">
+    <div class="sync-status"><div class="sync-dot" id="syncDot"></div><span id="syncText">טוען...</span></div>
+    <button class="btn-ghost" onclick="syncData()">↻ רענון</button>
+    <button class="btn-primary" onclick="openModal()">＋ בדיקה חדשה</button>
+  </div>
+</header>
+
+<div class="main">
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-label">סה"כ בדיקות</div><div class="stat-value" id="statTotal">–</div><div class="stat-sub">כל הזמנים</div></div>
+    <div class="stat-card"><div class="stat-label">החודש</div><div class="stat-value" id="statMonth">–</div><div class="stat-sub">בדיקות</div></div>
+    <div class="stat-card"><div class="stat-label">מבנים פעילים</div><div class="stat-value" id="statBuildings">–</div><div class="stat-sub">מבנים</div></div>
+    <div class="stat-card"><div class="stat-label">תחומים</div><div class="stat-value" id="statDomains">–</div><div class="stat-sub">תחומים שונים</div></div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('gantt',this)">📅 גאנט</button>
+    <button class="tab" onclick="switchTab('list',this)">📋 רשימה</button>
+  </div>
+
+  <!-- GANTT TAB -->
+  <div class="tab-content active" id="tabGantt">
+    <div class="gantt-layout">
+      <!-- MINI CAL -->
+      <div>
+        <div class="mini-cal">
+          <div class="mc-header">
+            <button class="mc-nav" onclick="prevMonth()">‹</button>
+            <div class="mc-title" id="calTitle"></div>
+            <button class="mc-nav" onclick="nextMonth()">›</button>
+          </div>
+          <div class="mc-grid">
+            <div class="cal-dnames"><div class="cal-dname">א</div><div class="cal-dname">ב</div><div class="cal-dname">ג</div><div class="cal-dname">ד</div><div class="cal-dname">ה</div><div class="cal-dname">ו</div><div class="cal-dname">ש</div></div>
+            <div class="cal-days" id="calDays"></div>
+          </div>
+          <div class="mc-footer"><button class="today-btn" onclick="goToday()">חזרה להיום</button></div>
+        </div>
+      </div>
+      <!-- GANTT -->
+      <div class="gantt-card">
+        <div class="gantt-top">
+          <div class="gantt-title" id="ganttTitle"></div>
+          <div class="gantt-filters">
+            <select id="filterBuilding" onchange="renderGantt()"><option value="">כל המבנים</option></select>
+            <select id="filterDomain" onchange="renderGantt()"><option value="">כל התחומים</option></select>
+          </div>
+        </div>
+        <div class="gantt-scroll"><table class="gantt-table" id="ganttTable"></table></div>
+        <div class="gantt-legend" id="ganttLegend"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIST TAB -->
+  <div class="tab-content" id="tabList">
+    <div class="list-card">
+      <table class="list-table">
+        <thead><tr><th>תאריך</th><th>מבנה</th><th>קומה</th><th>תחום</th><th>צוות</th><th>מייל</th><th></th></tr></thead>
+        <tbody id="listBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>הוספת בדיקה חדשה</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>תאריך</label><input type="date" id="fDate"/></div>
+      <div class="form-group"><label>מבנה</label><select id="fBuilding"><option>10a</option><option>10b</option><option>10c</option></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>קומה</label><input type="number" id="fFloor" min="0" max="30" placeholder="מס' קומה"/></div>
+      <div class="form-group"><label>תחום</label><select id="fDomain"><option>מאיפנים</option><option>בדיקות</option><option>יועצים</option><option>אחר</option></select></div>
+    </div>
+
+    <!-- STAFF PICKER -->
+    <div class="form-group">
+      <label>אנשי צוות</label>
+      <div id="selectedStaff" class="selected-staff"><div class="no-staff">לא נבחרו עדיין</div></div>
+    </div>
+    <div class="form-group">
+      <div class="staff-picker">
+        <div class="staff-search-wrap">
+          <input class="staff-search" id="staffSearch" type="text" placeholder="חפש עובד..." oninput="filterStaff()"/>
+        </div>
+        <div class="staff-list" id="staffList"></div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-outline" onclick="closeModal()">ביטול</button>
+      <button class="btn-primary" onclick="submitRow()">שמור ושלח זימון</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL POPUP -->
+<div class="detail-popup" id="detailPopup">
+  <div class="dp-header">
+    <div class="dp-title" id="dpTitle">פרטי בדיקה</div>
+    <button class="dp-close" onclick="closeDetail()">✕</button>
+  </div>
+  <div class="dp-body" id="dpBody"></div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// ============================================================
+// הדבק כאן את כתובת ה-Web App שקיבלת מ-Apps Script:
+const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+// ============================================================
+
+const DOMAIN_COLORS = {'מאיפנים':'#2563eb','בדיקות':'#059669','יועצים':'#7c3aed','אחר':'#d97706'};
+const HEB_MONTHS = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
+function dc(d){return DOMAIN_COLORS[d]||'#6b7280'}
+
+let allChecks=[], staffDB=[], selectedStaff=[];
+let curY, curM, selDate;
+
+function init(){
+  const now=new Date(); curY=now.getFullYear(); curM=now.getMonth(); selDate=now;
+  document.getElementById('fDate').value=now.toISOString().split('T')[0];
+  if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE') syncData(); else loadSample();
+}
+
+function hideLoader(){
+  const l=document.getElementById('loader');
+  l.classList.add('fade-out');
+  setTimeout(()=>l.style.display='none',500);
+}
+function setSS(state,txt){
+  document.getElementById('syncDot').className='sync-dot '+state;
+  document.getElementById('syncText').textContent=txt;
+}
+
+async function syncData(){
+  setSS('loading','מסנכרן...');
+  document.getElementById('ldMsg').textContent='טוען נתונים מ-Google Sheets...';
+  try{
+    const res=await fetch(SCRIPT_URL+'?action=getAll');
+    const json=await res.json();
+    parseChecks(json.checks||[]);
+    parseStaff(json.staff||[]);
+    refresh(); setSS('ok','מחובר');
+  }catch(e){setSS('err','שגיאת חיבור');}
+  finally{hideLoader();}
+}
+
+function parseChecks(raw){
+  allChecks=[];
+  for(let i=1;i<raw.length;i++){
+    const r=raw[i]; if(!r[0]) continue;
+    // support multiple staff stored as "name1|email1,name2|email2"
+    const crewRaw=r[4]||''; const emailRaw=r[5]||'';
+    let crew=[];
+    if(crewRaw.includes('|')){
+      crew=crewRaw.split(',').map(p=>{const[n,e]=p.split('|');return{name:n||'',email:e||''};});
+    } else {
+      const names=crewRaw.split(',').map(s=>s.trim());
+      const emails=emailRaw.split(',').map(s=>s.trim());
+      crew=names.filter(Boolean).map((n,i)=>({name:n,email:emails[i]||''}));
+    }
+    allChecks.push({date:parseDate(r[0]),building:r[1]||'',floor:r[2]||'',domain:r[3]||'',crew});
+  }
+}
+
+function parseStaff(raw){
+  staffDB=[];
+  for(let i=1;i<raw.length;i++){
+    const r=raw[i];
+    if(!r[0]&&!r[1]) continue;
+    // columns: name, building, floor, domain, email (adjust to your sheet)
+    // From image: col A=name, col B=building, col C=floor (optional), col D=domain, col E=email
+    staffDB.push({name:r[0]||'',building:r[1]||'',floor:r[2]||'',domain:r[3]||'',email:r[4]||''});
+  }
+}
+
+function parseDate(v){
+  if(!v) return null;
+  if(v instanceof Date) return v;
+  if(typeof v==='string'){const p=v.split('/');if(p.length===3)return p[2].length===4?new Date(p[2],p[1]-1,p[0]):new Date(p[0],p[1]-1,p[2]);return new Date(v);}
+  return new Date(v);
+}
+
+function loadSample(){
+  staffDB=[
+    {name:'שרון אמיתי',building:'10a',domain:'מאיפנים',email:'cupid.events18@gmail.com'},
+    {name:'יוסי שמש',building:'10a',domain:'מאיפנים',email:'cupid.events18@gmail.com'},
+    {name:'איציק דבוש',building:'10a',domain:'בדיקות',email:'cupid.events18@gmail.com'},
+    {name:'דנה לוי',building:'10b',domain:'יועצים',email:'dana@example.com'},
+    {name:'משה כהן',building:'10b',domain:'בדיקות',email:'moshe@example.com'},
+  ];
+  allChecks=[
+    {date:new Date(2026,5,14),building:'10a',floor:9,domain:'מאיפנים',crew:[{name:'שרון אמיתי',email:'cupid.events18@gmail.com'},{name:'יוסי שמש',email:'cupid.events18@gmail.com'}]},
+    {date:new Date(2026,5,16),building:'10a',floor:1,domain:'מאיפנים',crew:[{name:'יוסי שמש',email:'cupid.events18@gmail.com'}]},
+    {date:new Date(2026,5,18),building:'10a',floor:3,domain:'בדיקות',crew:[{name:'איציק דבוש',email:'cupid.events18@gmail.com'}]},
+    {date:new Date(2026,5,15),building:'10b',floor:5,domain:'מאיפנים',crew:[{name:'שרון אמיתי',email:'cupid.events18@gmail.com'}]},
+    {date:new Date(2026,5,18),building:'10c',floor:9,domain:'בדיקות',crew:[{name:'איציק דבוש',email:'cupid.events18@gmail.com'},{name:'משה כהן',email:'moshe@example.com'}]},
+    {date:new Date(2026,5,22),building:'10a',floor:2,domain:'יועצים',crew:[{name:'דנה לוי',email:'dana@example.com'}]},
+    {date:new Date(2026,5,25),building:'10b',floor:7,domain:'בדיקות',crew:[{name:'משה כהן',email:'moshe@example.com'}]},
+    {date:new Date(2026,5,28),building:'10c',floor:4,domain:'מאיפנים',crew:[{name:'שרון אמיתי',email:'cupid.events18@gmail.com'}]},
+  ];
+  refresh(); setSS('ok','נתוני דוגמה'); hideLoader();
+}
+
+function refresh(){updateFilters();updateStats();renderCalendar();renderGantt();renderList();}
+
+function updateFilters(){
+  const blds=[...new Set(allChecks.map(c=>c.building))].sort();
+  const doms=[...new Set(allChecks.map(c=>c.domain))].sort();
+  const bSel=document.getElementById('filterBuilding'),curB=bSel.value;
+  bSel.innerHTML='<option value="">כל המבנים</option>'+blds.map(b=>`<option value="${b}"${b===curB?' selected':''}>${b}</option>`).join('');
+  const dSel=document.getElementById('filterDomain'),curD=dSel.value;
+  dSel.innerHTML='<option value="">כל התחומים</option>'+doms.map(d=>`<option value="${d}"${d===curD?' selected':''}>${d}</option>`).join('');
+  const fB=document.getElementById('fBuilding');
+  if(blds.length) fB.innerHTML=blds.map(b=>`<option>${b}</option>`).join('');
+}
+
+function updateStats(){
+  const now=new Date();
+  const mc=allChecks.filter(c=>c.date&&c.date.getFullYear()===now.getFullYear()&&c.date.getMonth()===now.getMonth());
+  document.getElementById('statTotal').textContent=allChecks.length;
+  document.getElementById('statMonth').textContent=mc.length;
+  document.getElementById('statBuildings').textContent=new Set(allChecks.map(c=>c.building)).size;
+  document.getElementById('statDomains').textContent=new Set(allChecks.map(c=>c.domain)).size;
+}
+
+// ── CALENDAR ──
+function renderCalendar(){
+  document.getElementById('calTitle').textContent=HEB_MONTHS[curM]+' '+curY;
+  const firstDay=new Date(curY,curM,1).getDay();
+  const dim=new Date(curY,curM+1,0).getDate();
+  const today=new Date();
+  const evDays=new Set(allChecks.filter(c=>c.date&&c.date.getFullYear()===curY&&c.date.getMonth()===curM).map(c=>c.date.getDate()));
+  let h='';
+  for(let i=0;i<firstDay;i++){const pd=new Date(curY,curM,0).getDate()-firstDay+i+1;h+=`<div class="cal-day other">${pd}</div>`;}
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(curY,curM,d);
+    const isTod=dt.toDateString()===today.toDateString();
+    const isSel=selDate&&dt.toDateString()===selDate.toDateString();
+    const isWk=dt.getDay()===5||dt.getDay()===6;
+    const cls=[isTod&&!isSel?'is-today':'',isSel?'selected':'',isWk?'weekend':'',evDays.has(d)?'has-ev':''].filter(Boolean).join(' ');
+    h+=`<div class="cal-day ${cls}" onclick="selectDay(${d})">${d}</div>`;
+  }
+  const rem=(firstDay+dim)%7;const fill=rem===0?0:7-rem;
+  for(let d=1;d<=fill;d++) h+=`<div class="cal-day other">${d}</div>`;
+  document.getElementById('calDays').innerHTML=h;
+}
+
+function selectDay(d){
+  selDate=new Date(curY,curM,d);
+  document.getElementById('fDate').value=selDate.toISOString().split('T')[0];
+  renderCalendar();
+  const col=document.querySelector(`[data-day="${d}"]`);
+  if(col) col.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+}
+
+// ── GANTT ──
+function getFiltered(){
+  const b=document.getElementById('filterBuilding').value;
+  const d=document.getElementById('filterDomain').value;
+  return allChecks.filter(c=>(!b||c.building===b)&&(!d||c.domain===d));
+}
+
+function renderGantt(){
+  renderCalendar();
+  const dim=new Date(curY,curM+1,0).getDate();
+  const today=new Date();
+  const filtered=getFiltered();
+  document.getElementById('ganttTitle').textContent=HEB_MONTHS[curM]+' '+curY;
+  const checkMap={};
+  filtered.forEach(c=>{
+    if(!c.date) return;
+    if(c.date.getFullYear()===curY&&c.date.getMonth()===curM){
+      const k=c.date.getDate();
+      if(!checkMap[k]) checkMap[k]=[];
+      checkMap[k].push(c);
+    }
+  });
+  const DN=['א','ב','ג','ד','ה','ו','ש'];
+  let h='<thead><tr>';
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(curY,curM,d);
+    const isTod=dt.toDateString()===today.toDateString();
+    const isWk=dt.getDay()===5||dt.getDay()===6;
+    h+=`<th class="day-head ${isTod?'today-h':''} ${isWk?'wknd-h':''}" data-day="${d}"><span class="dn">${d}</span><span class="dd">${DN[dt.getDay()]}</span></th>`;
+  }
+  h+='</tr></thead><tbody><tr>';
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(curY,curM,d);
+    const isTod=dt.toDateString()===today.toDateString();
+    const isWk=dt.getDay()===5||dt.getDay()===6;
+    const checks=checkMap[d]||[];
+    h+=`<td class="gcell ${isTod?'today-col':''} ${isWk?'wknd-col':''}" data-day="${d}" onclick="cellClick(${d})">`;
+    checks.forEach((c,ci)=>{
+      const col=dc(c.domain);
+      const crewNames=c.crew.map(p=>p.name).join(', ');
+      const idx=allChecks.indexOf(c);
+      h+=`<div class="ev-card" style="background:${col}" onclick="event.stopPropagation();showDetail(event,${idx})">
+        <div class="ev-bld">בדיקה ב${c.building}</div>
+        <div class="ev-crew">צוות: ${crewNames}</div>
+      </div>`;
+    });
+    h+='</td>';
+  }
+  h+='</tr></tbody>';
+  document.getElementById('ganttTable').innerHTML=h;
+  const doms=[...new Set(filtered.map(c=>c.domain))];
+  document.getElementById('ganttLegend').innerHTML=
+    doms.map(d=>`<div class="leg-item"><div class="leg-dot" style="background:${dc(d)}"></div>${d}</div>`).join('')+
+    '<div class="leg-tip">לחץ על תא ריק להוספת בדיקה • לחץ על אירוע לפרטים</div>';
+}
+
+// ── DETAIL POPUP ──
+function showDetail(e,idx){
+  e.stopPropagation();
+  const c=allChecks[idx];
+  if(!c) return;
+  const popup=document.getElementById('detailPopup');
+  document.getElementById('dpTitle').textContent=`בדיקה ב${c.building} | ${c.date?c.date.toLocaleDateString('he-IL'):''}`;
+  const crewHtml=c.crew.map(p=>`
+    <div class="dp-crew-item">
+      <div class="dp-crew-name">${p.name}</div>
+      <div class="dp-crew-email">${p.email}</div>
+    </div>`).join('');
+  document.getElementById('dpBody').innerHTML=`
+    <div class="dp-row"><span class="dp-icon">🏢</span><div class="dp-val">${c.building}<small>מבנה</small></div></div>
+    <div class="dp-row"><span class="dp-icon">🏗️</span><div class="dp-val">קומה ${c.floor}<small>קומה</small></div></div>
+    <div class="dp-row"><span class="dp-icon">🔧</span><div class="dp-val">${c.domain}<small>תחום</small></div></div>
+    <div class="dp-row"><span class="dp-icon">👷</span><div class="dp-val"><small>צוות הבדיקה</small></div></div>
+    ${crewHtml}`;
+  const vw=window.innerWidth;
+  let left=e.clientX+12, top=e.clientY+12;
+  if(left+320>vw) left=e.clientX-330;
+  popup.style.left=Math.max(8,left)+'px';
+  popup.style.top=Math.max(8,top)+'px';
+  popup.classList.add('open');
+  setTimeout(()=>document.addEventListener('click',closeDetailOutside),10);
+}
+function closeDetail(){
+  document.getElementById('detailPopup').classList.remove('open');
+  document.removeEventListener('click',closeDetailOutside);
+}
+function closeDetailOutside(e){
+  if(!document.getElementById('detailPopup').contains(e.target)) closeDetail();
+}
+
+function cellClick(day){
+  const d=new Date(curY,curM,day);
+  document.getElementById('fDate').value=d.toISOString().split('T')[0];
+  openModal();
+}
+
+// ── LIST ──
+function renderList(){
+  const sorted=[...allChecks].sort((a,b)=>(b.date||0)-(a.date||0));
+  const tbody=document.getElementById('listBody');
+  if(!sorted.length){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--muted)">אין בדיקות עדיין</td></tr>';return;}
+  tbody.innerHTML=sorted.map(c=>{
+    const names=c.crew.map(p=>p.name).join(', ');
+    const emails=c.crew.map(p=>p.email).join(', ');
+    return`<tr>
+      <td>${c.date?c.date.toLocaleDateString('he-IL'):'–'}</td>
+      <td><strong>${c.building}</strong></td>
+      <td>${c.floor}</td>
+      <td><span class="badge" style="background:${dc(c.domain)}">${c.domain}</span></td>
+      <td>${names}</td>
+      <td style="direction:ltr;font-size:12px;color:var(--muted)">${emails}</td>
+      <td><a href="mailto:${emails}?subject=זימון בדיקה - ${c.building} קומה ${c.floor}&body=שלום,\nמוזמנים לבדיקה בתאריך ${c.date?c.date.toLocaleDateString('he-IL'):''} במבנה ${c.building} קומה ${c.floor}." style="font-size:12px;color:var(--accent);text-decoration:none">✉ שלח זימון</a></td>
+    </tr>`;}).join('');
+}
+
+// ── NAV ──
+function prevMonth(){curM--;if(curM<0){curM=11;curY--;}renderGantt();}
+function nextMonth(){curM++;if(curM>11){curM=0;curY++;}renderGantt();}
+function goToday(){const n=new Date();curY=n.getFullYear();curM=n.getMonth();selDate=n;renderGantt();}
+
+// ── MODAL ──
+function openModal(){
+  selectedStaff=[];
+  renderSelectedStaff();
+  renderStaffList('');
+  document.getElementById('staffSearch').value='';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+
+// ── STAFF PICKER ──
+function filterStaff(){renderStaffList(document.getElementById('staffSearch').value.toLowerCase());}
+
+function renderStaffList(q){
+  const list=document.getElementById('staffList');
+  const shown=staffDB.filter(s=>{
+    const match=!q||s.name.includes(q)||s.domain.includes(q)||s.email.toLowerCase().includes(q);
+    const notSel=!selectedStaff.find(x=>x.name===s.name&&x.email===s.email);
+    return match&&notSel;
+  });
+  if(!shown.length){list.innerHTML='<div style="padding:12px 14px;color:var(--muted);font-size:13px">לא נמצאו עובדים</div>';return;}
+  list.innerHTML=shown.map((s,i)=>`
+    <div class="staff-opt" onclick="addStaff(${staffDB.indexOf(s)})">
+      <div>
+        <div class="staff-name">${s.name}</div>
+        <div class="staff-domain">${s.domain}${s.building?' · '+s.building:''}</div>
+        <div class="staff-email">${s.email}</div>
+      </div>
+      <span style="color:var(--accent);font-size:18px;font-weight:300">+</span>
+    </div>`).join('');
+}
+
+function addStaff(idx){
+  const s=staffDB[idx];
+  if(selectedStaff.find(x=>x.name===s.name)) return;
+  selectedStaff.push({name:s.name,email:s.email});
+  renderSelectedStaff();
+  renderStaffList(document.getElementById('staffSearch').value.toLowerCase());
+}
+
+function removeStaff(i){
+  selectedStaff.splice(i,1);
+  renderSelectedStaff();
+  renderStaffList(document.getElementById('staffSearch').value.toLowerCase());
+}
+
+function renderSelectedStaff(){
+  const el=document.getElementById('selectedStaff');
+  if(!selectedStaff.length){el.innerHTML='<div class="no-staff">לא נבחרו עדיין</div>';return;}
+  el.innerHTML=selectedStaff.map((s,i)=>`
+    <div class="staff-tag">
+      ${s.name}
+      <span class="remove" onclick="removeStaff(${i})">×</span>
+    </div>`).join('');
+}
+
+// ── SUBMIT ──
+async function submitRow(){
+  const dateVal=document.getElementById('fDate').value;
+  const building=document.getElementById('fBuilding').value;
+  const floor=document.getElementById('fFloor').value;
+  const domain=document.getElementById('fDomain').value;
+  if(!dateVal||!building||!selectedStaff.length){alert('אנא מלא תאריך, מבנה ובחר לפחות איש צוות אחד');return;}
+
+  const crewStr=selectedStaff.map(s=>s.name+'|'+s.email).join(',');
+  const emailStr=selectedStaff.map(s=>s.email).join(',');
+  const nameStr=selectedStaff.map(s=>s.name).join(', ');
+
+  if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+    try{
+      setSS('loading','שומר...');
+      await fetch(`${SCRIPT_URL}?action=addRow&date=${dateVal}&building=${encodeURIComponent(building)}&floor=${floor}&domain=${encodeURIComponent(domain)}&name=${encodeURIComponent(crewStr)}&email=${encodeURIComponent(emailStr)}`);
+      setSS('ok','מחובר');
+    }catch(e){setSS('err','שגיאה בשמירה');}
+  }
+
+  // Send invite emails
+  const dateFormatted=new Date(dateVal).toLocaleDateString('he-IL');
+  const subject=encodeURIComponent(`זימון בדיקה – ${building} קומה ${floor} | ${dateFormatted}`);
+  const body=encodeURIComponent(`שלום,\n\nהנכם מוזמנים לבדיקה:\n📅 תאריך: ${dateFormatted}\n🏢 מבנה: ${building}\n🏗️ קומה: ${floor}\n🔧 תחום: ${domain}\n\nצוות הבדיקה: ${nameStr}\n\nבברכה,\nמערכת יואב`);
+  window.location.href=`mailto:${emailStr}?subject=${subject}&body=${body}`;
+
+  allChecks.push({date:new Date(dateVal),building,floor,domain,crew:[...selectedStaff]});
+  refresh();
+  closeModal();
+  document.getElementById('fFloor').value='';
+}
+
+// ── TABS ──
+function switchTab(tab,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab'+tab[0].toUpperCase()+tab.slice(1)).classList.add('active');
+  if(tab==='list') renderList();
+}
+
+// ── TOOLTIP ──
+function showTT(e,txt){
+  const t=document.getElementById('tooltip');
+  t.innerHTML=txt.replace(/\n/g,'<br>');t.style.display='block';
+  t.style.left=Math.min(e.clientX+12,window.innerWidth-230)+'px';
+  t.style.top=(e.clientY+14)+'px';
+}
+function hideTT(){document.getElementById('tooltip').style.display='none';}
+
+init();
+</script>
+</body>
+</html>
