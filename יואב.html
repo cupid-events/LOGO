@@ -52,12 +52,6 @@ header{
   box-shadow:0 1px 0 rgba(255,255,255,.06),0 4px 20px rgba(0,0,0,.3);
 }
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo-mark{
-  width:38px;height:38px;background:var(--accent);border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;font-weight:900;color:#fff;letter-spacing:-1px;
-  box-shadow:0 2px 8px rgba(37,99,235,.5);
-}
 .logo-info .logo-name{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.1}
 .logo-info .logo-sub{font-size:11px;color:rgba(255,255,255,.4);font-weight:500}
 .hdr-end{display:flex;align-items:center;gap:10px}
@@ -296,33 +290,147 @@ button:active{transform:scale(.96)}
 .stag .rm:hover{color:var(--red)}
 .nostaf{color:var(--light);font-size:13px;padding:6px 2px;font-style:italic}
 
-/* DETAIL POPUP */
+/* DETAIL POPUP – משופר */
 .dpop{
   display:none;position:fixed;z-index:500;
   background:var(--surface);border-radius:var(--r);
   box-shadow:var(--sh3);border:1px solid var(--border);
-  min-width:280px;max-width:340px;
-  animation:popIn .16s ease;
+  min-width:300px;max-width:360px;
+  animation:popIn .18s ease;overflow:hidden;
 }
 .dpop.on{display:block}
 .dpop-hdr{
-  background:var(--navy);color:#fff;
-  padding:14px 16px;border-radius:var(--r) var(--r) 0 0;
-  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;padding:16px 18px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
-.dpop-title{font-size:13px;font-weight:700}
-.dpop-close{background:none;border:none;color:rgba(255,255,255,.5);font-size:19px;cursor:pointer;padding:0;line-height:1;transition:color .15s}
-.dpop-close:hover{color:#fff}
-.dpop-body{padding:14px 16px}
-.drow{display:flex;align-items:flex-start;gap:10px;margin-bottom:11px;font-size:13px}
+.dpop-badge{
+  font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;
+  background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);
+  white-space:nowrap;
+}
+.dpop-title{font-size:14px;font-weight:800;flex:1}
+.dpop-close{
+  background:rgba(255,255,255,.12);border:none;border-radius:7px;
+  color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;
+}
+.dpop-close:hover{background:rgba(255,255,255,.22);color:#fff}
+.dpop-body{padding:16px 18px}
+.drow{
+  display:flex;align-items:center;gap:12px;
+  padding:9px 12px;border-radius:9px;margin-bottom:6px;
+  background:var(--surface2);border:1px solid var(--border);
+  font-size:13px;
+}
 .drow:last-child{margin-bottom:0}
-.dico{font-size:16px;flex-shrink:0;margin-top:1px}
-.dval{color:var(--text);line-height:1.45}
-.dval small{display:block;font-size:10px;color:var(--muted);margin-top:1px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
-.dcrew{background:var(--surface2);border-radius:9px;padding:9px 12px;margin-bottom:7px;border:1px solid var(--border)}
+.dico{font-size:17px;flex-shrink:0}
+.dval{color:var(--text);line-height:1.4;flex:1}
+.dval small{display:block;font-size:10px;color:var(--muted);margin-top:1px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.dcrew-section{margin-top:10px}
+.dcrew-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;padding-right:2px}
+.dcrew{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface2);border-radius:9px;
+  padding:9px 12px;margin-bottom:6px;
+  border:1px solid var(--border);
+  transition:background .1s;
+}
 .dcrew:last-child{margin-bottom:0}
-.dcrew-name{font-weight:700;font-size:13px}
-.dcrew-email{font-size:11px;color:var(--muted);direction:ltr;margin-top:3px}
+.dcrew:hover{background:var(--accent-light)}
+.dcrew-av{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;flex-shrink:0;
+}
+.dcrew-info{flex:1}
+.dcrew-name{font-weight:700;font-size:13px;color:var(--text)}
+.dcrew-email{font-size:11px;color:var(--muted);direction:ltr;margin-top:1px}
+.dpop-foot{padding:12px 18px;border-top:1px solid var(--border);background:var(--surface2)}
+.dpop-inv-btn{
+  width:100%;background:var(--accent);color:#fff;
+  border:none;border-radius:var(--rsm);padding:10px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  font-family:'Heebo',sans-serif;transition:all .15s;
+}
+.dpop-inv-btn:hover{background:var(--accent-dark)}
+
+/* PERIOD POPUP */
+.ppop-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.45);z-index:450;
+  align-items:flex-start;justify-content:center;
+  backdrop-filter:blur(4px);padding:4rem 1rem 1rem;
+}
+.ppop-overlay.on{display:flex}
+.ppop{
+  background:var(--surface);border-radius:var(--r);
+  box-shadow:var(--sh3);width:100%;max-width:600px;
+  max-height:80vh;display:flex;flex-direction:column;
+  animation:popIn .22s ease;overflow:hidden;
+}
+.ppop-hdr{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  padding:18px 22px;display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.ppop-hdr-left{display:flex;flex-direction:column;gap:3px}
+.ppop-title{font-size:17px;font-weight:800;color:#fff}
+.ppop-sub{font-size:12px;color:rgba(255,255,255,.5)}
+.ppop-close{
+  background:rgba(255,255,255,.12);border:none;border-radius:8px;
+  color:#fff;font-size:18px;cursor:pointer;
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;
+}
+.ppop-close:hover{background:rgba(255,255,255,.22)}
+.ppop-tabs{
+  display:flex;padding:12px 16px 0;gap:4px;
+  border-bottom:1px solid var(--border);background:var(--surface2);
+  flex-shrink:0;
+}
+.ppop-tab{
+  padding:8px 18px;font-size:13px;font-weight:700;
+  border:none;background:none;color:var(--muted);
+  border-radius:var(--rsm) var(--rsm) 0 0;cursor:pointer;
+  transition:all .15s;border-bottom:2.5px solid transparent;
+  font-family:'Heebo',sans-serif;
+}
+.ppop-tab.on{color:var(--accent);border-bottom-color:var(--accent);background:var(--surface)}
+.ppop-tab:hover:not(.on){background:var(--bg)}
+.ppop-body{flex:1;overflow-y:auto;padding:16px}
+.ppop-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted)}
+.ppop-empty .pe-icon{font-size:40px;margin-bottom:12px}
+.ppop-empty .pe-txt{font-size:14px;font-weight:500}
+.ppop-empty .pe-sub{font-size:12px;color:var(--light);margin-top:4px}
+.pcheck-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--rsm);padding:14px 16px;margin-bottom:10px;
+  border-right:4px solid var(--accent);
+  transition:box-shadow .15s;cursor:default;
+}
+.pcheck-card:hover{box-shadow:var(--sh2)}
+.pcheck-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.pcheck-date{font-size:12px;font-weight:700;color:var(--muted)}
+.pcheck-bld{font-size:15px;font-weight:800;color:var(--navy)}
+.pcheck-floor{font-size:12px;color:var(--muted);background:var(--bg);padding:2px 9px;border-radius:20px;font-weight:600}
+.pcheck-domain{font-size:11px;font-weight:700;color:#fff;padding:3px 10px;border-radius:20px}
+.pcheck-crew{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px}
+.pcheck-crew-tag{
+  display:flex;align-items:center;gap:7px;
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:20px;padding:4px 11px;font-size:12px;
+}
+.pct-av{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0}
+.pct-name{font-weight:600;color:var(--text)}
+
+@media(max-width:768px){
+  .ppop-overlay{padding:2rem 0 0;align-items:flex-end}
+  .ppop{max-width:100%;border-radius:20px 20px 0 0;max-height:85vh}
+  .dpop{min-width:88vw;max-width:94vw;left:50%!important;transform:translateX(-50%)!important;top:auto!important;bottom:85px}
+}
 
 /* FAB */
 .fab{
@@ -352,6 +460,68 @@ button:active{transform:scale(.96)}
 .toast.ok{border-right:4px solid var(--green)}
 .toast.warn{border-right:4px solid var(--amber)}
 .toast.err{border-right:4px solid var(--red)}
+
+/* CREDIT FOOTER */
+.credit-footer{
+  text-align:center;padding:2rem 1rem 1.5rem;margin-top:.5rem;
+}
+.credit-inner{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--surface);border-radius:40px;
+  padding:10px 22px;
+  border:1px solid var(--border2);
+  box-shadow:var(--sh);
+}
+.credit-text{
+  font-size:13px;font-weight:500;
+  color:var(--muted);
+  display:flex;align-items:center;gap:6px;
+}
+.credit-name{
+  font-weight:800;font-size:14px;
+  background:linear-gradient(135deg,#4285f4,#9b59b6,#ea4335,#fbbc05,#34a853,#4285f4);
+  background-size:300% 300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:geminiShift 4s ease infinite;
+}
+@keyframes geminiShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.credit-gems{display:flex;gap:4px;align-items:center}
+.gem{
+  font-size:12px;
+  animation:gemPulse 2.4s ease-in-out infinite;
+}
+.g1{color:#4285f4;animation-delay:0s}
+.g2{color:#9b59b6;animation-delay:.3s}
+.g3{color:#ea4335;animation-delay:.6s}
+@keyframes gemPulse{
+  0%,100%{opacity:.4;transform:scale(.85)}
+  50%{opacity:1;transform:scale(1.1)}
+}
+
+/* LOGO MARK */
+.logo-mark{
+  width:38px;height:38px;background:var(--accent);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(37,99,235,.5);
+}
+
+/* PERIOD BUTTONS */
+.btn-period{
+  background:var(--surface);color:var(--navy);
+  border:1.5px solid var(--border2);
+  padding:9px 16px;font-size:13px;font-weight:700;
+  border-radius:var(--rsm);font-family:'Heebo',sans-serif;
+  transition:all .18s;box-shadow:var(--sh);
+}
+.btn-period:hover{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:var(--sh2)}
+.btn-period:active{transform:scale(.96)}
 
 /* MOBILE */
 @media(max-width:768px){
@@ -404,7 +574,10 @@ button:active{transform:scale(.96)}
 
 <header>
   <div class="logo">
-    <div class="logo-mark">י</div>
+    <div class="logo-mark">
+      <img src="logoyoav.png" alt="יואב" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover;border-radius:10px"/>
+      <span style="display:none;align-items:center;justify-content:center;width:100%;height:100%;font-size:18px;font-weight:900;color:#fff">י</span>
+    </div>
     <div class="logo-info">
       <div class="logo-name">יואב</div>
       <div class="logo-sub">ניהול בדיקות מבנים</div>
@@ -429,6 +602,11 @@ button:active{transform:scale(.96)}
     <div class="tabs">
       <button class="tab on" onclick="switchTab('G',this)">📅 גאנט</button>
       <button class="tab" onclick="switchTab('L',this)">📋 רשימה</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn-period" onclick="showPeriod('day')">📆 היום</button>
+      <button class="btn-period" onclick="showPeriod('week')">🗓️ השבוע</button>
+      <button class="btn-period" onclick="showPeriod('month')">📋 החודש</button>
     </div>
   </div>
 
@@ -494,10 +672,10 @@ button:active{transform:scale(.96)}
     </div>
     <div class="frow">
       <div class="fg"><label>תאריך</label><input type="date" id="fDate"/></div>
-      <div class="fg"><label>מבנה</label><select id="fBuild"><option>10a</option><option>10b</option><option>10c</option></select></div>
+      <div class="fg"><label>מבנה</label><select id="fBuild" onchange="onBuildingChange()"><option>10a</option><option>10b</option><option>10c</option></select></div>
     </div>
     <div class="frow">
-      <div class="fg"><label>קומה</label><input type="number" id="fFloor" min="0" max="30" placeholder="מס' קומה"/></div>
+      <div class="fg"><label>קומה</label><select id="fFloor" onchange=""></select></div>
       <div class="fg"><label>תחום</label><select id="fDomain" onchange="onDomChange()"><option>מאיפנים</option><option>בדיקות</option><option>יועצים</option><option>אחר</option></select></div>
     </div>
     <div class="fg">
@@ -520,12 +698,46 @@ button:active{transform:scale(.96)}
 <div class="dpop" id="dpop">
   <div class="dpop-hdr">
     <div class="dpop-title" id="dptitle"></div>
+    <span class="dpop-badge" id="dpbadge"></span>
     <button class="dpop-close" onclick="closeDpop()">✕</button>
   </div>
   <div class="dpop-body" id="dpbody"></div>
+  <div class="dpop-foot">
+    <button class="dpop-inv-btn" id="dpinvbtn">📅 שלח זימון ליומן</button>
+  </div>
+</div>
+
+<!-- PERIOD POPUP -->
+<div class="ppop-overlay" id="ppopOverlay" onclick="if(event.target===this)closePpop()">
+  <div class="ppop">
+    <div class="ppop-hdr">
+      <div class="ppop-hdr-left">
+        <div class="ppop-title" id="ppopTitle">בדיקות היום</div>
+        <div class="ppop-sub" id="ppopSub"></div>
+      </div>
+      <button class="ppop-close" onclick="closePpop()">✕</button>
+    </div>
+    <div class="ppop-tabs">
+      <button class="ppop-tab on" onclick="switchPpopTab('day',this)">📆 היום</button>
+      <button class="ppop-tab" onclick="switchPpopTab('week',this)">🗓️ השבוע</button>
+      <button class="ppop-tab" onclick="switchPpopTab('month',this)">📋 החודש</button>
+    </div>
+    <div class="ppop-body" id="ppopBody"></div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
+
+<footer class="credit-footer">
+  <div class="credit-inner">
+    <span class="gem g1">✦</span>
+    <div class="credit-text">
+      פותח על ידי
+      <span class="credit-name">שמעון חג׳ג׳</span>
+    </div>
+    <span class="gem g1">✦</span>
+  </div>
+</footer>
 
 <script>
 // ============================================================
@@ -537,7 +749,7 @@ const HM=['ינואר','פברואר','מרץ','אפריל','מאי','יוני',
 const DN=['א','ב','ג','ד','ה','ו','ש'];
 function col(d){return DC[d]||'#64748b'}
 
-let checks=[],staff=[],blds=[],sel=[];
+let checks=[],staff=[],blds=[],bldFloors={},sel=[];
 let Y,M,selD;
 
 function init(){
@@ -601,15 +813,22 @@ function parseChecks(raw){
 }
 
 function parseStaff(raw){
-  staff=[];blds=[];
+  staff=[];blds=[];bldFloors={};
   const bs=new Set();
   for(let i=1;i<raw.length;i++){
     const r=raw[i];
     const b=(r[0]||'').toString().trim();
+    const fl=(r[1]||'').toString().trim();
     const d=(r[3]||'').toString().trim();
     const n=(r[4]||'').toString().trim();
     const e=(r[5]||'').toString().trim();
-    if(b) bs.add(b);
+    if(b){
+      bs.add(b);
+      if(fl&&fl!=='קרקע'){
+        if(!bldFloors[b]) bldFloors[b]=new Set();
+        bldFloors[b].add(fl);
+      }
+    }
     if(!n||!e) continue;
     if(staff.find(x=>x.name===n&&x.email===e)) continue;
     staff.push({name:n,email:e,domain:d,building:b});
@@ -638,6 +857,11 @@ function demo(){
     {name:'משה כהן',building:'10b',domain:'בדיקות',email:'moshe@ex.com'},
   ];
   blds=['10a','10b','10c'];
+  bldFloors={
+    '10a':new Set(['1','2','3','4','5','6','7','8','9']),
+    '10b':new Set(['1','2','3','4','5','6','7','8','9']),
+    '10c':new Set(['1','2','3','4','5','6','7','8','9']),
+  };
   checks=[
     {date:new Date(2026,5,14),building:'10a',floor:'9',domain:'מאיפנים',crew:[{name:'שרון אמיתי',email:'sharon@ex.com'},{name:'יוסי שמש',email:'yosi@ex.com'}]},
     {date:new Date(2026,5,16),building:'10a',floor:'1',domain:'מאיפנים',crew:[{name:'יוסי שמש',email:'yosi@ex.com'}]},
@@ -650,6 +874,24 @@ function demo(){
   const fb=document.getElementById('fBuild');
   if(fb) fb.innerHTML=blds.map(b=>`<option>${b}</option>`).join('');
   refresh();ss('ok','נתוני דוגמה');hideLoad();
+}
+
+function updateFloors(building){
+  const sel=document.getElementById('fFloor');
+  const floors=bldFloors[building];
+  if(floors&&floors.size>0){
+    const sorted=[...floors].map(Number).filter(n=>!isNaN(n)).sort((a,b)=>a-b);
+    if(sorted.length>0){
+      sel.innerHTML=sorted.map(f=>`<option value="${f}">קומה ${f}</option>`).join('');
+      return;
+    }
+  }
+  // fallback אם אין קומות בנתונים
+  sel.innerHTML=[1,2,3,4,5,6,7,8,9].map(f=>`<option value="${f}">קומה ${f}</option>`).join('');
+}
+
+function onBuildingChange(){
+  updateFloors(document.getElementById('fBuild').value);
 }
 
 function refresh(){updateFilters();updateStats();renderCal();renderG();renderL();}
@@ -756,30 +998,127 @@ function renderG(){
 }
 
 // DETAIL POPUP
+let _dpopCheck=null;
 function showDpop(e,idx){
   e.stopPropagation();
   const c=checks[idx];if(!c) return;
+  _dpopCheck=c;
   const p=document.getElementById('dpop');
-  document.getElementById('dptitle').textContent=`בדיקה ב${c.building} | ${c.date?c.date.toLocaleDateString('he-IL'):''}`;
-  const crew=c.crew.map(p=>`<div class="dcrew"><div class="dcrew-name">👤 ${p.name}</div><div class="dcrew-email">${p.email}</div></div>`).join('');
+  document.getElementById('dptitle').textContent=`בדיקה ב${c.building} | קומה ${c.floor}`;
+  const badge=document.getElementById('dpbadge');
+  badge.textContent=c.date?c.date.toLocaleDateString('he-IL'):'';
+  badge.style.background=col(c.domain)+'28';
+  badge.style.color=col(c.domain);
+
+  const crewHtml=c.crew.map(p=>`
+    <div class="dcrew">
+      <div class="dcrew-av" style="background:${col(c.domain)}">${p.name.charAt(0)}</div>
+      <div class="dcrew-info">
+        <div class="dcrew-name">${p.name}</div>
+        <div class="dcrew-email">${p.email}</div>
+      </div>
+    </div>`).join('');
+
   document.getElementById('dpbody').innerHTML=`
     <div class="drow"><span class="dico">🏢</span><div class="dval">${c.building}<small>מבנה</small></div></div>
     <div class="drow"><span class="dico">🏗️</span><div class="dval">קומה ${c.floor}<small>קומה</small></div></div>
-    <div class="drow"><span class="dico">🔧</span><div class="dval">${c.domain}<small>תחום</small></div></div>
-    <div class="drow"><span class="dico">👷</span><div class="dval"><small>צוות הבדיקה</small></div></div>
-    ${crew}`;
+    <div class="drow"><span class="dico">🔧</span><div class="dval" style="display:flex;align-items:center;gap:8px">
+      <span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:${col(c.domain)}"></span>
+      ${c.domain}<small>תחום</small>
+    </div></div>
+    <div class="dcrew-section">
+      <div class="dcrew-label">👷 צוות הבדיקה</div>
+      ${crewHtml}
+    </div>`;
+
+  document.getElementById('dpinvbtn').onclick=()=>resendDpop();
+
   const vw=window.innerWidth;
-  if(vw<=768){p.style.left='4%';p.style.top='auto';}
+  if(vw<=768){p.style.left='4%';p.style.top='auto';p.style.right='auto';}
   else{
-    let l=e.clientX+14,t=e.clientY+14;
-    if(l+350>vw) l=e.clientX-360;
-    p.style.left=Math.max(8,l)+'px';p.style.top=Math.max(8,t)+'px';p.style.bottom='auto';
+    let l=e.clientX+16,t=e.clientY+14;
+    if(l+380>vw) l=e.clientX-390;
+    if(l<8) l=8;
+    p.style.left=l+'px';p.style.top=Math.max(8,t)+'px';p.style.bottom='auto';p.style.right='auto';
   }
   p.classList.add('on');
   setTimeout(()=>document.addEventListener('click',closeDpopOut),10);
 }
+
+async function resendDpop(){
+  if(!_dpopCheck) return;
+  const c=_dpopCheck;
+  const date=c.date?c.date.toISOString().split('T')[0]:'';
+  const name=c.crew.map(s=>s.name).join(', ');
+  const email=c.crew.map(s=>s.email).join(', ');
+  try{
+    ss('loading','שולח...');
+    const data=JSON.stringify({date,building:c.building,floor:c.floor,domain:c.domain,name,email});
+    await fetch(SCRIPT_URL+'?action=addRow&data='+encodeURIComponent(data));
+    ss('ok','מחובר');toast('✅ זימון נשלח!','ok');closeDpop();
+  }catch(ex){ss('err','שגיאה');toast('שגיאה','err');}
+}
+
 function closeDpop(){document.getElementById('dpop').classList.remove('on');document.removeEventListener('click',closeDpopOut);}
 function closeDpopOut(e){if(!document.getElementById('dpop').contains(e.target)) closeDpop();}
+
+// PERIOD POPUP
+function showPeriod(period){
+  document.getElementById('ppopOverlay').classList.add('on');
+  document.body.style.overflow='hidden';
+  document.querySelectorAll('.ppop-tab').forEach(t=>t.classList.remove('on'));
+  const tabMap={'day':0,'week':1,'month':2};
+  document.querySelectorAll('.ppop-tab')[tabMap[period]].classList.add('on');
+  renderPpop(period);
+}
+function closePpop(){document.getElementById('ppopOverlay').classList.remove('on');document.body.style.overflow='';}
+function switchPpopTab(period,el){
+  document.querySelectorAll('.ppop-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');renderPpop(period);
+}
+
+function renderPpop(period){
+  const now=new Date();
+  let filtered=[],title='',sub='';
+  if(period==='day'){
+    filtered=checks.filter(c=>c.date&&c.date.toDateString()===now.toDateString());
+    title='📆 בדיקות היום';
+    sub=now.toLocaleDateString('he-IL',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  } else if(period==='week'){
+    const start=new Date(now);start.setDate(now.getDate()-now.getDay());start.setHours(0,0,0,0);
+    const end=new Date(start);end.setDate(start.getDate()+6);end.setHours(23,59,59,999);
+    filtered=checks.filter(c=>c.date&&c.date>=start&&c.date<=end);
+    title='🗓️ בדיקות השבוע';
+    sub=start.toLocaleDateString('he-IL',{day:'numeric',month:'long'})+' – '+end.toLocaleDateString('he-IL',{day:'numeric',month:'long',year:'numeric'});
+  } else {
+    filtered=checks.filter(c=>c.date&&c.date.getFullYear()===now.getFullYear()&&c.date.getMonth()===now.getMonth());
+    title='📋 בדיקות החודש';
+    sub=now.toLocaleDateString('he-IL',{month:'long',year:'numeric'});
+  }
+  document.getElementById('ppopTitle').textContent=title;
+  document.getElementById('ppopSub').textContent=`${filtered.length} בדיקות | ${sub}`;
+  const body=document.getElementById('ppopBody');
+  if(!filtered.length){
+    body.innerHTML=`<div class="ppop-empty"><div class="pe-icon">🔍</div><div class="pe-txt">אין בדיקות בתקופה זו</div><div class="pe-sub">לחץ ＋ להוספת בדיקה חדשה</div></div>`;
+    return;
+  }
+  const srt=[...filtered].sort((a,b)=>a.date-b.date);
+  body.innerHTML=srt.map(c=>{
+    const crew=c.crew.map(p=>`<div class="pcheck-crew-tag">
+      <div class="pct-av" style="background:${col(c.domain)}">${p.name.charAt(0)}</div>
+      <span class="pct-name">${p.name}</span>
+    </div>`).join('');
+    return`<div class="pcheck-card" style="border-right-color:${col(c.domain)}">
+      <div class="pcheck-top">
+        <span class="pcheck-date">${c.date.toLocaleDateString('he-IL',{weekday:'short',day:'numeric',month:'short'})}</span>
+        <span class="pcheck-bld">${c.building}</span>
+        <span class="pcheck-floor">קומה ${c.floor}</span>
+        <span class="pcheck-domain" style="background:${col(c.domain)}">${c.domain}</span>
+      </div>
+      <div class="pcheck-crew">${crew}</div>
+    </div>`;
+  }).join('');
+}
 
 function cellClick(d){
   const dt=new Date(Y,M,d);
@@ -820,6 +1159,8 @@ function openModal(){
   const doms=[...new Set(staff.map(s=>s.domain).filter(Boolean))].sort();
   const fd=document.getElementById('fDomain');
   if(doms.length) fd.innerHTML=doms.map(d=>`<option>${d}</option>`).join('');
+  // עדכן קומות לפי המבנה הנוכחי
+  updateFloors(document.getElementById('fBuild').value);
   renderStaff('');
   document.getElementById('moverlay').classList.add('on');
   document.body.style.overflow='hidden';
