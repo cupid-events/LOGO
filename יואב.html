@@ -295,20 +295,34 @@ button:active{transform:scale(.96)}
 .stag .rm:hover{color:var(--red)}
 .nostaf{color:var(--light);font-size:13px;padding:6px 2px;font-style:italic}
 
-/* DETAIL POPUP – משופר */
-.dpop{
-  display:none;position:fixed;z-index:500;
-  background:var(--surface);border-radius:var(--r);
-  box-shadow:var(--sh3);border:1px solid var(--border);
-  min-width:300px;max-width:360px;
-  animation:popIn .18s ease;overflow:hidden;
+/* DETAIL POPUP – overlay */
+.dpop-overlay{
+  display:none;position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.5);
+  align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(3px);
 }
-.dpop.on{display:block}
-.dpop-hdr{
+.dpop-overlay.on{display:flex}
+.dpop{
+  background:var(--surface);
+  border-radius:20px 20px 0 0;
+  width:100%;max-width:520px;
+  max-height:85vh;
+  display:flex;flex-direction:column;
+  box-shadow:var(--sh3);
+  animation:slideUp .22s ease;
+}
+@media(min-width:769px){
+  .dpop-overlay{align-items:center;padding:1rem}
+  .dpop{border-radius:var(--r);max-width:440px;animation:popIn .2s ease}
+}
+.dpop-hdr{flex-shrink:0;
   background:linear-gradient(135deg,var(--navy),var(--navy2));
   color:#fff;padding:16px 18px;
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border-radius:20px 20px 0 0;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
 }
+@media(min-width:769px){.dpop-hdr{border-radius:var(--r) var(--r) 0 0}}
 .dpop-badge{
   font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;
   background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);
@@ -322,7 +336,7 @@ button:active{transform:scale(.96)}
   transition:all .15s;flex-shrink:0;
 }
 .dpop-close:hover{background:rgba(255,255,255,.22);color:#fff}
-.dpop-body{padding:16px 18px}
+.dpop-body{padding:16px 18px;overflow-y:auto;flex:1}
 .drow{
   display:flex;align-items:center;gap:12px;
   padding:9px 12px;border-radius:9px;margin-bottom:6px;
@@ -353,7 +367,7 @@ button:active{transform:scale(.96)}
 .dcrew-info{flex:1}
 .dcrew-name{font-weight:700;font-size:13px;color:var(--text)}
 .dcrew-email{font-size:11px;color:var(--muted);direction:ltr;margin-top:1px}
-.dpop-foot{padding:12px 18px;border-top:1px solid var(--border);background:var(--surface2)}
+.dpop-foot{padding:12px 18px;border-top:1px solid var(--border);background:var(--surface2);flex-shrink:0}
 .dpop-inv-btn{
   width:100%;background:var(--accent);color:#fff;
   border:none;border-radius:var(--rsm);padding:10px;
@@ -706,16 +720,12 @@ button:active{transform:scale(.96)}
   border-left:1px solid rgba(180,210,255,.18);
 }
 
-/* WINDOWS */
-.hf-main{display:flex;align-items:center;gap:8px}
+/* FLOOR CONTENT */
+.hf-main{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .hf-num{font-size:12px;font-weight:800;color:rgba(200,220,255,.7);min-width:22px;flex-shrink:0}
-.hf-windows{display:flex;flex-wrap:wrap;gap:3px;flex:1}
-.hf-win{width:12px;height:8px;border-radius:1px;border:1px solid rgba(255,255,255,.12);transition:all .2s}
-.hf-win.lit{background:rgba(255,240,180,.85);box-shadow:0 0 4px rgba(255,220,100,.6);border-color:rgba(255,220,100,.4)}
-.hf-win.dark{background:rgba(20,25,60,.6)}
-.holo-floor.has-check .hf-win.lit{background:rgba(100,255,180,.8);box-shadow:0 0 5px rgba(50,220,120,.7);border-color:rgba(50,220,120,.4)}
-.hf-right{flex-shrink:0;margin-right:4px}
-.hf-check-badge{font-size:10px;font-weight:700;color:#6ee7b7;background:rgba(16,185,129,.2);border:1px solid rgba(52,211,153,.45);padding:2px 9px;border-radius:10px;white-space:nowrap;text-shadow:0 0 8px rgba(52,211,153,.6)}
+.hf-domain{flex:1;font-size:11px;font-weight:600;color:rgba(180,210,255,.6)}
+.hf-right{flex-shrink:0}
+.hf-check-badge{font-size:11px;font-weight:700;color:#6ee7b7;background:rgba(16,185,129,.2);border:1px solid rgba(52,211,153,.45);padding:3px 10px;border-radius:10px;white-space:nowrap;text-shadow:0 0 8px rgba(52,211,153,.6)}
 .hf-crew{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .hf-crew-tag{font-size:10px;color:#93c5fd;background:rgba(59,130,246,.14);border:1px solid rgba(96,165,250,.28);padding:2px 9px;border-radius:10px;font-weight:600;text-shadow:0 0 6px rgba(59,130,246,.4)}
 
@@ -840,8 +850,7 @@ button:active{transform:scale(.96)}
   .frow{grid-template-columns:1fr}
   .mfooter{flex-direction:column-reverse}
   .mfooter button{width:100%;padding:14px}
-  .dpop{min-width:90vw;max-width:95vw;left:50%!important;transform:translateX(-50%)!important;top:auto!important;bottom:80px}
-  .dpop.on{display:block}
+  .dpop.on{display:flex;flex-direction:column}
   .fab{display:flex}
   .btn-hdr-new{display:none}
   .toast{bottom:80px;right:12px;left:12px;max-width:none}
@@ -994,18 +1003,22 @@ button:active{transform:scale(.96)}
   </div>
 </div>
 
-<div class="dpop" id="dpop">
-  <div class="dpop-hdr">
-    <div class="dpop-title" id="dptitle"></div>
-    <span class="dpop-badge" id="dpbadge"></span>
-    <button class="dpop-close" onclick="closeDpop()">✕</button>
-  </div>
-  <div class="dpop-body" id="dpbody"></div>
-  <div class="dpop-foot">
-    <button class="dpop-inv-btn" id="dpinvbtn">📅 שלח זימון ליומן</button>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
-      <button class="dpop-edit-btn" id="dpeditbtn">✏️ ערוך</button>
-      <button class="dpop-del-btn" id="dpdelbtn">🗑️ מחק</button>
+<div class="dpop-overlay" id="dpopOverlay" onclick="if(event.target===this)closeDpop()">
+  <div class="dpop" id="dpop">
+    <div class="dpop-hdr">
+      <div style="flex:1">
+        <div class="dpop-title" id="dptitle"></div>
+        <span class="dpop-badge" id="dpbadge"></span>
+      </div>
+      <button class="dpop-close" onclick="closeDpop()">✕</button>
+    </div>
+    <div class="dpop-body" id="dpbody"></div>
+    <div class="dpop-foot">
+      <button class="dpop-inv-btn" id="dpinvbtn">📅 שלח זימון ליומן</button>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <button class="dpop-edit-btn" id="dpeditbtn">✏️ ערוך בדיקה</button>
+        <button class="dpop-del-btn" id="dpdelbtn">🗑️ מחק בדיקה</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1046,12 +1059,12 @@ button:active{transform:scale(.96)}
     </div>
     <div class="fg">
       <label>אנשי צוות</label>
-      <div id="selStaff" class="stags"><div class="nostaf">טרם נבחרו</div></div>
+      <div id="eSelStaff" class="stags"><div class="nostaf">טרם נבחרו</div></div>
     </div>
     <div class="fg">
       <div class="spicker">
-        <div class="ssearch-wrap"><input class="ssearch" id="ssearch" type="text" placeholder="🔍 חפש עובד..." oninput="fStaff()"/></div>
-        <div class="slist" id="slist"></div>
+        <div class="ssearch-wrap"><input class="ssearch" id="eStaffSearch" type="text" placeholder="🔍 חפש עובד..." oninput="fEditStaff()"/></div>
+        <div class="slist" id="eStaffList"></div>
       </div>
     </div>
     <div class="mfooter">
@@ -1437,16 +1450,14 @@ function renderHoloBlds(){
       const crew=flChecks.flatMap(c=>c.crew.map(p=>p.name));
       const uniqCrew=[...new Set(crew)];
       const domain=flChecks[0]?.domain||'';
-      let winsHtml='<div class="hf-windows">';
-      for(let r=0;r<2;r++) for(let wc=0;wc<4;wc++)
-        winsHtml+=`<div class="hf-win ${(hasCheck||(Math.random()>.4))?'lit':'dark'}"></div>`;
-      winsHtml+='</div>';
+      let winsHtml=''; // ללא חלונות
       const crewHtml=hasCheck&&uniqCrew.length?
         '<div class="hf-crew">'+uniqCrew.map(n=>`<span class="hf-crew-tag">👤 ${n}</span>`).join('')+'</div>':'';
-      const badge=hasCheck?`<span class="hf-check-badge">✓ ${flChecks.length} בדיקה | ${domain}</span>`:'';
+      const badge=hasCheck?`<span class="hf-check-badge">✓ ${domain}</span>`:'';
       return`<div class="holo-floor ${hasCheck?'has-check':''}">
         <div class="hf-main">
-          <span class="hf-num">${fl}</span>${winsHtml}
+          <span class="hf-num">${fl}</span>
+          <span class="hf-domain">קומה ${fl}</span>
           <div class="hf-right">${badge}</div>
         </div>${crewHtml}
       </div>`;
@@ -1490,11 +1501,7 @@ function showDpop(e,idx){
   document.getElementById('dpinvbtn').onclick=()=>resendDpop();
   document.getElementById('dpeditbtn').onclick=()=>{closeDpop();openEditModal(idx);};
   document.getElementById('dpdelbtn').onclick=()=>deleteCheck(idx);
-  const vw=window.innerWidth;
-  if(vw<=768){p.style.left='4%';p.style.top='auto';p.style.right='auto';}
-  else{let l=e.clientX+16,t=e.clientY+14;if(l+380>vw)l=e.clientX-390;if(l<8)l=8;
-    p.style.left=l+'px';p.style.top=Math.max(8,t)+'px';p.style.bottom='auto';p.style.right='auto';}
-  p.classList.add('on');
+  document.getElementById('dpopOverlay').classList.add('on');
   setTimeout(()=>document.addEventListener('click',closeDpopOut),10);
 }
 
@@ -1505,7 +1512,8 @@ function deleteCheck(idx){
   toast('🗑️ הבדיקה נמחקה','warn');
 }
 
-let _editIdx=-1;
+let _editIdx=-1, editSel=[];
+
 function openEditModal(idx){
   const c=checks[idx];if(!c) return;
   _editIdx=idx;
@@ -1518,17 +1526,46 @@ function openEditModal(idx){
   const ed=document.getElementById('efDomain');
   if(doms.length) ed.innerHTML=doms.map(d=>`<option>${d}</option>`).join('');
   ed.value=c.domain;
-  sel=[...c.crew];renderSel();
-  document.getElementById('ssearch').value='';renderStaff('');
+  editSel=[...c.crew];
+  renderEditSel();
+  document.getElementById('eStaffSearch').value='';
+  fEditStaff();
   document.getElementById('editOverlay').classList.add('on');
   document.body.style.overflow='hidden';
 }
 
-function updateEditFloors(building,currentFloor){
-  const s=document.getElementById('efFloor');
-  const floors=bldFloors[building];
-  const list=(floors&&floors.size>0)?[...floors].map(Number).filter(n=>!isNaN(n)).sort((a,b)=>a-b):[1,2,3,4,5,6,7,8,9];
-  s.innerHTML=list.map(f=>`<option value="${f}"${String(f)===String(currentFloor)?' selected':''}>קומה ${f}</option>`).join('');
+function renderEditSel(){
+  const el=document.getElementById('eSelStaff');
+  if(!editSel.length){el.innerHTML='<div class="nostaf">טרם נבחרו</div>';return;}
+  el.innerHTML=editSel.map((s,i)=>`<div class="stag">${s.name}<span class="rm" onclick="rmEditStaff(${i})">×</span></div>`).join('');
+}
+
+function fEditStaff(){
+  const q=document.getElementById('eStaffSearch').value.toLowerCase();
+  const dom=document.getElementById('efDomain').value;
+  const list=document.getElementById('eStaffList');
+  const shown=staff.filter(s=>{
+    if(dom&&s.domain!==dom) return false;
+    const m=!q||s.name.includes(q)||s.email.toLowerCase().includes(q);
+    return m&&!editSel.find(x=>x.name===s.name&&x.email===s.email);
+  });
+  if(!shown.length){list.innerHTML=`<div style="padding:14px;color:var(--muted);font-size:13px;text-align:center">לא נמצאו עובדים</div>`;return;}
+  list.innerHTML=shown.map(s=>`
+    <div class="sopt" onclick="addEditStaff(${staff.indexOf(s)})">
+      <div><div class="sname">${s.name}</div><div class="semail">${s.email}</div></div>
+      <div class="sadd">+</div>
+    </div>`).join('');
+}
+
+function addEditStaff(i){
+  const s=staff[i];
+  if(editSel.find(x=>x.name===s.name)) return;
+  editSel.push({name:s.name,email:s.email});
+  renderEditSel();fEditStaff();
+}
+
+function rmEditStaff(i){
+  editSel.splice(i,1);renderEditSel();fEditStaff();
 }
 
 async function saveEdit(){
@@ -1536,8 +1573,8 @@ async function saveEdit(){
   const building=document.getElementById('efBuild').value;
   const floor=document.getElementById('efFloor').value;
   const domain=document.getElementById('efDomain').value;
-  if(!date||!building||!sel.length){toast('מלא תאריך, מבנה וצוות','warn');return;}
-  checks[_editIdx]={date:new Date(date),building,floor,domain,crew:[...sel]};
+  if(!date||!building||!editSel.length){toast('מלא תאריך, מבנה וצוות','warn');return;}
+  checks[_editIdx]={date:new Date(date),building,floor,domain,crew:[...editSel]};
   document.getElementById('editOverlay').classList.remove('on');
   document.body.style.overflow='';
   refresh();toast('✅ הבדיקה עודכנה','ok');
@@ -1557,8 +1594,8 @@ async function resendDpop(){
   }catch(ex){ss('err','שגיאה');toast('שגיאה','err');}
 }
 
-function closeDpop(){document.getElementById('dpop').classList.remove('on');document.removeEventListener('click',closeDpopOut);}
-function closeDpopOut(e){if(!document.getElementById('dpop').contains(e.target)) closeDpop();}
+function closeDpop(){document.getElementById('dpopOverlay').classList.remove('on');document.removeEventListener('click',closeDpopOut);}
+function closeDpopOut(e){if(e.target===document.getElementById('dpopOverlay')) closeDpop();}
 
 // PERIOD POPUP
 function showPeriod(period){
