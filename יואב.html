@@ -373,8 +373,18 @@ button:active{transform:scale(.96)}
   border:none;border-radius:var(--rsm);padding:10px;
   font-size:13px;font-weight:700;cursor:pointer;
   font-family:'Heebo',sans-serif;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
 }
 .dpop-inv-btn:hover{background:var(--accent-dark)}
+.btn-spinner{
+  width:16px;height:16px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;
+  animation:spin .7s linear infinite;
+  flex-shrink:0;display:none;
+}
+.btn-spinning .btn-spinner{display:block}
+.btn-spinning{opacity:.85;cursor:not-allowed;pointer-events:none}
 .dpop-edit-btn{
   background:var(--surface2);color:var(--navy);
   border:1.5px solid var(--border2);border-radius:var(--rsm);
@@ -1014,10 +1024,10 @@ button:active{transform:scale(.96)}
     </div>
     <div class="dpop-body" id="dpbody"></div>
     <div class="dpop-foot">
-      <button class="dpop-inv-btn" id="dpinvbtn">📅 שלח זימון ליומן</button>
+      <button class="dpop-inv-btn" id="dpinvbtn"><div class="btn-spinner"></div>📅 שלח זימון ליומן</button>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
-        <button class="dpop-edit-btn" id="dpeditbtn">✏️ ערוך בדיקה</button>
-        <button class="dpop-del-btn" id="dpdelbtn">🗑️ מחק בדיקה</button>
+        <button class="dpop-edit-btn" id="dpeditbtn"><div class="btn-spinner"></div>✏️ ערוך בדיקה</button>
+        <button class="dpop-del-btn" id="dpdelbtn"><div class="btn-spinner"></div>🗑️ מחק בדיקה</button>
       </div>
     </div>
   </div>
@@ -1069,7 +1079,7 @@ button:active{transform:scale(.96)}
     </div>
     <div class="mfooter">
       <button class="btn-cancel" onclick="document.getElementById('editOverlay').classList.remove('on');document.body.style.overflow=''">ביטול</button>
-      <button class="btn-save" onclick="saveEdit()">✓ שמור שינויים</button>
+      <button class="btn-save" id="editSaveBtn" onclick="saveEdit()" style="display:flex;align-items:center;justify-content:center;gap:8px"><div class="btn-spinner" style="border-top-color:#fff"></div>✓ שמור שינויים</button>
     </div>
   </div>
 </div>
@@ -1104,7 +1114,7 @@ button:active{transform:scale(.96)}
 
 <script>
 // ============================================================
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyC1VfjlHSlWtgvYXCMj8xkbE7Ib691_52BDaDUEyvs5qk_KJplQF1ry4vWI5aEsZB9/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFCHBTkwjsbOjtS925DOLSl82l2Ccwf9_OvPh51jqGMSYkP8R69hQ1omVIyxfsI4_h/exec';
 // ============================================================
 
 const DC={'מאיפנים':'#2563eb','בדיקות':'#059669','יועצים':'#7c3aed','תקשוב':'#d97706','אחר':'#64748b'};
@@ -1167,11 +1177,12 @@ function parseChecks(raw){
     const ns=(r[4]||'').toString().split(',').map(s=>s.trim()).filter(Boolean);
     const es=(r[5]||'').toString().split(',').map(s=>s.trim()).filter(Boolean);
     checks.push({
+      rowIndex: i+1,  // מספר שורה אמיתי בגיליון (מתחיל מ-2)
       date:pd(r[0]),
       building:(r[1]||'').toString(),
       floor:(r[2]||'').toString(),
       domain:(r[3]||'').toString(),
-      crew:ns.map((n,i)=>({name:n,email:es[i]||''}))
+      crew:ns.map((n,idx)=>({name:n,email:es[idx]||''}))
     });
   }
 }
@@ -1250,8 +1261,17 @@ function updateFloors(building){
       return;
     }
   }
-  // fallback אם אין קומות בנתונים
   sel.innerHTML=[1,2,3,4,5,6,7,8,9].map(f=>`<option value="${f}">קומה ${f}</option>`).join('');
+}
+
+function updateEditFloors(building, currentFloor){
+  const sel=document.getElementById('efFloor');
+  if(!sel) return;
+  const floors=bldFloors[building];
+  const list=(floors&&floors.size>0)
+    ?[...floors].map(Number).filter(n=>!isNaN(n)).sort((a,b)=>a-b)
+    :[1,2,3,4,5,6,7,8,9];
+  sel.innerHTML=list.map(f=>`<option value="${f}"${String(f)===String(currentFloor)?' selected':''}>קומה ${f}</option>`).join('');
 }
 
 function onBuildingChange(){
@@ -1499,39 +1519,87 @@ function showDpop(e,idx){
       ${c.domain}<small>תחום</small></div></div>
     <div class="dcrew-section"><div class="dcrew-label">👷 צוות הבדיקה</div>${crewHtml}</div>`;
   document.getElementById('dpinvbtn').onclick=()=>resendDpop();
-  document.getElementById('dpeditbtn').onclick=()=>{closeDpop();openEditModal(idx);};
+  document.getElementById('dpeditbtn').onclick=()=>{
+    document.getElementById('dpopOverlay').classList.remove('on');
+    setTimeout(()=>openEditModal(idx),50);
+  };
   document.getElementById('dpdelbtn').onclick=()=>deleteCheck(idx);
   document.getElementById('dpopOverlay').classList.add('on');
   setTimeout(()=>document.addEventListener('click',closeDpopOut),10);
 }
 
-function deleteCheck(idx){
+// כלי עזר – טעינה על כפתור
+function setLoading(btnId, loading, originalText){
+  const btn=document.getElementById(btnId);
+  if(!btn) return;
+  if(loading){
+    btn.dataset.orig=btn.innerText.trim();
+    btn.classList.add('btn-spinning');
+  } else {
+    btn.classList.remove('btn-spinning');
+  }
+}
+
+async function deleteCheck(idx){
   const c=checks[idx];if(!c) return;
   if(!confirm(`למחוק בדיקה ב${c.building} קומה ${c.floor}?`)) return;
-  checks.splice(idx,1);closeDpop();refresh();
-  toast('🗑️ הבדיקה נמחקה','warn');
+  closeDpop();
+
+  if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'&&c.rowIndex){
+    try{
+      setLoading('dpdelbtn',true);
+      const data=JSON.stringify({rowIndex:c.rowIndex});
+      console.log('מוחק שורה מספר:',c.rowIndex);
+      const url=SCRIPT_URL+'?action=deleteRow&data='+encodeURIComponent(data);
+      ss('loading','מוחק...');
+      const r=await fetch(url);
+      const j=await r.json();
+      console.log('תשובת מחיקה:',j);
+      setLoading('dpdelbtn',false);
+      if(j.ok) toast('🗑️ הבדיקה נמחקה','warn');
+      else toast('⚠️ שגיאה: '+(j.error||''),'warn');
+      ss('ok','מחובר');
+    }catch(e){
+      setLoading('dpdelbtn',false);
+      console.error('שגיאת מחיקה:',e);
+      ss('err','שגיאה');
+    }
+  } else {
+    toast('🗑️ נמחק (דוגמה)','warn');
+  }
+  checks.splice(idx,1);
+  refresh();
 }
 
 let _editIdx=-1, editSel=[];
 
 function openEditModal(idx){
-  const c=checks[idx];if(!c) return;
+  console.log('פותח עריכה לאינדקס', idx);
+  const c=checks[idx];
+  if(!c){console.error('לא נמצאה בדיקה באינדקס',idx);return;}
   _editIdx=idx;
+
+  // מלא שדות
   document.getElementById('efDate').value=c.date?c.date.toISOString().split('T')[0]:'';
   const efB=document.getElementById('efBuild');
   if(blds.length) efB.innerHTML=blds.map(b=>`<option>${b}</option>`).join('');
   efB.value=c.building;
   updateEditFloors(c.building,c.floor);
+
   const doms=[...new Set(staff.map(s=>s.domain).filter(Boolean))].sort();
   const ed=document.getElementById('efDomain');
   if(doms.length) ed.innerHTML=doms.map(d=>`<option>${d}</option>`).join('');
   ed.value=c.domain;
+
   editSel=[...c.crew];
   renderEditSel();
   document.getElementById('eStaffSearch').value='';
   fEditStaff();
+
+  // פתח מודל עריכה
   document.getElementById('editOverlay').classList.add('on');
   document.body.style.overflow='hidden';
+  console.log('מודל עריכה נפתח');
 }
 
 function renderEditSel(){
@@ -1574,10 +1642,41 @@ async function saveEdit(){
   const floor=document.getElementById('efFloor').value;
   const domain=document.getElementById('efDomain').value;
   if(!date||!building||!editSel.length){toast('מלא תאריך, מבנה וצוות','warn');return;}
+
+  const oldCheck=checks[_editIdx];
+  const nameStr=editSel.map(s=>s.name).join(', ');
+  const emailStr=editSel.map(s=>s.email).join(', ');
+
+  if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+    try{
+      setLoading('editSaveBtn',true);
+      ss('loading','שומר שינויים...');
+      const data=JSON.stringify({
+        rowIndex: oldCheck.rowIndex,  // מספר שורה מדויק
+        date, building, floor, domain,
+        name: nameStr, email: emailStr
+      });
+      console.log('שולח updateRow:', JSON.parse(data));
+      const r=await fetch(SCRIPT_URL+'?action=updateRow&data='+encodeURIComponent(data));
+      const j=await r.json();
+      console.log('תשובת updateRow:', j);
+      if(j.ok) toast('✅ הבדיקה עודכנה','ok');
+      else toast('⚠️ שגיאה: '+(j.error||''),'warn');
+      setLoading('editSaveBtn',false);
+      ss('ok','מחובר');
+    }catch(e){
+      setLoading('editSaveBtn',false);
+      console.error('שגיאת עריכה:',e);
+      ss('err','שגיאה');toast('שגיאת רשת','warn');
+    }
+  } else {
+    toast('✅ הבדיקה עודכנה (דוגמה)','ok');
+  }
+
   checks[_editIdx]={date:new Date(date),building,floor,domain,crew:[...editSel]};
   document.getElementById('editOverlay').classList.remove('on');
   document.body.style.overflow='';
-  refresh();toast('✅ הבדיקה עודכנה','ok');
+  refresh();
 }
 
 async function resendDpop(){
