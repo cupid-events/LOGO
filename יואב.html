@@ -361,6 +361,20 @@ button:active{transform:scale(.96)}
   font-family:'Heebo',sans-serif;transition:all .15s;
 }
 .dpop-inv-btn:hover{background:var(--accent-dark)}
+.dpop-edit-btn{
+  background:var(--surface2);color:var(--navy);
+  border:1.5px solid var(--border2);border-radius:var(--rsm);
+  padding:8px;font-size:12px;font-weight:700;cursor:pointer;
+  font-family:'Heebo',sans-serif;transition:all .15s;
+}
+.dpop-edit-btn:hover{background:var(--accent-light);border-color:var(--accent);color:var(--accent)}
+.dpop-del-btn{
+  background:#fff1f2;color:#be123c;
+  border:1.5px solid #fecdd3;border-radius:var(--rsm);
+  padding:8px;font-size:12px;font-weight:700;cursor:pointer;
+  font-family:'Heebo',sans-serif;transition:all .15s;
+}
+.dpop-del-btn:hover{background:#ffe4e6;border-color:#fda4af}
 
 /* PERIOD POPUP */
 .ppop-overlay{
@@ -584,7 +598,7 @@ button:active{transform:scale(.96)}
 /* HOLOGRAM OVERLAY */
 .holo-overlay{
   display:none;position:fixed;inset:0;
-  background:rgba(1,0,12,.78);z-index:600;
+  background:rgba(0,4,20,.8);z-index:600;
   align-items:center;justify-content:center;
   backdrop-filter:blur(6px);padding:1rem;
 }
@@ -592,32 +606,31 @@ button:active{transform:scale(.96)}
 .holo-box{
   width:100%;max-width:1100px;max-height:90vh;
   display:flex;flex-direction:column;
-  background:rgba(6,2,22,.92);border-radius:var(--r);
-  border:1px solid rgba(196,181,253,.45);
-  box-shadow:0 0 80px rgba(124,58,237,.55),0 0 200px rgba(99,102,241,.2),inset 0 0 60px rgba(124,58,237,.06);
+  background:rgba(3,8,30,.93);border-radius:var(--r);
+  border:1px solid rgba(220,230,255,.35);
+  box-shadow:0 0 80px rgba(150,180,255,.3),0 0 200px rgba(100,140,255,.12),inset 0 0 60px rgba(150,180,255,.04);
   animation:holoIn .3s ease;overflow:hidden;
 }
 @keyframes holoIn{from{transform:scale(.94) translateY(8px);opacity:0}to{transform:scale(1);opacity:1}}
 .holo-hdr{
-  padding:18px 26px;
-  border-bottom:1px solid rgba(196,181,253,.2);
+  padding:18px 26px;border-bottom:1px solid rgba(220,230,255,.18);
   display:flex;align-items:center;justify-content:space-between;
-  background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(99,102,241,.08));
+  background:linear-gradient(135deg,rgba(150,180,255,.12),rgba(100,140,255,.05));
 }
-.holo-title{font-size:19px;font-weight:800;color:#ede9fe;letter-spacing:-.3px;text-shadow:0 0 24px rgba(196,181,253,.7)}
-.holo-sub{font-size:12px;color:rgba(196,181,253,.65);margin-top:3px}
+.holo-title{font-size:19px;font-weight:800;color:#e8eeff;letter-spacing:-.3px;text-shadow:0 0 24px rgba(180,210,255,.7)}
+.holo-sub{font-size:12px;color:rgba(180,210,255,.6);margin-top:3px}
 .holo-close{
-  background:rgba(196,181,253,.14);border:1px solid rgba(196,181,253,.35);
-  color:#c4b5fd;border-radius:8px;width:34px;height:34px;
+  background:rgba(220,230,255,.12);border:1px solid rgba(220,230,255,.3);
+  color:#b8d0ff;border-radius:8px;width:34px;height:34px;
   display:flex;align-items:center;justify-content:center;
   font-size:18px;cursor:pointer;transition:all .15s;
 }
-.holo-close:hover{background:rgba(196,181,253,.28);color:#ede9fe}
+.holo-close:hover{background:rgba(220,230,255,.25);color:#e8eeff}
 .holo-body{
   flex:1;overflow-y:auto;padding:32px 28px;
   display:flex;gap:28px;flex-wrap:wrap;
   align-items:flex-end;justify-content:center;
-  background:radial-gradient(ellipse at center bottom,rgba(124,58,237,.14) 0%,transparent 65%);
+  background:radial-gradient(ellipse at center bottom,rgba(100,140,255,.1) 0%,transparent 65%);
 }
 
 /* BUILDING 3D */
@@ -626,14 +639,14 @@ button:active{transform:scale(.96)}
   flex:1;min-width:220px;max-width:300px;position:relative;
 }
 .holo-bld-name{
-  font-size:13px;font-weight:800;color:#c4b5fd;
+  font-size:13px;font-weight:800;color:#c8daff;
   margin-bottom:14px;letter-spacing:.8px;text-transform:uppercase;
-  text-shadow:0 0 20px rgba(196,181,253,.9);
+  text-shadow:0 0 20px rgba(180,210,255,.9);
   display:flex;align-items:center;gap:8px;width:100%;justify-content:center;
 }
 .holo-bld-name::before,.holo-bld-name::after{
   content:'';flex:1;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(196,181,253,.45));
+  background:linear-gradient(90deg,transparent,rgba(180,210,255,.4));
 }
 .holo-bld-name::before{transform:scaleX(-1)}
 .holo-bld-wrap{
@@ -641,96 +654,152 @@ button:active{transform:scale(.96)}
   transform:perspective(500px) rotateX(5deg);
   transform-origin:center bottom;
 }
-
-/* grid lines overlay */
 .holo-bld-wrap::before{
   content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 29px,rgba(196,181,253,.05) 29px,rgba(196,181,253,.05) 30px);
+  background:repeating-linear-gradient(0deg,transparent,transparent 30px,rgba(180,210,255,.04) 30px,rgba(180,210,255,.04) 31px);
   pointer-events:none;z-index:1;
 }
-
 .holo-floors{display:flex;flex-direction:column-reverse;gap:2px;width:100%}
 
-/* קומה רגילה */
+/* קומה רגילה – לבן */
 .holo-floor{
-  border-radius:5px;padding:10px 14px;
-  background:linear-gradient(180deg,rgba(55,30,120,.7),rgba(22,8,65,.82));
-  border-top:1px solid rgba(196,181,253,.3);
-  border-left:1px solid rgba(196,181,253,.18);
-  border-right:1px solid rgba(196,181,253,.18);
-  border-bottom:1px solid rgba(80,50,180,.18);
-  position:relative;overflow:hidden;transition:all .2s;cursor:default;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  border-radius:5px;padding:8px 12px;
+  background:linear-gradient(180deg,rgba(30,45,100,.75),rgba(12,18,55,.85));
+  border-top:1px solid rgba(200,220,255,.28);
+  border-left:1px solid rgba(200,220,255,.15);
+  border-right:1px solid rgba(200,220,255,.15);
+  border-bottom:1px solid rgba(60,80,180,.18);
+  position:relative;overflow:hidden;transition:all .22s;cursor:default;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
 }
-.holo-floor::after{
-  content:'';position:absolute;top:0;left:0;right:0;height:40%;
-  background:linear-gradient(180deg,rgba(255,255,255,.05),transparent);
-  pointer-events:none;
-}
+.holo-floor::after{content:'';position:absolute;top:0;left:0;right:0;height:35%;background:linear-gradient(180deg,rgba(255,255,255,.04),transparent);pointer-events:none;}
 .holo-floor:hover{
-  background:linear-gradient(180deg,rgba(80,45,170,.85),rgba(40,16,110,.9));
-  border-top-color:rgba(196,181,253,.6);
-  box-shadow:0 0 20px rgba(124,58,237,.45),inset 0 1px 0 rgba(255,255,255,.08);
-  transform:translateX(-4px) scaleX(1.015);z-index:2;
+  background:linear-gradient(180deg,rgba(50,70,160,.85),rgba(25,35,100,.9));
+  border-top-color:rgba(200,220,255,.55);
+  box-shadow:0 0 18px rgba(150,180,255,.35),inset 0 1px 0 rgba(255,255,255,.07);
+  transform:translateX(-3px) scaleX(1.01);z-index:2;
 }
 
-/* קומה עם בדיקה */
+/* קומה ירוקה עם בדיקה */
 .holo-floor.has-check{
-  background:linear-gradient(180deg,rgba(5,55,35,.82),rgba(2,28,18,.88));
-  border-top-color:rgba(52,211,153,.55);
-  border-left-color:rgba(52,211,153,.3);
-  border-right-color:rgba(52,211,153,.3);
-  box-shadow:inset 0 1px 0 rgba(52,211,153,.15),0 0 8px rgba(16,185,129,.2);
+  background:linear-gradient(180deg,rgba(4,60,38,.82),rgba(2,32,18,.9)) !important;
+  border-top-color:rgba(52,211,153,.6) !important;
+  border-left-color:rgba(52,211,153,.35) !important;
+  border-right-color:rgba(52,211,153,.35) !important;
+  box-shadow:inset 0 1px 0 rgba(52,211,153,.18),0 0 12px rgba(16,185,129,.25) !important;
 }
 .holo-floor.has-check:hover{
-  box-shadow:0 0 22px rgba(16,185,129,.45),inset 0 1px 0 rgba(52,211,153,.25);
+  box-shadow:0 0 22px rgba(16,185,129,.5),inset 0 1px 0 rgba(52,211,153,.3) !important;
 }
 
-.hf-top{display:flex;align-items:center;gap:8px}
-.hf-num{font-size:12px;font-weight:800;color:rgba(196,181,253,.75);min-width:26px}
-.hf-label{font-size:11px;color:rgba(196,181,253,.45);flex:1;font-weight:500}
-.hf-check-badge{
-  font-size:10px;font-weight:700;color:#6ee7b7;
-  background:rgba(16,185,129,.2);border:1px solid rgba(52,211,153,.45);
-  padding:2px 10px;border-radius:10px;white-space:nowrap;
-  text-shadow:0 0 8px rgba(52,211,153,.6);
+/* מבנה תלת מימד – צדדים */
+.holo-side-l{
+  position:absolute;top:0;bottom:0;right:-10px;width:10px;
+  background:linear-gradient(90deg,rgba(20,30,90,.7),rgba(8,12,40,.9));
+  transform:skewY(-2deg);transform-origin:top right;
+  border-right:1px solid rgba(180,210,255,.18);
 }
+.holo-side-r{
+  position:absolute;top:0;bottom:0;left:-10px;width:10px;
+  background:linear-gradient(270deg,rgba(20,30,90,.7),rgba(8,12,40,.9));
+  transform:skewY(2deg);transform-origin:top left;
+  border-left:1px solid rgba(180,210,255,.18);
+}
+
+/* WINDOWS */
+.hf-main{display:flex;align-items:center;gap:8px}
+.hf-num{font-size:12px;font-weight:800;color:rgba(200,220,255,.7);min-width:22px;flex-shrink:0}
+.hf-windows{display:flex;flex-wrap:wrap;gap:3px;flex:1}
+.hf-win{width:12px;height:8px;border-radius:1px;border:1px solid rgba(255,255,255,.12);transition:all .2s}
+.hf-win.lit{background:rgba(255,240,180,.85);box-shadow:0 0 4px rgba(255,220,100,.6);border-color:rgba(255,220,100,.4)}
+.hf-win.dark{background:rgba(20,25,60,.6)}
+.holo-floor.has-check .hf-win.lit{background:rgba(100,255,180,.8);box-shadow:0 0 5px rgba(50,220,120,.7);border-color:rgba(50,220,120,.4)}
+.hf-right{flex-shrink:0;margin-right:4px}
+.hf-check-badge{font-size:10px;font-weight:700;color:#6ee7b7;background:rgba(16,185,129,.2);border:1px solid rgba(52,211,153,.45);padding:2px 9px;border-radius:10px;white-space:nowrap;text-shadow:0 0 8px rgba(52,211,153,.6)}
 .hf-crew{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
-.hf-crew-tag{
-  font-size:10px;color:#67e8f9;
-  background:rgba(6,182,212,.14);border:1px solid rgba(34,211,238,.28);
-  padding:2px 9px;border-radius:10px;font-weight:600;
-  text-shadow:0 0 6px rgba(6,182,212,.5);
-}
+.hf-crew-tag{font-size:10px;color:#93c5fd;background:rgba(59,130,246,.14);border:1px solid rgba(96,165,250,.28);padding:2px 9px;border-radius:10px;font-weight:600;text-shadow:0 0 6px rgba(59,130,246,.4)}
 
-/* סריקה */
+/* סריקה לבנה */
 .holo-scan{
   position:absolute;left:0;right:0;height:2px;bottom:0;
-  background:linear-gradient(90deg,transparent 0%,rgba(196,181,253,.95) 50%,transparent 100%);
+  background:linear-gradient(90deg,transparent 0%,rgba(220,235,255,.95) 50%,transparent 100%);
   animation:scan 3s linear infinite;pointer-events:none;z-index:3;
-  box-shadow:0 0 10px rgba(196,181,253,.8),0 0 3px #fff;
+  box-shadow:0 0 10px rgba(180,210,255,.8),0 0 3px #fff;
 }
 @keyframes scan{from{bottom:0%}to{bottom:100%}}
 
-/* בסיס מבנה */
+/* בסיס */
 .holo-bld-base{
   position:relative;width:95%;height:12px;
-  background:linear-gradient(180deg,rgba(124,58,237,.6),rgba(76,29,149,.4));
-  border-radius:0 0 6px 6px;
-  border:1px solid rgba(196,181,253,.35);border-top:none;
-  box-shadow:0 4px 24px rgba(124,58,237,.6),0 0 50px rgba(124,58,237,.25);
+  background:linear-gradient(180deg,rgba(100,140,220,.55),rgba(50,80,160,.35));
+  border-radius:0 0 6px 6px;border:1px solid rgba(180,210,255,.3);border-top:none;
+  box-shadow:0 4px 24px rgba(100,140,255,.5),0 0 50px rgba(100,140,255,.2);
 }
-.holo-bld-base::after{
-  content:'';position:absolute;bottom:-10px;left:5%;right:5%;height:10px;
-  background:radial-gradient(ellipse,rgba(124,58,237,.5) 0%,transparent 70%);
-  border-radius:50%;filter:blur(4px);
-}
+.holo-bld-base::after{content:'';position:absolute;bottom:-10px;left:5%;right:5%;height:10px;background:radial-gradient(ellipse,rgba(100,140,255,.45) 0%,transparent 70%);border-radius:50%;filter:blur(4px);}
 
 @media(max-width:768px){
   .week-grid{grid-template-columns:repeat(7,minmax(100px,1fr))}
   .holo-body{flex-direction:column;align-items:center;padding:20px 14px}
   .holo-bld{max-width:100%;min-width:unset;width:100%}
   .btn-holo{font-size:12px;padding:8px 12px}
+}
+
+/* MOBILE WEEK NAV */
+.mobile-week-nav{
+  display:none;
+  align-items:center;justify-content:space-between;
+  padding:10px 12px;border-top:1px solid var(--border);
+  background:var(--surface2);gap:8px;
+}
+.mwn-btn{
+  background:var(--navy);color:#fff;border:none;
+  border-radius:var(--rsm);padding:10px 14px;
+  font-size:13px;font-weight:700;
+  font-family:'Heebo',sans-serif;
+  white-space:nowrap;flex-shrink:0;
+  box-shadow:0 2px 8px rgba(12,35,64,.3);
+}
+.mwn-btn:hover{background:var(--navy2)}
+.mwn-center{position:relative;flex:1;display:flex;justify-content:center}
+.mwn-date{
+  position:absolute;inset:0;opacity:0;cursor:pointer;
+  width:100%;height:100%;z-index:2;
+}
+.mwn-date-label{
+  background:var(--surface);border:1.5px solid var(--border2);
+  border-radius:var(--rsm);padding:9px 16px;
+  font-size:13px;font-weight:700;color:var(--navy);
+  cursor:pointer;white-space:nowrap;
+  box-shadow:var(--sh);
+  display:flex;align-items:center;gap:6px;
+}
+
+/* HOLO BUILDING TABS */
+.holo-bld-tabs{
+  display:none;
+  padding:12px 16px;border-top:1px solid rgba(180,210,255,.15);
+  background:rgba(10,15,50,.8);
+  gap:8px;flex-wrap:wrap;justify-content:center;
+}
+.holo-bld-tab{
+  background:rgba(30,45,110,.7);color:#b8d0ff;
+  border:1px solid rgba(180,210,255,.2);
+  border-radius:20px;padding:8px 18px;
+  font-size:13px;font-weight:700;
+  font-family:'Heebo',sans-serif;cursor:pointer;
+  transition:all .18s;white-space:nowrap;
+}
+.holo-bld-tab:hover{background:rgba(60,90,200,.7);border-color:rgba(180,210,255,.5);color:#e8eeff}
+.holo-bld-tab.active{
+  background:linear-gradient(135deg,rgba(60,100,220,.8),rgba(30,60,160,.9));
+  border-color:rgba(180,210,255,.55);color:#e8eeff;
+  box-shadow:0 0 12px rgba(100,150,255,.4);
+}
+
+@media(max-width:768px){
+  .mobile-week-nav{display:flex}
+  .holo-bld-tabs{display:flex}
+  .gc-nav{display:none}
 }
 
 /* PERIOD BUTTONS */
@@ -869,6 +938,14 @@ button:active{transform:scale(.96)}
           </div>
         </div>
         <div class="week-cal" id="weekCal"></div>
+        <div class="mobile-week-nav">
+          <button class="mwn-btn" onclick="prevW()">‹ שבוע קודם</button>
+          <div class="mwn-center">
+            <input type="date" id="mobileJumpDate" class="mwn-date" onchange="jumpToDate(this.value)"/>
+            <label for="mobileJumpDate" class="mwn-date-label">📅 בחר תאריך</label>
+          </div>
+          <button class="mwn-btn" onclick="nextW()">שבוע הבא ›</button>
+        </div>
         <div class="gleg" id="gleg"></div>
       </div>
     </div>
@@ -926,6 +1003,10 @@ button:active{transform:scale(.96)}
   <div class="dpop-body" id="dpbody"></div>
   <div class="dpop-foot">
     <button class="dpop-inv-btn" id="dpinvbtn">📅 שלח זימון ליומן</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+      <button class="dpop-edit-btn" id="dpeditbtn">✏️ ערוך</button>
+      <button class="dpop-del-btn" id="dpdelbtn">🗑️ מחק</button>
+    </div>
   </div>
 </div>
 
@@ -948,6 +1029,38 @@ button:active{transform:scale(.96)}
   </div>
 </div>
 
+<!-- EDIT MODAL -->
+<div class="moverlay" id="editOverlay" onclick="if(event.target===this){document.getElementById('editOverlay').classList.remove('on');document.body.style.overflow=''}">
+  <div class="mbox">
+    <div class="mhdr">
+      <h2>✏️ עריכת בדיקה</h2>
+      <button class="mclose" onclick="document.getElementById('editOverlay').classList.remove('on');document.body.style.overflow=''">✕</button>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>תאריך</label><input type="date" id="efDate"/></div>
+      <div class="fg"><label>מבנה</label><select id="efBuild" onchange="updateEditFloors(this.value,'')"><option>10a</option><option>10b</option><option>10c</option></select></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>קומה</label><select id="efFloor"></select></div>
+      <div class="fg"><label>תחום</label><select id="efDomain"><option>מאיפנים</option><option>בדיקות</option><option>יועצים</option><option>אחר</option></select></div>
+    </div>
+    <div class="fg">
+      <label>אנשי צוות</label>
+      <div id="selStaff" class="stags"><div class="nostaf">טרם נבחרו</div></div>
+    </div>
+    <div class="fg">
+      <div class="spicker">
+        <div class="ssearch-wrap"><input class="ssearch" id="ssearch" type="text" placeholder="🔍 חפש עובד..." oninput="fStaff()"/></div>
+        <div class="slist" id="slist"></div>
+      </div>
+    </div>
+    <div class="mfooter">
+      <button class="btn-cancel" onclick="document.getElementById('editOverlay').classList.remove('on');document.body.style.overflow=''">ביטול</button>
+      <button class="btn-save" onclick="saveEdit()">✓ שמור שינויים</button>
+    </div>
+  </div>
+</div>
+
 <!-- HOLOGRAM -->
 <div class="holo-overlay" id="holoOverlay" onclick="if(event.target===this)closeHolo()">
   <div class="holo-box">
@@ -959,6 +1072,7 @@ button:active{transform:scale(.96)}
       <button class="holo-close" onclick="closeHolo()">✕</button>
     </div>
     <div class="holo-body" id="holoBody"></div>
+    <div class="holo-bld-tabs" id="holoBldTabs"></div>
   </div>
 </div>
 
@@ -1264,63 +1378,86 @@ function cellClickDate(dateStr){
   openModal();
 }
 
+function jumpToDate(dateStr){
+  if(!dateStr) return;
+  const d=new Date(dateStr);
+  weekStart=getWeekStart(d);
+  Y=d.getFullYear();M=d.getMonth();selD=d;
+  renderG();
+}
+
 // HOLOGRAM
-function showHolo(){
-  const overlay=document.getElementById('holoOverlay');
-  overlay.classList.add('on');
-  document.body.style.overflow='hidden';
-  renderHolo();
-}
-function closeHolo(){
-  document.getElementById('holoOverlay').classList.remove('on');
-  document.body.style.overflow='';
-}
+function showHolo(){document.getElementById('holoOverlay').classList.add('on');document.body.style.overflow='hidden';renderHolo();}
+function closeHolo(){document.getElementById('holoOverlay').classList.remove('on');document.body.style.overflow='';}
+
+let _activeBld=null;
 
 function renderHolo(){
   const body=document.getElementById('holoBody');
-  document.getElementById('holoSub').textContent=
-    `${blds.length} מבנים | ${checks.length} בדיקות סה"כ`;
+  const tabsEl=document.getElementById('holoBldTabs');
+  document.getElementById('holoSub').textContent=`${blds.length} מבנים | ${checks.length} בדיקות סה"כ`;
 
   if(!blds.length){
-    body.innerHTML='<div style="color:rgba(167,139,250,.5);text-align:center;padding:3rem;font-size:14px">אין מבנים להצגה</div>';
-    return;
+    body.innerHTML='<div style="color:rgba(255,255,255,.4);text-align:center;padding:3rem">אין מבנים להצגה</div>';
+    tabsEl.innerHTML='';return;
   }
 
-  body.innerHTML=blds.map(bld=>{
-    // קומות של המבנה הזה
+  // קבע מבנה פעיל (ראשון כברירת מחדל במובייל)
+  if(!_activeBld||!blds.includes(_activeBld)) _activeBld=blds[0];
+
+  // build tabs
+  tabsEl.innerHTML=blds.map(b=>`
+    <button class="holo-bld-tab ${b===_activeBld?'active':''}" onclick="selectHoloBld('${b}')">${b}</button>
+  `).join('');
+
+  renderHoloBlds();
+}
+
+function selectHoloBld(bld){
+  _activeBld=bld;
+  // update tab active state
+  document.querySelectorAll('.holo-bld-tab').forEach(t=>{
+    t.classList.toggle('active', t.textContent.trim()===bld);
+  });
+  renderHoloBlds();
+}
+
+function renderHoloBlds(){
+  const body=document.getElementById('holoBody');
+  const isMobile=window.innerWidth<=768;
+  // במובייל – רק המבנה הפעיל; בדסקטופ – כולם
+  const toRender=isMobile?[_activeBld]:blds;
+
+  body.innerHTML=toRender.map(bld=>{
     const floors=bldFloors[bld]?[...bldFloors[bld]].map(Number).filter(n=>!isNaN(n)).sort((a,b)=>b-a):[];
     if(!floors.length) return '';
-
     const floorsHtml=floors.map(fl=>{
-      // בדיקות בקומה הזו
       const flChecks=checks.filter(c=>c.building===bld&&String(c.floor)===String(fl));
       const hasCheck=flChecks.length>0;
-
       const crew=flChecks.flatMap(c=>c.crew.map(p=>p.name));
       const uniqCrew=[...new Set(crew)];
       const domain=flChecks[0]?.domain||'';
-
-      const crewHtml=uniqCrew.length?
+      let winsHtml='<div class="hf-windows">';
+      for(let r=0;r<2;r++) for(let wc=0;wc<4;wc++)
+        winsHtml+=`<div class="hf-win ${(hasCheck||(Math.random()>.4))?'lit':'dark'}"></div>`;
+      winsHtml+='</div>';
+      const crewHtml=hasCheck&&uniqCrew.length?
         '<div class="hf-crew">'+uniqCrew.map(n=>`<span class="hf-crew-tag">👤 ${n}</span>`).join('')+'</div>':'';
-
-      const badge=hasCheck?
-        `<span class="hf-check-badge">${flChecks.length} בדיקה${flChecks.length>1?'ות':''} | ${domain}</span>`:'';
-
+      const badge=hasCheck?`<span class="hf-check-badge">✓ ${flChecks.length} בדיקה | ${domain}</span>`:'';
       return`<div class="holo-floor ${hasCheck?'has-check':''}">
-        <div class="hf-top">
-          <span class="hf-num">${fl}</span>
-          <span class="hf-label">קומה ${fl}</span>
-          ${badge}
-        </div>
-        ${crewHtml}
+        <div class="hf-main">
+          <span class="hf-num">${fl}</span>${winsHtml}
+          <div class="hf-right">${badge}</div>
+        </div>${crewHtml}
       </div>`;
     }).join('');
-
     return`<div class="holo-bld">
       <div class="holo-bld-name">🏢 מבנה ${bld}</div>
-      <div class="holo-floors">
-        ${floorsHtml}
+      <div class="holo-bld-wrap">
+        <div class="holo-floors">${floorsHtml}</div>
         <div class="holo-scan"></div>
+        <div class="holo-side-l"></div>
+        <div class="holo-side-r"></div>
       </div>
       <div class="holo-bld-base"></div>
     </div>`;
@@ -1328,51 +1465,82 @@ function renderHolo(){
 }
 
 // DETAIL POPUP
-let _dpopCheck=null;
+let _dpopCheck=null,_dpopIdx=-1;
 function showDpop(e,idx){
   e.stopPropagation();
   const c=checks[idx];if(!c) return;
-  _dpopCheck=c;
+  _dpopCheck=c;_dpopIdx=idx;
   const p=document.getElementById('dpop');
   document.getElementById('dptitle').textContent=`בדיקה ב${c.building} | קומה ${c.floor}`;
   const badge=document.getElementById('dpbadge');
   badge.textContent=c.date?c.date.toLocaleDateString('he-IL'):'';
-  badge.style.background=col(c.domain)+'28';
-  badge.style.color=col(c.domain);
-
+  badge.style.background=col(c.domain)+'28';badge.style.color=col(c.domain);
   const crewHtml=c.crew.map(p=>`
     <div class="dcrew">
       <div class="dcrew-av" style="background:${col(c.domain)}">${p.name.charAt(0)}</div>
-      <div class="dcrew-info">
-        <div class="dcrew-name">${p.name}</div>
-        <div class="dcrew-email">${p.email}</div>
-      </div>
+      <div class="dcrew-info"><div class="dcrew-name">${p.name}</div><div class="dcrew-email">${p.email}</div></div>
     </div>`).join('');
-
   document.getElementById('dpbody').innerHTML=`
     <div class="drow"><span class="dico">🏢</span><div class="dval">${c.building}<small>מבנה</small></div></div>
     <div class="drow"><span class="dico">🏗️</span><div class="dval">קומה ${c.floor}<small>קומה</small></div></div>
     <div class="drow"><span class="dico">🔧</span><div class="dval" style="display:flex;align-items:center;gap:8px">
       <span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:${col(c.domain)}"></span>
-      ${c.domain}<small>תחום</small>
-    </div></div>
-    <div class="dcrew-section">
-      <div class="dcrew-label">👷 צוות הבדיקה</div>
-      ${crewHtml}
-    </div>`;
-
+      ${c.domain}<small>תחום</small></div></div>
+    <div class="dcrew-section"><div class="dcrew-label">👷 צוות הבדיקה</div>${crewHtml}</div>`;
   document.getElementById('dpinvbtn').onclick=()=>resendDpop();
-
+  document.getElementById('dpeditbtn').onclick=()=>{closeDpop();openEditModal(idx);};
+  document.getElementById('dpdelbtn').onclick=()=>deleteCheck(idx);
   const vw=window.innerWidth;
   if(vw<=768){p.style.left='4%';p.style.top='auto';p.style.right='auto';}
-  else{
-    let l=e.clientX+16,t=e.clientY+14;
-    if(l+380>vw) l=e.clientX-390;
-    if(l<8) l=8;
-    p.style.left=l+'px';p.style.top=Math.max(8,t)+'px';p.style.bottom='auto';p.style.right='auto';
-  }
+  else{let l=e.clientX+16,t=e.clientY+14;if(l+380>vw)l=e.clientX-390;if(l<8)l=8;
+    p.style.left=l+'px';p.style.top=Math.max(8,t)+'px';p.style.bottom='auto';p.style.right='auto';}
   p.classList.add('on');
   setTimeout(()=>document.addEventListener('click',closeDpopOut),10);
+}
+
+function deleteCheck(idx){
+  const c=checks[idx];if(!c) return;
+  if(!confirm(`למחוק בדיקה ב${c.building} קומה ${c.floor}?`)) return;
+  checks.splice(idx,1);closeDpop();refresh();
+  toast('🗑️ הבדיקה נמחקה','warn');
+}
+
+let _editIdx=-1;
+function openEditModal(idx){
+  const c=checks[idx];if(!c) return;
+  _editIdx=idx;
+  document.getElementById('efDate').value=c.date?c.date.toISOString().split('T')[0]:'';
+  const efB=document.getElementById('efBuild');
+  if(blds.length) efB.innerHTML=blds.map(b=>`<option>${b}</option>`).join('');
+  efB.value=c.building;
+  updateEditFloors(c.building,c.floor);
+  const doms=[...new Set(staff.map(s=>s.domain).filter(Boolean))].sort();
+  const ed=document.getElementById('efDomain');
+  if(doms.length) ed.innerHTML=doms.map(d=>`<option>${d}</option>`).join('');
+  ed.value=c.domain;
+  sel=[...c.crew];renderSel();
+  document.getElementById('ssearch').value='';renderStaff('');
+  document.getElementById('editOverlay').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+
+function updateEditFloors(building,currentFloor){
+  const s=document.getElementById('efFloor');
+  const floors=bldFloors[building];
+  const list=(floors&&floors.size>0)?[...floors].map(Number).filter(n=>!isNaN(n)).sort((a,b)=>a-b):[1,2,3,4,5,6,7,8,9];
+  s.innerHTML=list.map(f=>`<option value="${f}"${String(f)===String(currentFloor)?' selected':''}>קומה ${f}</option>`).join('');
+}
+
+async function saveEdit(){
+  const date=document.getElementById('efDate').value;
+  const building=document.getElementById('efBuild').value;
+  const floor=document.getElementById('efFloor').value;
+  const domain=document.getElementById('efDomain').value;
+  if(!date||!building||!sel.length){toast('מלא תאריך, מבנה וצוות','warn');return;}
+  checks[_editIdx]={date:new Date(date),building,floor,domain,crew:[...sel]};
+  document.getElementById('editOverlay').classList.remove('on');
+  document.body.style.overflow='';
+  refresh();toast('✅ הבדיקה עודכנה','ok');
 }
 
 async function resendDpop(){
