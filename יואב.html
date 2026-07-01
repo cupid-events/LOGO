@@ -824,7 +824,10 @@ button:active{transform:scale(.96)}
     </div>
     <div class="login-fg">
       <label>סיסמא</label>
-      <input type="password" id="loginPass" placeholder="הכנס סיסמא" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <div style="position:relative">
+        <input type="password" id="loginPass" placeholder="הכנס סיסמא" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" style="padding-left:44px"/>
+        <button type="button" onclick="togglePass()" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;padding:0;color:rgba(255,255,255,.4);transition:color .15s" id="passEyeBtn" title="הצג/הסתר סיסמא">👁️</button>
+      </div>
     </div>
     <button class="login-btn" id="loginBtn" onclick="doLogin()">
       <div class="login-spinner"></div>
@@ -915,7 +918,12 @@ button:active{transform:scale(.96)}
             <select id="fDom" onchange="renderG()"><option value="">כל התחומים</option></select>
           </div>
         </div>
+        <div class="mobile-view-toggle">
+          <button class="mvt-btn on" onclick="setMobileView('week',this)">📅 שבוע</button>
+          <button class="mvt-btn" onclick="setMobileView('month',this)">📆 חודש</button>
+        </div>
         <div class="week-cal" id="weekCal"></div>
+        <div class="month-view" id="monthView"></div>
         <div class="mobile-week-nav">
           <button class="mwn-btn" onclick="prevW()">‹ שבוע קודם</button>
           <div class="mwn-center">
@@ -964,6 +972,21 @@ button:active{transform:scale(.96)}
         <div class="ssearch-wrap"><input class="ssearch" id="ssearch" type="text" placeholder="🔍 חפש עובד..." oninput="fStaff()"/></div>
         <div class="slist" id="slist"></div>
       </div>
+    </div>
+    <div class="fg">
+      <label>סטטוס</label>
+      <select id="fStatus" onchange="onStatusChange('fStatus','fNotesWrap')">
+        <option value="טרם התחיל">⚪ טרם התחיל</option>
+        <option value="בביצוע">🟠 בביצוע</option>
+        <option value="בוצע">🟢 בוצע</option>
+        <option value="בוטל">🔴 בוטל</option>
+        <option value="נדחה">🩷 נדחה</option>
+        <option value="נעל"ח">⚫ נעל"ח</option>
+      </select>
+    </div>
+    <div class="fg" id="fNotesWrap" style="display:none">
+      <label>הערות (חובה)</label>
+      <input type="text" id="fNotes" placeholder="יש לרשום סיבה..."/>
     </div>
     <div class="mfooter">
       <button class="btn-cancel" onclick="closeModal()">ביטול</button>
@@ -1036,6 +1059,21 @@ button:active{transform:scale(.96)}
         <div class="slist" id="eStaffList"></div>
       </div>
     </div>
+    <div class="fg">
+      <label>סטטוס</label>
+      <select id="efStatus" onchange="onStatusChange('efStatus','efNotesWrap')">
+        <option value="טרם התחיל">⚪ טרם התחיל</option>
+        <option value="בביצוע">🟠 בביצוע</option>
+        <option value="בוצע">🟢 בוצע</option>
+        <option value="בוטל">🔴 בוטל</option>
+        <option value="נדחה">🩷 נדחה</option>
+        <option value="נעל\"ח">⚫ נעל"ח</option>
+      </select>
+    </div>
+    <div class="fg" id="efNotesWrap" style="display:none">
+      <label>הערות (חובה)</label>
+      <input type="text" id="efNotes" placeholder="יש לרשום סיבה..."/>
+    </div>
     <div class="mfooter">
       <button class="btn-cancel" onclick="document.getElementById('editOverlay').classList.remove('on');document.body.style.overflow=''">ביטול</button>
       <button class="btn-save" id="editSaveBtn" onclick="saveEdit()" style="display:flex;align-items:center;justify-content:center;gap:8px"><div class="btn-spinner" style="border-top-color:#fff"></div>✓ שמור שינויים</button>
@@ -1073,16 +1111,59 @@ button:active{transform:scale(.96)}
 
 <script>
 // ============================================================
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyFCHBTkwjsbOjtS925DOLSl82l2Ccwf9_OvPh51jqGMSYkP8R69hQ1omVIyxfsI4_h/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6EjncHPjNqgF8rJADq5Ps0izTx8t1s1KqVti8B6vd5Jjc31gRIClBF9Lda2tiH2Fg/exec';
 // ============================================================
 
+
+// תיקון timezone – ממיר string תאריך ל-Date מקומי
+function parseLocalDate(str){
+  if(!str) return null;
+  // Date object מגיליון – מגיע כ-UTC, ממיר למקומי
+  if(str instanceof Date){
+    return new Date(str.getUTCFullYear(), str.getUTCMonth(), str.getUTCDate());
+  }
+  // פורמט YYYY-MM-DD (מ-input date)
+  if(typeof str==='string'&&str.match(/^\d{4}-\d{2}-\d{2}/)){
+    const [y,m,d]=str.substring(0,10).split('-').map(Number);
+    return new Date(y,m-1,d);
+  }
+  // פורמט DD/MM/YY או DD/MM/YYYY מגיליון
+  if(typeof str==='string'&&str.includes('/')){
+    const p=str.split('/');
+    if(p.length===3){
+      const year=p[2].length===4?Number(p[2]):2000+Number(p[2]);
+      return new Date(year,Number(p[1])-1,Number(p[0]));
+    }
+  }
+  // מספר (serial date של Excel/Sheets)
+  if(typeof str==='number'){
+    const d=new Date(Math.round((str-25569)*86400*1000));
+    return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate());
+  }
+  return null;
+}
 const DC={'מאיפנים':'#2563eb','בדיקות':'#059669','יועצים':'#7c3aed','תקשוב':'#d97706','אחר':'#64748b'};
+const STATUS_COLORS={'טרם התחיל':'#6366f1','בביצוע':'#f97316','בוצע':'#10b981','בוטל':'#ef4444','נדחה':'#ec4899','נעל\"ח':'#6b7280'};
+function statusColor(s){return STATUS_COLORS[s]||'#6366f1';}
+function statusLabel(s){const icons={'טרם התחיל':'⚪','בביצוע':'🟠','בוצע':'🟢','בוטל':'🔴','נדחה':'🩷','נעל\"ח':'⚫'};return (icons[s]||'⚪')+' '+(s||'טרם התחיל');}
 const HM=['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
 const DN=['א','ב','ג','ד','ה','ו','ש'];
 function col(d){return DC[d]||'#64748b'}
 
 let checks=[],staff=[],blds=[],bldFloors={},sel=[];
 let Y,M,selD;
+
+
+// הצג הערות בהתאם לסטטוס
+function onStatusChange(statusId, notesWrapId){
+  const s=document.getElementById(statusId).value;
+  const needNotes=s==='בוטל'||s==='נדחה'||s.includes('נעל');
+  document.getElementById(notesWrapId).style.display=needNotes?'block':'none';
+  if(!needNotes){
+    const notesEl=document.getElementById(notesWrapId==='fNotesWrap'?'fNotes':'efNotes');
+    if(notesEl) notesEl.value='';
+  }
+}
 
 // ── AUTH ──
 let currentUser=null, currentRole=null, usersDB=[];
@@ -1091,13 +1172,21 @@ function parseUsers(raw){
   usersDB=[];
   for(let i=1;i<raw.length;i++){
     const r=raw[i];
-    const username=(r[7]||'').toString().trim();  // עמודה H
-    const password=(r[8]||'').toString().trim();  // עמודה I
-    const role    =(r[9]||'').toString().trim();  // עמודה J
+    const username=(r[7]!=null?String(r[7]):'').trim();  // עמודה H
+    const password=(r[8]!=null?String(r[8]):'').trim();  // עמודה I – ממיר גם מספרים
+    const role    =(r[9]!=null?String(r[9]):'').trim();  // עמודה J
     if(!username) continue;
     usersDB.push({username,password,role});
   }
   console.log('משתמשים נטענו:',usersDB.length);
+}
+
+
+function togglePass(){
+  const inp=document.getElementById('loginPass');
+  const btn=document.getElementById('passEyeBtn');
+  if(inp.type==='password'){inp.type='text';btn.style.color='rgba(255,255,255,.8)';}
+  else{inp.type='password';btn.style.color='rgba(255,255,255,.4)';}
 }
 
 async function doLogin(){
@@ -1176,7 +1265,7 @@ function isAdmin(){if(!currentRole) return false; const r=currentRole.toLowerCas
 function init(){
   const n=new Date();Y=n.getFullYear();M=n.getMonth();selD=n;
   weekStart=getWeekStart(n);
-  document.getElementById('fDate').value=n.toISOString().split('T')[0];
+  document.getElementById('fDate').value=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
   // הצג מסך כניסה – לא טוען נתונים עד כניסה
   if(!SCRIPT_URL||SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE'){
     // במצב דוגמה – כנסה אוטומטית כ-admin
@@ -1231,12 +1320,14 @@ function parseChecks(raw){
     const ns=(r[4]||'').toString().split(',').map(s=>s.trim()).filter(Boolean);
     const es=(r[5]||'').toString().split(',').map(s=>s.trim()).filter(Boolean);
     checks.push({
-      rowIndex: i+1,  // מספר שורה אמיתי בגיליון (מתחיל מ-2)
+      rowIndex: i+1,
       date:pd(r[0]),
       building:(r[1]||'').toString(),
       floor:(r[2]||'').toString(),
       domain:(r[3]||'').toString(),
-      crew:ns.map((n,idx)=>({name:n,email:es[idx]||''}))
+      crew:ns.map((n,idx)=>({name:n,email:es[idx]||''})),
+      status:(r[6]||'טרם התחיל').toString().trim(),  // עמודה G
+      notes:(r[7]||'').toString().trim()                 // עמודה H
     });
   }
 }
@@ -1270,12 +1361,7 @@ function parseStaff(raw){
   console.log('סה"כ: '+staff.length);
 }
 
-function pd(v){
-  if(!v) return null;
-  if(v instanceof Date) return v;
-  if(typeof v==='string'){const p=v.split('/');if(p.length===3)return p[2].length===4?new Date(p[2],p[1]-1,p[0]):new Date(p[0],p[1]-1,p[2]);return new Date(v);}
-  return new Date(v);
-}
+function pd(v){return parseLocalDate(v);}
 
 function demo(){
   staff=[
@@ -1377,8 +1463,65 @@ function renderCal(){
 function pickDay(d){
   selD=new Date(Y,M,d);
   weekStart=getWeekStart(selD);
-  document.getElementById('fDate').value=selD.toISOString().split('T')[0];
+  document.getElementById('fDate').value=selD.getFullYear()+'-'+String(selD.getMonth()+1).padStart(2,'0')+'-'+String(selD.getDate()).padStart(2,'0');
   renderG();
+}
+
+
+// ── MOBILE VIEW TOGGLE ──
+let mobileView='week';
+function setMobileView(v,el){
+  mobileView=v;
+  document.querySelectorAll('.mvt-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  document.getElementById('weekCal').style.display=v==='week'?'':'none';
+  const mv=document.getElementById('monthView');
+  if(v==='month'){mv.classList.add('on');renderMonth();}
+  else mv.classList.remove('on');
+}
+
+function renderMonth(){
+  const dim=new Date(Y,M+1,0).getDate();
+  const firstDay=new Date(Y,M,1).getDay();
+  const today=new Date();
+  const filtered=getF();
+  const map={};
+  filtered.forEach(c=>{
+    if(!c.date||c.date.getFullYear()!==Y||c.date.getMonth()!==M) return;
+    const k=c.date.getDate();
+    if(!map[k]) map[k]=[];
+    map[k].push(c);
+  });
+  const dayNames=['א','ב','ג','ד','ה','ו','ש'];
+  let h='<div class="month-day-names">'+dayNames.map(d=>`<div class="month-day-name">${d}</div>`).join('')+'</div>';
+  h+='<div class="month-grid">';
+  // prev month days
+  const prevDim=new Date(Y,M,0).getDate();
+  for(let i=0;i<firstDay;i++){
+    const d=prevDim-firstDay+i+1;
+    h+=`<div class="month-cell other-month"><div class="month-cell-num">${d}</div></div>`;
+  }
+  // current month
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(Y,M,d);
+    const isToday=dt.toDateString()===today.toDateString();
+    const isWk=dt.getDay()===5||dt.getDay()===6;
+    const cls='month-cell'+(isToday?' today-cell':'')+(isWk?' weekend-cell':'');
+    const dateStr=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
+    const evs=map[d]||[];
+    let evHtml=evs.slice(0,3).map(c=>{
+      const idx=checks.indexOf(c);
+      return `<div class="month-ev" style="background:${statusColor(c.status)}" onclick="event.stopPropagation();showDpop(event,${idx})"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);margin-left:4px;vertical-align:middle"></span>בדיקה ב${c.building}</div>`;
+    }).join('');
+    if(evs.length>3) evHtml+=`<div class="month-more">+${evs.length-3} נוספות</div>`;
+    h+=`<div class="${cls}" onclick="cellClickDate('${dateStr}')"><div class="month-cell-num">${d}</div>${evHtml}</div>`;
+  }
+  // next month
+  const total=firstDay+dim;
+  const rem=total%7===0?0:7-total%7;
+  for(let d=1;d<=rem;d++) h+=`<div class="month-cell other-month"><div class="month-cell-num">${d}</div></div>`;
+  h+='</div>';
+  document.getElementById('monthView').innerHTML=h;
 }
 
 // WEEK VIEW
@@ -1429,13 +1572,16 @@ function renderG(){
     const isWk=dt.getDay()===5||dt.getDay()===6;
     const dayChecks=map[dt.toDateString()]||[];
     const cls='week-day'+(isToday?' today':'')+(isWk?' weekend':'');
-    const dateStr=dt.toISOString().split('T')[0];
+    const dateStr=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
 
     const evHtml=dayChecks.map(c=>{
       const idx=checks.indexOf(c);
       const names=c.crew.map(p=>p.name).join(', ');
       return`<div class="wd-ev" style="background:${col(c.domain)}" onclick="event.stopPropagation();showDpop(event,${idx})">
-        <div class="wd-ev-bld">בדיקה ב${c.building} | ק׳${c.floor}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+          <div class="wd-ev-bld">בדיקה ב${c.building} | ק׳${c.floor}</div>
+          <span title="${c.status||'טרם התחיל'}" style="width:9px;height:9px;border-radius:50%;background:#fff;flex-shrink:0;opacity:.9;box-shadow:0 0 4px rgba(0,0,0,.3),inset 0 0 0 2.5px ${statusColor(c.status)};display:block"></span>
+        </div>
         <div class="wd-ev-crew">👷 ${names}</div>
       </div>`;
     }).join('');
@@ -1453,6 +1599,7 @@ function renderG(){
   }
   h+='</div>';
   document.getElementById('weekCal').innerHTML=h;
+  if(mobileView==='month') renderMonth();
 
   const doms=[...new Set(f.map(c=>c.domain))];
   document.getElementById('gleg').innerHTML=
@@ -1568,6 +1715,7 @@ function showDpop(e,idx){
   document.getElementById('dpbody').innerHTML=`
     <div class="drow"><span class="dico">🏢</span><div class="dval">${c.building}<small>מבנה</small></div></div>
     <div class="drow"><span class="dico">🏗️</span><div class="dval">קומה ${c.floor}<small>קומה</small></div></div>
+    <div class="drow"><span class="dico">📊</span><div class="dval"><span class="status-badge status-${c.status.replace(/[^א-ת]/g,'')}" style="background:${statusColor(c.status)}">${statusLabel(c.status)}</span><small>סטטוס</small></div></div>
     <div class="drow"><span class="dico">🔧</span><div class="dval" style="display:flex;align-items:center;gap:8px">
       <span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:${col(c.domain)}"></span>
       ${c.domain}<small>תחום</small></div></div>
@@ -1635,8 +1783,14 @@ function openEditModal(idx){
   if(!c){console.error('לא נמצאה בדיקה באינדקס',idx);return;}
   _editIdx=idx;
 
-  // מלא שדות
-  document.getElementById('efDate').value=c.date?c.date.toISOString().split('T')[0]:'';
+  // מלא שדות – תאריך מקומי (לא UTC)
+  if(c.date){
+    const d=c.date;
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,'0');
+    const day=String(d.getDate()).padStart(2,'0');
+    document.getElementById('efDate').value=`${y}-${m}-${day}`;
+  }
   const efB=document.getElementById('efBuild');
   if(blds.length) efB.innerHTML=blds.map(b=>`<option>${b}</option>`).join('');
   efB.value=c.building;
@@ -1651,6 +1805,13 @@ function openEditModal(idx){
   renderEditSel();
   document.getElementById('eStaffSearch').value='';
   fEditStaff();
+
+  // מלא סטטוס והערות
+  const efSt=document.getElementById('efStatus');
+  if(efSt) efSt.value=c.status||'טרם התחיל';
+  onStatusChange('efStatus','efNotesWrap');
+  const efN=document.getElementById('efNotes');
+  if(efN) efN.value=c.notes||'';
 
   // פתח מודל עריכה
   document.getElementById('editOverlay').classList.add('on');
@@ -1697,7 +1858,18 @@ async function saveEdit(){
   const building=document.getElementById('efBuild').value;
   const floor=document.getElementById('efFloor').value;
   const domain=document.getElementById('efDomain').value;
+  const status=document.getElementById('efStatus')?.value||'טרם התחיל';
+  const notes=(document.getElementById('efNotes')?.value||'').trim();
+
   if(!date||!building||!editSel.length){toast('מלא תאריך, מבנה וצוות','warn');return;}
+
+  // בדיקת הערות חובה
+  const needsNotes=status==='בוטל'||status==='נדחה'||status.includes('נעל');
+  if(needsNotes&&!notes){
+    toast('יש לרשום הערה לסטטוס זה','warn');
+    document.getElementById('efNotes')?.focus();
+    return;
+  }
 
   const oldCheck=checks[_editIdx];
   const nameStr=editSel.map(s=>s.name).join(', ');
@@ -1708,9 +1880,10 @@ async function saveEdit(){
       setLoading('editSaveBtn',true);
       ss('loading','שומר שינויים...');
       const data=JSON.stringify({
-        rowIndex: oldCheck.rowIndex,  // מספר שורה מדויק
+        rowIndex: oldCheck.rowIndex,
         date, building, floor, domain,
-        name: nameStr, email: emailStr
+        name: nameStr, email: emailStr,
+        status, notes
       });
       console.log('שולח updateRow:', JSON.parse(data));
       const r=await fetch(SCRIPT_URL+'?action=updateRow&data='+encodeURIComponent(data));
@@ -1729,7 +1902,7 @@ async function saveEdit(){
     toast('✅ הבדיקה עודכנה (דוגמה)','ok');
   }
 
-  checks[_editIdx]={date:new Date(date),building,floor,domain,crew:[...editSel]};
+  checks[_editIdx]={...checks[_editIdx],date:parseLocalDate(date),building,floor,domain,crew:[...editSel],status,notes};
   document.getElementById('editOverlay').classList.remove('on');
   document.body.style.overflow='';
   refresh();
@@ -1738,7 +1911,7 @@ async function saveEdit(){
 async function resendDpop(){
   if(!_dpopCheck) return;
   const c=_dpopCheck;
-  const date=c.date?c.date.toISOString().split('T')[0]:'';
+  const date=c.date?(()=>{const _d=c.date;return _d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0')})():'';
   const name=c.crew.map(s=>s.name).join(', ');
   const email=c.crew.map(s=>s.email).join(', ');
   try{
@@ -1812,7 +1985,7 @@ function renderPpop(period){
 
 function cellClick(d){
   const dt=new Date(Y,M,d);
-  document.getElementById('fDate').value=dt.toISOString().split('T')[0];
+  document.getElementById('fDate').value=dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0');
   openModal();
 }
 
@@ -1908,6 +2081,10 @@ async function submit(){
   const floor=document.getElementById('fFloor').value;
   const domain=document.getElementById('fDomain').value;
   if(!date||!building||!sel.length){toast('יש למלא תאריך, מבנה ולבחור צוות','warn');return;}
+  const status=document.getElementById('fStatus').value;
+  const notes=document.getElementById('fNotes').value.trim();
+  const needsNotes=['בוטל','נדחה','נעל\"ח'].includes(status);
+  if(needsNotes&&!notes){toast('יש לרשום הערה לסטטוס זה','warn');document.getElementById('fNotes').focus();return;}
 
   const name=sel.map(s=>s.name).join(', ');
   const email=sel.map(s=>s.email).join(', ');
@@ -1937,14 +2114,14 @@ async function submit(){
     }catch(e){ss('err','שגיאה');toast('שגיאה: '+e.message,'err');return;}
   }
 
-  checks.push({date:new Date(date),building,floor,domain,crew:[...sel]});
+  checks.push({date:parseLocalDate(date),building,floor,domain,crew:[...sel],status,notes,rowIndex:checks.length+2});
   refresh();closeModal();
   document.getElementById('fFloor').value='';
 }
 
 async function resend(i){
   const c=sorted[i];if(!c||!c.crew.length) return;
-  const date=c.date?c.date.toISOString().split('T')[0]:'';
+  const date=c.date?(()=>{const _d=c.date;return _d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0')})():'';
   const name=c.crew.map(s=>s.name).join(', ');
   const email=c.crew.map(s=>s.email).join(', ');
   try{
