@@ -149,19 +149,44 @@
   .seat-status{font-size:13px;color:var(--muted)}
   .seat-layout{display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start}
   .floor{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:16px;height:540px;
-    overflow:hidden;box-shadow:var(--shadow);
+    overflow-y:auto;overflow-x:hidden;box-shadow:var(--shadow)}
+  .floor .hint{position:sticky;top:8px;z-index:5;text-align:center;color:var(--muted);
+    font-size:12.5px;pointer-events:none;background:rgba(255,255,255,.85);border-radius:999px;
+    width:fit-content;margin:8px auto 0;padding:4px 16px;backdrop-filter:blur(2px)}
+  .floor-canvas{position:relative;height:2000px;
     background-image:radial-gradient(circle,#f3e4e2 1.2px,transparent 1.2px);background-size:26px 26px}
-  .floor .hint{position:absolute;left:0;right:0;bottom:10px;text-align:center;color:var(--muted);
-    font-size:12.5px;pointer-events:none}
-  .stable{position:absolute;width:98px;height:98px;border-radius:50%;background:#fff;border:2.5px solid var(--primary);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:grab;
-    transform:translate(-50%,-50%);box-shadow:0 4px 12px rgba(140,30,25,.16);touch-action:none;user-select:none}
+  .hint-text{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+  .bulk-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:10px}
+  .bfield{flex:1}
+  .bfield label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}
+  .bfield input{width:100%;margin-bottom:0!important}
+  .bx{padding-bottom:12px;color:var(--muted);font-weight:700}
+  .row-del{width:36px;height:42px;border:1.5px solid var(--line);border-radius:10px;background:#fff;
+    color:var(--muted);font-size:15px;flex-shrink:0}
+  .row-del:hover{color:var(--red);border-color:var(--red)}
+  .chk{display:flex;align-items:center;gap:8px;font-size:13.5px;margin:14px 0 4px;color:var(--ink)}
+  .chk input{width:17px;height:17px;accent-color:var(--primary)}
+  .stable{position:absolute;transform:translate(-50%,-50%);cursor:grab;touch-action:none;user-select:none;
+    transition:filter .15s}
+  .stable:hover{filter:drop-shadow(0 6px 14px rgba(140,30,25,.28))}
   .stable:active{cursor:grabbing}
-  .stable .tname{font-weight:700;font-size:12.5px;max-width:84px;overflow:hidden;text-overflow:ellipsis;
+  .stable .tbl{position:absolute;inset:18px;border-radius:50%;background:#fff;border:2.5px solid var(--primary);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+    box-shadow:0 4px 12px rgba(140,30,25,.16),inset 0 0 0 5px #fdf3f2;pointer-events:none}
+  .stable.full .tbl{border-color:var(--green);background:var(--green-bg);box-shadow:0 4px 12px rgba(31,157,85,.18),inset 0 0 0 5px #f2fbf5}
+  .stable.over .tbl{border-color:var(--red);background:var(--red-bg);box-shadow:0 4px 12px rgba(229,72,77,.2),inset 0 0 0 5px #fef5f5}
+  .stable .tname{font-weight:700;font-size:12.5px;max-width:74%;overflow:hidden;text-overflow:ellipsis;
     white-space:nowrap;text-align:center;pointer-events:none}
-  .stable .tcount{font-size:12px;color:var(--muted);pointer-events:none}
-  .stable.full{border-color:var(--green);background:var(--green-bg)}
-  .stable.over{border-color:var(--red);background:var(--red-bg)}
+  .stable .tcount{font-size:11.5px;color:var(--muted);pointer-events:none;font-weight:600}
+  .chair{position:absolute;width:15px;height:15px;border-radius:50% 50% 44% 44%;background:#fff;
+    border:2px solid #dcaaa5;transform:translate(-50%,-50%);pointer-events:none;
+    box-shadow:0 1px 3px rgba(140,30,25,.18)}
+  .chair.taken{background:var(--green);border-color:#178044}
+  .stable.over .chair.taken{background:var(--red);border-color:#c73337}
+  .seat-legend{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted)}
+  .chair-demo{display:inline-block;width:13px;height:13px;border-radius:50%;background:#fff;
+    border:2px solid #dcaaa5;vertical-align:-2px}
+  .chair-demo.taken{background:var(--green);border-color:#178044}
   .unassigned-panel{max-height:540px;overflow:auto}
   .unassigned-panel input{width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;
     font-size:13.5px;margin-bottom:10px}
@@ -339,13 +364,17 @@
     <div id="viewSeating" style="display:none">
       <div class="seat-toolbar">
         <button class="btn primary" id="addTableBtn">➕ הוסף שולחן</button>
+        <button class="btn ghost" id="bulkBtn">🪄 סידור שולחנות</button>
+        <button class="btn ghost" id="resetTablesBtn" style="color:var(--red);border-color:var(--red-border)">🗑️ איפוס שולחנות</button>
         <span class="seat-status" id="seatStatus"></span>
+        <span class="seat-legend"><i class="chair-demo taken"></i> תפוס&nbsp;&nbsp;<i class="chair-demo"></i> פנוי</span>
         <div class="spacer"></div>
         <span class="seat-status" id="seatSummary"></span>
       </div>
       <div class="seat-layout">
         <div class="floor" id="floor">
-          <div class="hint">גוררים שולחן כדי להזיז · לוחצים על שולחן לעריכה ושיבוץ אורחים</div>
+          <div class="hint">גוררים להזזה · לוחצים לעריכה ושיבוץ · גוללים למטה לעוד מקום</div>
+          <div class="floor-canvas" id="floorCanvas"></div>
         </div>
         <div class="panel unassigned-panel">
           <h3>ללא שולחן (<span id="unCount">0</span>)</h3>
@@ -405,6 +434,40 @@
     <p style="font-size:13.5px;color:var(--muted)">לכל אורח נשלח קישור עם סיומת הטלפון שלו לזיהוי:</p>
     <div class="link-box" id="linkExample"></div>
     <div class="actions"><button class="btn primary" id="copyBaseLink">העתקת תבנית הקישור</button></div>
+  </div>
+</div>
+
+<!-- מודאל: איפוס שולחנות -->
+<div class="modal-bg" id="resetModal">
+  <div class="modal">
+    <button class="close-x" data-close>&times;</button>
+    <h3>🗑️ איפוס כל השולחנות</h3>
+    <p class="hint-text" id="resetInfo"></p>
+    <p class="hint-text" style="color:var(--red);font-weight:600">
+      הפעולה תמחק את כל השולחנות והשיבוצים של האירוע הזה, ותנקה את עמודת "שולחן" בגיליון. אי אפשר לבטל אותה.
+    </p>
+    <div class="actions">
+      <button class="btn danger" id="resetGo">כן, מחק הכל</button>
+      <button class="btn ghost" data-close>ביטול</button>
+    </div>
+  </div>
+</div>
+
+<!-- מודאל: סידור שולחנות אוטומטי -->
+<div class="modal-bg" id="bulkModal">
+  <div class="modal">
+    <button class="close-x" data-close>&times;</button>
+    <h3>🪄 סידור שולחנות אוטומטי</h3>
+    <p class="hint-text">בוחרים כמה שולחנות וכמה מקומות בכל אחד – והמערכת מסדרת אותם על הרצפה בשבילכם. אפשר לשלב כמה סוגים (למשל 10 שולחנות של 12 + 2 שולחנות של 24).</p>
+    <div id="bulkRows"></div>
+    <button class="btn ghost" id="bulkAddRow" style="width:100%">➕ הוספת סוג שולחן</button>
+    <label class="chk" id="freshWrap" style="display:none">
+      <input type="checkbox" id="bulkFresh" checked> מחיקת השולחנות הקיימים לפני היצירה
+    </label>
+    <div class="actions">
+      <button class="btn primary" id="bulkGo">צור סידור</button>
+      <button class="btn ghost" data-close>ביטול</button>
+    </div>
   </div>
 </div>
 
@@ -785,15 +848,30 @@ function tableSeated(t){
 }
 
 function renderSeating(){
-  const floor=$("floor");
+  const floor=$("floorCanvas");
+  floor.style.height=(seatingData.canvasH||2000)+"px";   // הרצפה גדלה לפי הצורך
   floor.querySelectorAll(".stable").forEach(el=>el.remove());
   seatingData.tables.forEach(t=>{
     const seated=tableSeated(t);
+    // גודל השולחן גדל עם מספר המקומות
+    const size = t.seats<=8 ? 118 : t.seats<=14 ? 146 : 172;
     const el=document.createElement("div");
     el.className="stable"+(seated>t.seats?" over":seated===t.seats&&t.seats>0?" full":"");
+    el.style.width=el.style.height=size+"px";
     el.style.left=(t.x||50)+"%"; el.style.top=(t.y||50)+"%";
     el.dataset.id=t.id;
-    el.innerHTML=`<span class="tname">${esc(t.name)}</span><span class="tcount">${seated}/${t.seats}</span>`;
+    // כיסאות סביב השולחן (עד 24 מוצגים)
+    const shown=Math.min(t.seats,24), r=size/2-8;
+    let chairs="";
+    for(let i=0;i<shown;i++){
+      const a=-Math.PI/2 + i*2*Math.PI/shown;
+      const cx=50+(r*Math.cos(a))/size*100;
+      const cy=50+(r*Math.sin(a))/size*100;
+      chairs+=`<span class="chair${i<Math.min(seated,shown)?" taken":""}" style="left:${cx}%;top:${cy}%"></span>`;
+    }
+    const names=(t.guests||[]).map(k=>{const g=guests.find(x=>keyOf(x)===k);return g?g.name:null;}).filter(Boolean).join(", ");
+    el.title=names?`${t.name}: ${names}`:t.name;
+    el.innerHTML=chairs+`<div class="tbl"><span class="tname">${esc(t.name)}</span><span class="tcount">${seated}/${t.seats}</span></div>`;
     el.addEventListener("pointerdown",tableDown);
     el.addEventListener("pointermove",tableMove);
     el.addEventListener("pointerup",tableUp);
@@ -828,7 +906,7 @@ function tableDown(e){
   const id=e.currentTarget.dataset.id;
   const tbl=seatingData.tables.find(t=>t.id===id);
   if(!tbl) return;
-  const fr=$("floor").getBoundingClientRect();
+  const fr=$("floorCanvas").getBoundingClientRect();
   drag={tbl,el:e.currentTarget,fr,sx:e.clientX,sy:e.clientY,ox:tbl.x||50,oy:tbl.y||50,moved:false};
   e.currentTarget.setPointerCapture(e.pointerId);
 }
@@ -838,7 +916,7 @@ function tableMove(e){
   if(Math.abs(dx)>6||Math.abs(dy)>6) drag.moved=true;
   if(!drag.moved) return;
   drag.tbl.x=Math.min(94,Math.max(6,drag.ox+dx/drag.fr.width*100));
-  drag.tbl.y=Math.min(90,Math.max(9,drag.oy+dy/drag.fr.height*100));
+  drag.tbl.y=Math.min(98,Math.max(2,drag.oy+dy/drag.fr.height*100));
   drag.el.style.left=drag.tbl.x+"%";
   drag.el.style.top=drag.tbl.y+"%";
 }
@@ -849,15 +927,128 @@ function tableUp(){
   if(moved) scheduleSave(); else openTableModal(tbl.id);
 }
 
+/* ---------- מספור חכם: תמיד המספר הפנוי הנמוך ביותר ---------- */
+function nextTableNumbers(count){
+  const used=new Set();
+  seatingData.tables.forEach(t=>{
+    const m=/^שולחן (\d+)$/.exec(t.name||"");
+    if(m) used.add(Number(m[1]));
+  });
+  const out=[]; let n=1;
+  while(out.length<count){ if(!used.has(n)) out.push(n); n++; }
+  return out;
+}
+
 /* ---------- הוספת שולחן ---------- */
 $("addTableBtn").onclick=()=>{
-  const n=seatingData.tables.length+1;
+  const n=nextTableNumbers(1)[0];
   const tbl={id:Date.now().toString(36),name:"שולחן "+n,seats:10,
-    x:15+(n%5)*17,y:15+Math.floor(n/5)*20,guests:[]};
+    x:15+(n%5)*17,y:5+(Math.floor(n/5)%9)*10,guests:[]};
   seatingData.tables.push(tbl);
   renderSeating();
   scheduleSave();
   openTableModal(tbl.id);
+};
+
+/* ---------- איפוס שולחנות ---------- */
+$("resetTablesBtn").onclick=()=>{
+  if(!seatingData.tables.length) return toast("אין שולחנות למחוק");
+  const seated=seatingData.tables.reduce((s,t)=>s+(t.guests||[]).length,0);
+  $("resetInfo").textContent=`על הרצפה כרגע ${seatingData.tables.length} שולחנות עם ${seated} אורחים משובצים.`;
+  openModal("resetModal");
+};
+$("resetGo").onclick=()=>{
+  seatingData={tables:[],canvasH:2000};
+  closeModals();
+  renderSeating();
+  scheduleSave();          // השמירה גם מרוקנת את עמודת "שולחן" בגיליון
+  toast("כל השולחנות נמחקו – אפשר להתחיל מחדש");
+};
+
+/* ---------- סידור שולחנות אוטומטי ---------- */
+function bulkRowHTML(count,seats){
+  return `<div class="bulk-row">
+    <div class="bfield"><label>מספר שולחנות</label>
+      <input type="number" class="b-count" min="1" max="60" value="${count}"></div>
+    <span class="bx">×</span>
+    <div class="bfield"><label>מקומות בשולחן</label>
+      <input type="number" class="b-seats" min="1" max="40" value="${seats}"></div>
+    <button type="button" class="row-del" title="הסרת שורה">✕</button>
+  </div>`;
+}
+$("bulkBtn").onclick=()=>{
+  $("bulkRows").innerHTML=bulkRowHTML(8,12);
+  $("freshWrap").style.display=seatingData.tables.length?"flex":"none";
+  $("bulkFresh").checked=true;
+  openModal("bulkModal");
+};
+$("bulkAddRow").onclick=()=>{
+  $("bulkRows").insertAdjacentHTML("beforeend",bulkRowHTML(2,24));
+};
+$("bulkRows").addEventListener("click",e=>{
+  if(e.target.classList.contains("row-del")){
+    const rows=$("bulkRows").querySelectorAll(".bulk-row");
+    if(rows.length>1) e.target.closest(".bulk-row").remove();
+  }
+});
+$("bulkGo").onclick=()=>{
+  const groups=[...$("bulkRows").querySelectorAll(".bulk-row")].map(r=>({
+    count:Math.max(1,Number(r.querySelector(".b-count").value)||0),
+    seats:Math.max(1,Number(r.querySelector(".b-seats").value)||0)
+  })).filter(g=>g.count&&g.seats);
+  if(!groups.length) return toast("נא למלא לפחות שורה אחת");
+  const total=groups.reduce((s,g)=>s+g.count,0);
+
+  const fresh=$("freshWrap").style.display!=="none"&&$("bulkFresh").checked;
+  if(fresh) seatingData.tables=[];
+
+  const canvas=$("floorCanvas");
+  const W=canvas.clientWidth||700;
+
+  // שלב 1: חישוב הגובה הדרוש לכל הסידור
+  let needPx=70;
+  groups.forEach(g=>{
+    const size=g.seats<=8?118:g.seats<=14?146:172;
+    const cols=Math.max(2,Math.floor(W/(size+34)));
+    needPx+=Math.ceil(g.count/cols)*(size+40)+30;
+  });
+
+  // שלב 2: הגדלת הרצפה אם צריך, תוך שמירת המיקום של שולחנות קיימים
+  const oldH=seatingData.canvasH||2000;
+  const newH=Math.max(2000,needPx+120);
+  if(newH!==oldH){
+    seatingData.tables.forEach(t=>{ t.y=t.y*oldH/newH; });
+    seatingData.canvasH=newH;
+  }
+  const H=seatingData.canvasH||2000;
+
+  // שלב 3: פיזור השולחנות ברשת
+  const nums=nextTableNumbers(total);
+  let idx=0;
+  let yPx=70;
+  groups.forEach(g=>{
+    const size=g.seats<=8?118:g.seats<=14?146:172;
+    const cols=Math.max(2,Math.floor(W/(size+34)));
+    const xStep=W/Math.min(cols,g.count);
+    for(let i=0;i<g.count;i++){
+      const col=i%cols, row=Math.floor(i/cols);
+      const num=nums[idx++];
+      seatingData.tables.push({
+        id:Date.now().toString(36)+"-"+num,
+        name:"שולחן "+num,
+        seats:g.seats,
+        x:Math.min(94,Math.max(6,((col+0.5)*xStep)/W*100)),
+        y:((yPx+row*(size+40)+size/2)/H)*100,
+        guests:[]
+      });
+    }
+    yPx+=Math.ceil(g.count/cols)*(size+40)+30; // רווח בין קבוצות
+  });
+
+  closeModals();
+  renderSeating();
+  scheduleSave();
+  toast(`נוצרו ${total} שולחנות – עכשיו רק לשבץ אורחים 🎉`);
 };
 
 /* ---------- מודאל עריכת שולחן ---------- */
