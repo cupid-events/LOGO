@@ -186,7 +186,6 @@
                     <a href="#vision" class="hover:text-gold-600 transition-colors duration-200">החזון שלנו</a>
                     <a href="#gallery" class="hover:text-gold-600 transition-colors duration-200">גלריה</a>
                     <a href="#prayer-times" class="hover:text-gold-600 transition-colors duration-200">זמני תפילות</a>
-                    <a href="#activities" class="hover:text-gold-600 transition-colors duration-200">הפעילות שלנו</a>
                     <a href="#donations" class="hover:text-gold-600 transition-colors duration-200">תרומות והנצחה</a>
                     <a href="#contact" class="hover:text-gold-600 transition-colors duration-200">צור קשר</a>
                 </div>
@@ -215,7 +214,6 @@
                 <a href="#vision" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">החזון שלנו</a>
                 <a href="#gallery" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">גלריה</a>
                 <a href="#prayer-times" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">זמני תפילות</a>
-                <a href="#activities" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">הפעילות שלנו</a>
                 <a href="#donations" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">תרומות והנצחה</a>
                 <a href="#contact" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">צור קשר</a>
                 <div class="pt-4 px-4">
@@ -264,8 +262,8 @@
                 <a href="#prayer-times" class="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 active:scale-[0.98] text-center flex items-center justify-center gap-2">
                     <i class="fa-regular fa-clock text-lg"></i> לוח זמני תפילות
                 </a>
-                <a href="#activities" class="w-full sm:w-auto bg-white hover:bg-stone-50 text-gold-700 hover:text-gold-800 border border-gold-500/30 font-bold px-8 py-4 rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] text-center flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-calendar-check text-lg"></i> פעילויות ושיעורים
+                <a href="#gallery" class="w-full sm:w-auto bg-white hover:bg-stone-50 text-gold-700 hover:text-gold-800 border border-gold-500/30 font-bold px-8 py-4 rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] text-center flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-images text-lg"></i> רגעים מהקהילה
                 </a>
             </div>
         </div>
@@ -300,7 +298,7 @@
             <!-- Current Halachic Info -->
             <div class="flex items-center space-x-reverse space-x-2 bg-gold-50 border border-gold-500/20 px-3 py-1.5 rounded-full text-xs text-gold-700 font-bold animate-pulse">
                 <i class="fa-solid fa-circle-exclamation"></i>
-                <span>שלוש תפילות בכל יום ושיעורי תורה לגברים ולנשים</span>
+                <span>בית הכנסת פעיל בסופ"ש וימי חג</span>
             </div>
         </div>
     </div>
@@ -464,96 +462,14 @@
     <!-- PRAYER TIMES SECTION -->
     <section id="prayer-times" class="py-20 md:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-800 mb-4">זמני התפילות ושיעורי הקבע</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-800 mb-4">זמני תפילות בשבת קודש</h2>
             <div class="w-24 h-1 bg-gradient-to-r from-gold-400 to-gold-600 mx-auto rounded-full mb-6"></div>
             <p class="text-stone-600 max-w-2xl mx-auto text-lg font-medium">
-                אנו מקיימים מנייני תפילה קבועים לאורך כל השבוע, באווירה חמה ומסבירת פנים. מצאו את המניין המתאים לכם ביותר.
+                אנו מקיימים מנייני תפילה בשבתות ובימי חג, באווירה חמה ומסבירת פנים. בואו להתפלל איתנו.
             </p>
         </div>
 
-        <!-- Tabs Switcher -->
-        <div class="flex justify-center mb-10">
-            <div class="bg-stone-100 p-1.5 rounded-xl inline-flex space-x-reverse space-x-1 shadow-inner border border-stone-200">
-                <button onclick="switchTab('weekdays')" id="btn-weekdays" class="tab-btn px-3 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold text-sm sm:text-base transition-all duration-200 bg-white text-gold-800 shadow border border-gold-500/10">
-                    <i class="fa-solid fa-sun ml-1.5 text-gold-600"></i> ימי חול
-                </button>
-                <button onclick="switchTab('shabbat')" id="btn-shabbat" class="tab-btn px-3 sm:px-6 py-2.5 sm:py-3 rounded-lg font-bold text-sm sm:text-base text-stone-600 hover:text-stone-900 transition-all duration-200">
-                    <span class="ml-1.5">🕯️🕯️</span> שבת קודש וימי חג
-                </button>
-            </div>
-        </div>
-
-        <!-- Weekdays Grid -->
-        <div id="tab-weekdays" class="tab-content grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Shacharit -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gold-200/50 hover:shadow-md transition-all duration-300 overflow-hidden group">
-                <div class="bg-gradient-to-r from-gold-50 to-gold-100/50 border-b border-gold-200/50 p-6 text-center relative">
-                    <span class="text-3xl text-gold-600 mb-2 inline-block"><i class="fa-solid fa-cloud-sun"></i></span>
-                    <h3 class="text-xl font-bold text-stone-800">שחרית</h3>
-                </div>
-                <div class="p-6 divide-y divide-stone-100">
-                    <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מניין ראשון (ותיקין)</span>
-                        <span class="bg-gold-50 text-gold-700 px-3 py-1 rounded-full font-bold text-sm border border-gold-200">עם הנץ החמה</span>
-                    </div>
-                    <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מניין שני</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">07:00</span>
-                    </div>
-                    <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מניין שלישי</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">08:15</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mincha -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gold-200/50 hover:shadow-md transition-all duration-300 overflow-hidden group">
-                <div class="bg-gradient-to-r from-gold-50 to-gold-100/50 border-b border-gold-200/50 p-6 text-center relative">
-                    <span class="text-3xl text-gold-600 mb-2 inline-block"><i class="fa-solid fa-sun"></i></span>
-                    <h3 class="text-xl font-bold text-stone-800">מנחה</h3>
-                </div>
-                <div class="p-6 divide-y divide-stone-100">
-                    <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מניין צהריים גדול</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">13:30</span>
-                    </div>
-                    <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מניין מנחה ערב</span>
-                        <span class="bg-gold-50 text-gold-700 px-3 py-1 rounded-full font-bold text-sm border border-gold-200">20 דק' לפני השקיעה</span>
-                    </div>
-                    <div class="flex justify-between py-4 items-center text-stone-400 font-medium text-sm">
-                        <span>שיעור קצר בין מנחה לערבית</span>
-                        <i class="fa-solid fa-book-open text-gold-600"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Arvit -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gold-200/50 hover:shadow-md transition-all duration-300 overflow-hidden group">
-                <div class="bg-gradient-to-r from-gold-50 to-gold-100/50 border-b border-gold-200/50 p-6 text-center relative">
-                    <span class="text-3xl text-gold-600 mb-2 inline-block"><i class="fa-solid fa-moon"></i></span>
-                    <h3 class="text-xl font-bold text-stone-800">ערבית</h3>
-                </div>
-                <div class="p-6 divide-y divide-stone-100">
-                    <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מניין ראשון</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">בצמוד למנחה</span>
-                    </div>
-                    <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מניין שני</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">20:30</span>
-                    </div>
-                    <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מניין שלישי (מאוחר)</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">22:00</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Shabbat Grid (Hidden by default) -->
-        <div id="tab-shabbat" class="tab-content hidden grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div id="tab-shabbat" class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Kabbalat Shabbat -->
             <div class="bg-white rounded-2xl shadow-sm border border-gold-200/50 hover:shadow-md transition-all duration-300 overflow-hidden group">
                 <div class="bg-gradient-to-r from-gold-100/40 to-gold-200/30 border-b border-gold-200/60 p-6 text-center relative">
@@ -566,12 +482,12 @@
                         <span class="bg-gold-50 text-gold-700 px-3 py-1 rounded-full font-bold text-sm border border-gold-200/60">זמן באר שבע</span>
                     </div>
                     <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מנחה וקבלת שבת</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">10 דק' לפני כניסת שבת</span>
+                        <span class="font-bold text-stone-700">מנחה</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">בכניסת שבת</span>
                     </div>
-                    <div class="flex justify-between py-4 items-center text-stone-500 font-medium text-sm">
-                        <span>דבר תורה קצר מהרב</span>
-                        <span class="bg-stone-100 text-stone-600 px-2.5 py-0.5 rounded text-xs font-bold">לפני ערבית</span>
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">קבלת שבת וערבית</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">לאחר תפילת מנחה</span>
                     </div>
                 </div>
             </div>
@@ -585,15 +501,15 @@
                 <div class="p-6 divide-y divide-stone-100">
                     <div class="flex justify-between py-4 items-center">
                         <span class="font-bold text-stone-700">תפילת שחרית</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">07:45 קורבנות</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">בשעה 8:00 הודו</span>
                     </div>
                     <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מנחה גדולה</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">13:00</span>
+                        <span class="font-bold text-stone-700">שיעור תורה</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">45 דק' לפני מנחה</span>
                     </div>
                     <div class="flex justify-between py-4 items-center">
-                        <span class="font-bold text-stone-700">מנחה קטנה</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">17:00</span>
+                        <span class="font-bold text-stone-700">מנחה</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">לאחר שיעור תורה</span>
                     </div>
                 </div>
             </div>
@@ -606,88 +522,17 @@
                         <i class="fa-solid fa-star text-2xl mx-1.5 -mt-2 inline-block align-top"></i>
                         <i class="fa-solid fa-star text-lg"></i>
                     </span>
-                    <h3 class="text-xl font-bold text-stone-800">שיעור תורה וערבית צאת השבת</h3>
+                    <h3 class="text-xl font-bold text-stone-800">סעודה שלישית וערבית צאת השבת</h3>
                 </div>
                 <div class="p-6 divide-y divide-stone-100">
-                    <div class="flex flex-wrap justify-between py-4 items-center gap-2">
-                        <span class="font-bold text-stone-700">שיעור תורה מפי הרב וסעודה שלישית</span>
-                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">בסיום תפילת מנחה</span>
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">סעודה שלישית</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">לאחר תפילת מנחה</span>
                     </div>
                     <div class="flex justify-between py-4 items-center">
                         <span class="font-bold text-stone-700">ערבית של מוצ"ש</span>
                         <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">בזמן צאת השבת</span>
                     </div>
-                    <div class="flex justify-between py-4 items-center text-stone-500 font-medium text-sm">
-                        <span>הבדלה</span>
-                        <span class="bg-stone-100 text-stone-600 px-2.5 py-0.5 rounded text-xs font-bold">לאחר התפילה</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CLASSES & EVENTS SECTION -->
-    <section id="activities" class="bg-white text-stone-800 py-20 md:py-28 border-y border-gold-500/10 relative">
-        <div class="absolute inset-0 bg-gradient-to-t from-stone-50/50 via-transparent to-stone-50/50 pointer-events-none"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-16">
-                <span class="text-gold-600 font-bold uppercase tracking-wider text-sm block mb-2">תורה, תפילה וחסד</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 mb-4">הפעילות בבית הכנסת</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-gold-400 to-gold-600 mx-auto rounded-full mb-6"></div>
-                <p class="text-stone-600 max-w-2xl mx-auto text-lg font-medium">
-                    פעילות עשירה ומגוונת לכל בני הקהילה – גברים, נשים, ילדים ונוער – לאורך כל ימות השנה.
-                </p>
-            </div>
-
-            <!-- Activities Cards Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 hover:border-gold-500 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group">
-                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-5 icon-tilt"><i class="fa-solid fa-book-open"></i></span>
-                    <h3 class="text-lg font-bold text-stone-900 mb-2">שלוש תפילות בכל יום</h3>
-                    <p class="text-stone-600 text-sm leading-relaxed font-medium">שחרית, מנחה וערבית – מנייני תפילה קבועים באווירה חמה ומקבלת.</p>
-                </div>
-
-                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 hover:border-gold-500 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group">
-                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-5 icon-tilt"><i class="fa-solid fa-chalkboard-user"></i></span>
-                    <h3 class="text-lg font-bold text-stone-900 mb-2">שיעורי תורה לגברים ולנשים</h3>
-                    <p class="text-stone-600 text-sm leading-relaxed font-medium">שיעורים מגוונים ומעשירים המתאימים לכל רמה ולכל גיל.</p>
-                </div>
-
-                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 hover:border-gold-500 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group">
-                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-5 icon-tilt"><i class="fa-solid fa-torah"></i></span>
-                    <h3 class="text-lg font-bold text-stone-900 mb-2">שיעורי הלכה ואמונה</h3>
-                    <p class="text-stone-600 text-sm leading-relaxed font-medium">לימוד הלכה למעשה וחיזוק יסודות האמונה בדרכו של הרב זצ"ל.</p>
-                </div>
-
-                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 hover:border-gold-500 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group">
-                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-5 icon-tilt"><i class="fa-solid fa-scroll"></i></span>
-                    <h3 class="text-lg font-bold text-stone-900 mb-2">דרשות שבת וחגים</h3>
-                    <p class="text-stone-600 text-sm leading-relaxed font-medium">דברי תורה וחיזוק בשבתות ובמועדי ישראל לכל הקהילה.</p>
-                </div>
-
-                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 hover:border-gold-500 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group">
-                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-5 icon-tilt"><i class="fa-solid fa-people-group"></i></span>
-                    <h3 class="text-lg font-bold text-stone-900 mb-2">אירועים קהילתיים</h3>
-                    <p class="text-stone-600 text-sm leading-relaxed font-medium">התכנסויות, סעודות מצווה ואירועים המחברים את כל בני הקהילה.</p>
-                </div>
-
-                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 hover:border-gold-500 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group">
-                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-5 icon-tilt"><i class="fa-solid fa-child-reaching"></i></span>
-                    <h3 class="text-lg font-bold text-stone-900 mb-2">פעילויות לילדים ולנוער</h3>
-                    <p class="text-stone-600 text-sm leading-relaxed font-medium">חינוך וערכים באהבה – פעילויות מהנות ומחזקות לדור הצעיר.</p>
-                </div>
-
-                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 hover:border-gold-500 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group">
-                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-5 icon-tilt"><i class="fa-solid fa-hands-holding-child"></i></span>
-                    <h3 class="text-lg font-bold text-stone-900 mb-2">סיוע למשפחות נזקקות</h3>
-                    <p class="text-stone-600 text-sm leading-relaxed font-medium">עזרה ותמיכה בדיסקרטיות ובכבוד למשפחות הזקוקות לכך.</p>
-                </div>
-
-                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 hover:border-gold-500 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group">
-                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-5 icon-tilt"><i class="fa-solid fa-hand-holding-heart"></i></span>
-                    <h3 class="text-lg font-bold text-stone-900 mb-2">ליווי משפחות בשמחות ובאבל</h3>
-                    <p class="text-stone-600 text-sm leading-relaxed font-medium">יחד בשמחות ותמיכה בשעות קושי – מתוך ערבות הדדית אמיתית.</p>
                 </div>
             </div>
         </div>
@@ -701,38 +546,11 @@
                 <!-- Left: Text Info -->
                 <div class="lg:col-span-5">
                     <span class="text-gold-600 font-bold uppercase tracking-wider text-sm block mb-2">שותפות נצח</span>
-                    <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-850 mb-6">תרומות והנצחות</h2>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-850 mb-6">תרומות</h2>
                     <p class="text-stone-600 text-lg leading-relaxed mb-6 font-medium">
                         ניתן לקחת חלק בפעילות בית הכנסת במגוון דרכים. כל תרומה מסייעת בהמשך קיום פעילות התורה, התפילה והחסד של הקהילה.
                     </p>
 
-                    <!-- Donation options from the file -->
-                    <div class="space-y-3">
-                        <div class="flex items-center space-x-reverse space-x-3">
-                            <span class="bg-gold-100 text-gold-700 p-2 rounded-lg border border-gold-200 w-9 h-9 flex items-center justify-center shrink-0"><i class="fa-solid fa-torah"></i></span>
-                            <h4 class="font-bold text-stone-850">הקדשת ספר תורה</h4>
-                        </div>
-                        <div class="flex items-center space-x-reverse space-x-3">
-                            <span class="bg-gold-100 text-gold-700 p-2 rounded-lg border border-gold-200 w-9 h-9 flex items-center justify-center shrink-0"><i class="fa-solid fa-book-open"></i></span>
-                            <h4 class="font-bold text-stone-850">הקדשת שיעור תורה</h4>
-                        </div>
-                        <div class="flex items-center space-x-reverse space-x-3">
-                            <span class="bg-gold-100 text-gold-700 p-2 rounded-lg border border-gold-200 w-9 h-9 flex items-center justify-center shrink-0"><i class="fa-solid fa-dove"></i></span>
-                            <h4 class="font-bold text-stone-850">הנצחת יקירים</h4>
-                        </div>
-                        <div class="flex items-center space-x-reverse space-x-3">
-                            <span class="bg-gold-100 text-gold-700 p-2 rounded-lg border border-gold-200 w-9 h-9 flex items-center justify-center shrink-0"><i class="fa-solid fa-utensils"></i></span>
-                            <h4 class="font-bold text-stone-850">תרומה לסעודות מצווה</h4>
-                        </div>
-                        <div class="flex items-center space-x-reverse space-x-3">
-                            <span class="bg-gold-100 text-gold-700 p-2 rounded-lg border border-gold-200 w-9 h-9 flex items-center justify-center shrink-0"><i class="fa-solid fa-hands-holding-child"></i></span>
-                            <h4 class="font-bold text-stone-850">סיוע למשפחות נזקקות</h4>
-                        </div>
-                        <div class="flex items-center space-x-reverse space-x-3">
-                            <span class="bg-gold-100 text-gold-700 p-2 rounded-lg border border-gold-200 w-9 h-9 flex items-center justify-center shrink-0"><i class="fa-solid fa-building-columns"></i></span>
-                            <h4 class="font-bold text-stone-850">השתתפות בפעילות השוטפת של בית הכנסת</h4>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Right: Donation Form Card -->
@@ -740,28 +558,6 @@
                     <h3 class="text-2xl font-bold text-stone-850 mb-6 text-center lg:text-right">טופס תרומה קל ומהיר</h3>
                     
                     <form id="donation-form" onsubmit="handleDonationSubmit(event)" class="space-y-6">
-                        <!-- Donation Target -->
-                        <div>
-                            <label class="block text-sm font-bold text-stone-700 mb-2">יעד התרומה</label>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <label class="border-2 border-gold-500 bg-gold-50/50 p-4 rounded-xl text-center cursor-pointer hover:bg-gold-50 block transition-all" id="label-gen">
-                                    <input type="radio" name="target" value="כללי" checked class="hidden" onclick="selectDonationType('gen')">
-                                    <span class="block text-gold-800 font-bold mb-1 text-sm">החזקת בית הכנסת</span>
-                                    <span class="text-xs text-stone-500">תרומה לפעילות השוטפת</span>
-                                </label>
-                                <label class="border-2 border-stone-200 p-4 rounded-xl text-center cursor-pointer hover:bg-gold-50 block transition-all" id="label-mem">
-                                    <input type="radio" name="target" value="הנצחה" class="hidden" onclick="selectDonationType('mem')">
-                                    <span class="block text-stone-850 font-bold mb-1 text-sm">הנצחה וזיכרון</span>
-                                    <span class="text-xs text-stone-500">לעילוי נשמת יקיר</span>
-                                </label>
-                                <label class="border-2 border-stone-200 p-4 rounded-xl text-center cursor-pointer hover:bg-gold-50 block transition-all" id="label-poor">
-                                    <input type="radio" name="target" value="חסד" class="hidden" onclick="selectDonationType('poor')">
-                                    <span class="block text-stone-850 font-bold mb-1 text-sm">חסד וסעודות מצווה</span>
-                                    <span class="text-xs text-stone-500">סיוע למשפחות נזקקות</span>
-                                </label>
-                            </div>
-                        </div>
-
                         <!-- Amount Quick Selection -->
                         <div>
                             <label class="block text-sm font-bold text-stone-700 mb-2">בחרו סכום תרומה (ש"ח)</label>
@@ -782,18 +578,6 @@
                             </div>
                         </div>
 
-                        <!-- Dedication fields -->
-                        <div id="dedication-fields" class="hidden space-y-4 bg-stone-50 p-4 rounded-xl border border-gold-200/50">
-                            <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">שם הנפטר/ת להנצחה</label>
-                                <input type="text" id="deceased-name" placeholder="לדוגמה: משה בן אברהם ז&quot;ל" class="block w-full px-4 py-2.5 bg-white border border-stone-200 rounded-lg text-sm focus:border-gold-500 outline-none">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-stone-700 mb-1">תאריך פטירה עברי/לועזי (אם ידוע)</label>
-                                <input type="text" id="deceased-date" placeholder="לדוגמה: י&quot;ב בתשרי / 12 באוקטובר" class="block w-full px-4 py-2.5 bg-white border border-stone-200 rounded-lg text-sm focus:border-gold-500 outline-none">
-                            </div>
-                        </div>
-
                         <!-- Contact Details -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
@@ -808,7 +592,7 @@
 
                         <!-- Submit Button -->
                         <button type="submit" class="w-full bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-extrabold py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 active:scale-[0.98] text-center flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-credit-card"></i> מעבר לתשלום מאובטח
+                            <i class="fa-solid fa-credit-card"></i> מעבר לתרומה
                         </button>
                     </form>
 
@@ -819,7 +603,7 @@
                         </div>
                         <h4 class="text-2xl font-bold text-stone-850 mb-2">תודה רבה ותזכו למצוות!</h4>
                         <p class="text-stone-600 max-w-sm mb-6 font-medium">
-                            תרומתכם בסך <span id="success-amount" class="font-bold text-gold-700"></span> ש"ח לטובת <span id="success-target" class="font-bold text-stone-850"></span> נקלטה בהצלחה במערכת הסימולציה. קבלה נשלחה אל <span id="success-email" class="font-bold text-stone-800"></span>.
+                            תרומתכם בסך <span id="success-amount" class="font-bold text-gold-700"></span> ש"ח נקלטה בהצלחה. קבלה תישלח אל <span id="success-email" class="font-bold text-stone-800"></span>.
                         </p>
                         <button onclick="resetDonationForm()" class="bg-gold-600 hover:bg-gold-700 text-white font-bold py-2.5 px-6 rounded-lg transition-colors shadow-sm">תרומה נוספת</button>
                     </div>
@@ -864,25 +648,26 @@
 
                         <!-- Contact items -->
                         <div class="space-y-6">
-                            <a href="https://maps.google.com/?q=צקלג 33, מיתר" target="_blank" rel="noopener" class="flex items-center space-x-reverse space-x-4 group">
+                            <a href="https://maps.google.com/?q=בשמת 40, מיתר" target="_blank" rel="noopener" class="flex items-center space-x-reverse space-x-4 group">
                                 <span class="bg-white text-gold-600 p-3 rounded-xl border border-gold-200 shadow-sm group-hover:bg-gold-500 group-hover:text-white transition-colors"><i class="fa-solid fa-location-dot"></i></span>
                                 <div>
                                     <span class="block text-xs text-stone-500 font-bold">כתובת בית הכנסת</span>
-                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors">צקלג 33, מיתר <i class="fa-solid fa-arrow-up-left text-[10px] text-stone-400 mr-1"></i></span>
+                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors">צקלג פינת בשמת, מיתר <i class="fa-solid fa-arrow-up-left text-[10px] text-stone-400 mr-1"></i></span>
+                                    <span class="block text-xs text-stone-500 font-medium mt-0.5">מקלט מאחורי מתחם בתי הכנסת (הכניסה מרחוב בשמת 40)</span>
                                 </div>
                             </a>
-                            <a href="tel:025551818" class="flex items-center space-x-reverse space-x-4 group">
+                            <a href="tel:0546666434" class="flex items-center space-x-reverse space-x-4 group">
                                 <span class="bg-white text-gold-600 p-3 rounded-xl border border-gold-200 shadow-sm group-hover:bg-gold-500 group-hover:text-white transition-colors"><i class="fa-solid fa-phone"></i></span>
                                 <div>
                                     <span class="block text-xs text-stone-500 font-bold">טלפון המשרד והרב</span>
-                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors" dir="ltr">02-555-1818</span>
+                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors" dir="ltr">054-6666434</span>
                                 </div>
                             </a>
-                            <a href="mailto:ahavat.israel180@gmail.com" class="flex items-center space-x-reverse space-x-4 group">
+                            <a href="mailto:Norsimatan@gmail.com" class="flex items-center space-x-reverse space-x-4 group">
                                 <span class="bg-white text-gold-600 p-3 rounded-xl border border-gold-200 shadow-sm group-hover:bg-gold-500 group-hover:text-white transition-colors"><i class="fa-solid fa-envelope"></i></span>
                                 <div>
                                     <span class="block text-xs text-stone-500 font-bold">דואר אלקטרוני</span>
-                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors" dir="ltr">ahavat.israel180@gmail.com</span>
+                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors" dir="ltr">Norsimatan@gmail.com</span>
                                 </div>
                             </a>
                         </div>
@@ -922,7 +707,7 @@
                             <textarea id="contact-message" name="תוכן ההודעה" required rows="4" placeholder="כתבו כאן את פנייתכם ונדאג לחזור אליכם בהקדם..." class="block w-full px-4 py-3 bg-stone-50 border border-stone-200 hover:border-gold-300 rounded-xl focus:border-gold-500 focus:bg-white focus:ring-1 focus:ring-gold-500 outline-none text-stone-900 transition-all text-sm resize-none"></textarea>
                         </div>
                         <button type="submit" class="w-full bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-extrabold py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
-                            <i class="fa-regular fa-paper-plane"></i> שליחת פנייה
+                            <i class="fa-brands fa-whatsapp text-lg"></i> שליחת הודעה בוואטסאפ
                         </button>
                     </form>
 
@@ -930,8 +715,8 @@
                     <div id="contact-success-modal" class="hidden mt-4 bg-emerald-50 border border-emerald-300/50 p-4 rounded-xl text-emerald-700 flex items-start gap-3 animate-fadeIn">
                         <i class="fa-solid fa-circle-check text-xl mt-0.5"></i>
                         <div>
-                            <h4 class="font-bold text-stone-850 text-sm">פנייתך נשלחה בהצלחה!</h4>
-                            <p class="text-xs text-stone-600 mt-1">ההודעה נשלחה למייל בית הכנסת. נציג או הרב יחזור אליך בקרוב.</p>
+                            <h4 class="font-bold text-stone-850 text-sm">וואטסאפ נפתח עם ההודעה שלך</h4>
+                            <p class="text-xs text-stone-600 mt-1">נשאר רק ללחוץ על כפתור השליחה בוואטסאפ, ונחזור אליך בהקדם.</p>
                         </div>
                     </div>
 
@@ -939,8 +724,8 @@
                     <div id="contact-error-modal" class="hidden mt-4 bg-red-50 border border-red-300/50 p-4 rounded-xl text-red-700 flex items-start gap-3 animate-fadeIn">
                         <i class="fa-solid fa-circle-exclamation text-xl mt-0.5"></i>
                         <div>
-                            <h4 class="font-bold text-stone-850 text-sm">השליחה נכשלה</h4>
-                            <p class="text-xs text-stone-600 mt-1">אנא נסו שוב, או כתבו לנו ישירות לכתובת <a href="mailto:ahavat.israel180@gmail.com" class="font-bold underline" dir="ltr">ahavat.israel180@gmail.com</a></p>
+                            <h4 class="font-bold text-stone-850 text-sm">לא הצלחנו לפתוח את וואטסאפ</h4>
+                            <p class="text-xs text-stone-600 mt-1">אפשר לכתוב לנו ישירות בוואטסאפ למספר <a href="https://wa.me/972546666434" target="_blank" rel="noopener" class="font-bold underline" dir="ltr">054-6666434</a> או במייל <a href="mailto:Norsimatan@gmail.com" class="font-bold underline" dir="ltr">Norsimatan@gmail.com</a></p>
                         </div>
                     </div>
                 </div>
@@ -987,7 +772,6 @@
                         <li><a href="#vision" class="hover:text-gold-600 transition-colors">החזון שלנו</a></li>
                         <li><a href="#gallery" class="hover:text-gold-600 transition-colors">גלריה</a></li>
                         <li><a href="#prayer-times" class="hover:text-gold-600 transition-colors">זמני תפילות</a></li>
-                        <li><a href="#activities" class="hover:text-gold-600 transition-colors">הפעילות בבית הכנסת</a></li>
                         <li><a href="#donations" class="hover:text-gold-600 transition-colors">תרומות והנצחות</a></li>
                     </ul>
                 </div>
@@ -1365,32 +1149,6 @@
             mobileMenu.classList.add('hidden');
         }
 
-        // 2. Tab Switcher for Prayer Times
-        function switchTab(tabId) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.add('hidden');
-            });
-
-            // Show current tab content with a soft entrance
-            const activeTab = document.getElementById(`tab-${tabId}`);
-            activeTab.classList.remove('hidden');
-            activeTab.classList.remove('tab-anim');
-            void activeTab.offsetWidth; // restart animation
-            activeTab.classList.add('tab-anim');
-
-            // Reset tab buttons styles
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-white', 'text-gold-800', 'shadow', 'border', 'border-gold-500/10');
-                btn.classList.add('text-stone-600', 'hover:text-stone-900');
-            });
-
-            // Set active button style
-            const activeBtn = document.getElementById(`btn-${tabId}`);
-            activeBtn.classList.add('bg-white', 'text-gold-800', 'shadow', 'border', 'border-gold-500/10');
-            activeBtn.classList.remove('text-stone-600', 'hover:text-stone-900');
-        }
-
         // 3. Dynamic Gregorian & Hebrew Dates
         function initDates() {
             const today = new Date();
@@ -1421,30 +1179,8 @@
                 });
         }
 
-        // 4. Donation Calculator & Type Selection Logic
-        let selectedDonationTypeVal = 'כללי';
+        // 4. Donation Calculator Logic
         let currentDonationAmount = 0;
-
-        function selectDonationType(typeId) {
-            // Reset borders
-            document.getElementById('label-gen').className = 'border-2 border-stone-200 p-4 rounded-xl text-center cursor-pointer hover:bg-gold-50 block transition-all';
-            document.getElementById('label-mem').className = 'border-2 border-stone-200 p-4 rounded-xl text-center cursor-pointer hover:bg-gold-50 block transition-all';
-            document.getElementById('label-poor').className = 'border-2 border-stone-200 p-4 rounded-xl text-center cursor-pointer hover:bg-gold-50 block transition-all';
-
-            // Highlight selected
-            const selectedLabel = document.getElementById(`label-${typeId}`);
-            selectedLabel.className = 'border-2 border-gold-500 bg-gold-50/50 p-4 rounded-xl text-center cursor-pointer hover:bg-gold-50 block transition-all';
-
-            // Handle dedication field visibility
-            const dedicationFields = document.getElementById('dedication-fields');
-            if (typeId === 'mem') {
-                dedicationFields.classList.remove('hidden');
-                selectedDonationTypeVal = 'הנצחה וזיכרון לעילוי נשמת';
-            } else {
-                dedicationFields.classList.add('hidden');
-                selectedDonationTypeVal = typeId === 'poor' ? 'חסד, סעודות מצווה וסיוע למשפחות נזקקות' : 'הפעילות השוטפת של בית הכנסת';
-            }
-        }
 
         function setDonationAmount(amount, btnEl) {
             currentDonationAmount = amount;
@@ -1499,15 +1235,8 @@
             const donorName = document.getElementById('donor-name').value;
             const donorEmail = document.getElementById('donor-email').value;
             
-            // Build dedication phrase
-            let finalTargetDescription = selectedDonationTypeVal;
-            if(selectedDonationTypeVal.includes('הנצחה') && document.getElementById('deceased-name').value) {
-                finalTargetDescription += ` הנפטר/ת המונצח/ת: ${document.getElementById('deceased-name').value}`;
-            }
-
             // Fill success view
             document.getElementById('success-amount').innerText = finalAmount;
-            document.getElementById('success-target').innerText = finalTargetDescription;
             document.getElementById('success-email').innerText = donorEmail;
 
             // Show success modal inside form card
@@ -1518,7 +1247,6 @@
             document.getElementById('donation-form').reset();
             document.getElementById('donation-success-modal').classList.add('hidden');
             document.getElementById('custom-amount-wrapper').classList.add('hidden');
-            selectDonationType('gen');
             currentDonationAmount = 0;
             // Clear buttons selection visual
             document.querySelectorAll('.amount-btn').forEach(btn => {
@@ -1527,45 +1255,35 @@
             });
         }
 
-        async function handleContactSubmit(event) {
+        function handleContactSubmit(event) {
             event.preventDefault();
 
             const form = document.getElementById('contact-form');
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
             const successAlert = document.getElementById('contact-success-modal');
             const errorAlert = document.getElementById('contact-error-modal');
-
             successAlert.classList.add('hidden');
             errorAlert.classList.add('hidden');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> שולח...';
 
-            try {
-                const response = await fetch('https://formsubmit.co/ajax/ahavat.israel180@gmail.com', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify({
-                        'שם מלא': document.getElementById('contact-name').value,
-                        'טלפון': document.getElementById('contact-phone').value,
-                        'אימייל': document.getElementById('contact-email').value,
-                        'נושא הפנייה': document.getElementById('contact-subject').value,
-                        'תוכן ההודעה': document.getElementById('contact-message').value,
-                        _subject: 'פנייה חדשה מאתר בית הכנסת אהבת ישראל',
-                        _template: 'table'
-                    })
-                });
+            // Build the WhatsApp message
+            const lines = [
+                'שלום הגעתי מהאתר של בית הכנסת אהבת ישראל',
+                '',
+                'שם: ' + document.getElementById('contact-name').value,
+                'טלפון: ' + document.getElementById('contact-phone').value,
+                'אימייל: ' + document.getElementById('contact-email').value,
+                'נושא: ' + document.getElementById('contact-subject').value,
+                '',
+                document.getElementById('contact-message').value
+            ];
+            const waUrl = 'https://wa.me/972546666434?text=' + encodeURIComponent(lines.join('\n'));
 
-                if (!response.ok) throw new Error('send failed');
-
+            const win = window.open(waUrl, '_blank');
+            if (win) {
                 successAlert.classList.remove('hidden');
                 form.reset();
                 setTimeout(() => successAlert.classList.add('hidden'), 10000);
-            } catch (err) {
+            } else {
                 errorAlert.classList.remove('hidden');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = originalText;
             }
         }
 
