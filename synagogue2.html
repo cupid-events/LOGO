@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בית הכנסת "אהבת ישראל" ע"ש הרב יורם מיכאל אברג'יל זצ"ל - תורה, תפילה, חסד ואחדות</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#f4f8fb',
+                            100: '#e9f1f8',
+                            200: '#cfe0ee',
+                            300: '#a3c2da',
+                            400: '#5f8db3',
+                            500: '#2c5f8a', // Main Blue (logo navy)
+                            600: '#255278',
+                            700: '#1e4363',
+                            800: '#18364f',
+                            900: '#122b40',
+                        },
+                        stone: {
+                            50: '#fafaf9',
+                            100: '#f5f5f4',
+                            200: '#e7e5e4',
+                            300: '#d6d3d1',
+                            400: '#a8a29e',
+                            500: '#78716c',
+                            600: '#57534e',
+                            700: '#44403c',
+                            800: '#292524',
+                            900: '#1c1917',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Assistant', 'Rubik', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Assistant & Rubik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@200..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html {
+            scroll-padding-top: 6rem; /* Anchor links land below the fixed navbar */
+        }
+        body {
+            font-family: 'Assistant', sans-serif;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Rubik', 'Assistant', sans-serif;
+        }
+        .hero-pattern {
+            background-color: #f7fafd; /* Soft white-blue background */
+            background-image: radial-gradient(rgba(44, 95, 138, 0.12) 1px, transparent 0), radial-gradient(rgba(44, 95, 138, 0.12) 1px, transparent 0);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #3a74a5 0%, #18364f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* fadeIn was referenced but never defined */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.35s ease-out both; }
+
+        /* Gentle float for the hero badge (instead of the harsh bounce) */
+        @keyframes floatSoft {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-6px); }
+        }
+        .animate-float { animation: floatSoft 3.5s ease-in-out infinite; }
+
+        /* Scroll-reveal for sections */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Visible keyboard focus */
+        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+            outline: 2px solid #2c5f8a;
+            outline-offset: 2px;
+            border-radius: 0.375rem;
+        }
+
+        /* Hero entrance animation (staggered on load) */
+        @keyframes heroIn {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .hero-anim { opacity: 0; animation: heroIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+        /* Modal entrance */
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(14px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-card { animation: modalIn 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+        /* Tab content cross-fade */
+        @keyframes tabIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .tab-anim { animation: tabIn 0.4s ease-out both; }
+
+        /* Icon micro-interaction inside cards */
+        .group:hover .icon-tilt { transform: scale(1.12) rotate(-6deg); }
+        .icon-tilt { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        /* Text selection in brand gold */
+        ::selection { background: #cfe0ee; color: #122b40; }
+
+        /* Refined scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f2f7fb; }
+        ::-webkit-scrollbar-thumb { background: #a3c2da; border-radius: 8px; border: 2px solid #f2f7fb; }
+        ::-webkit-scrollbar-thumb:hover { background: #5f8db3; }
+        html { scrollbar-color: #a3c2da #f2f7fb; scrollbar-width: thin; }
+
+        /* Gallery carousel */
+        .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.9s ease-in-out, transform 6s linear; transform: scale(1.05); }
+        .carousel-slide.active { opacity: 1; transform: scale(1); z-index: 1; }
+        .carousel-dot { width: 0.625rem; height: 0.625rem; border-radius: 9999px; background: rgba(255,255,255,0.4); transition: all 0.3s; }
+        .carousel-dot:hover { background: rgba(255,255,255,0.7); }
+        .carousel-dot.active { background: #fff; width: 1.6rem; }
+        #carousel-progress { transition: width 0.1s linear; }
+
+        /* Respect reduced-motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .reveal { opacity: 1; transform: none; transition: none; }
+            .animate-float, .animate-fadeIn, .animate-pulse, .animate-spin, .hero-anim, .modal-card, .tab-anim { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .carousel-slide { transition: opacity 0.2s !important; transform: none !important; }
+            * { transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800 selection:bg-gold-200 selection:text-stone-900">
+
+    <!-- NAVIGATION BAR -->
+    <nav id="main-nav" class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gold-500/20 shadow-sm text-stone-800 transition-shadow duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex items-center space-x-reverse space-x-3">
+                    <img src="reka1.png" alt="לוגו בית הכנסת" id="nav-logo-img"
+                         class="hidden w-14 h-14 rounded-full object-cover shadow-md shadow-gold-500/25 border-2 border-gold-300"
+                         onload="this.classList.remove('hidden'); document.getElementById('nav-logo-default').classList.add('hidden');">
+                    <div id="nav-logo-default" class="bg-gradient-to-br from-gold-400 to-gold-600 p-2.5 rounded-full shadow-md shadow-gold-500/25">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="block text-xl font-bold tracking-wide text-gradient">אהבת ישראל</span>
+                        <span class="block text-xs text-gold-600 font-medium tracking-wide">ע"ש הרב יורם מיכאל אברג'יל זצ"ל</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-reverse space-x-8 text-sm font-semibold text-stone-750">
+                    <a href="#hero" class="hover:text-gold-600 transition-colors duration-200">דף הבית</a>
+                    <a href="#about" class="hover:text-gold-600 transition-colors duration-200">הרב זצ"ל והקהילה</a>
+                    <a href="#vision" class="hover:text-gold-600 transition-colors duration-200">החזון שלנו</a>
+                    <a href="#gallery" class="hover:text-gold-600 transition-colors duration-200">גלריה</a>
+                    <a href="#prayer-times" class="hover:text-gold-600 transition-colors duration-200">זמני תפילות</a>
+                    <a href="#donations" class="hover:text-gold-600 transition-colors duration-200">תרומות והנצחה</a>
+                    <a href="#contact" class="hover:text-gold-600 transition-colors duration-200">צור קשר</a>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <a href="#donations" class="bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-bold px-5 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-sm">
+                        <i class="fa-solid fa-heart-half-stroke ml-1.5"></i> שותפות ותרומה
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gold-600 hover:text-gold-700 focus:outline-none focus:ring-2 focus:ring-gold-500 rounded-lg p-2 transition-colors">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gold-500/15 animate-fadeIn shadow-lg">
+            <div class="px-2 pt-2 pb-4 space-y-1 sm:px-3 text-center font-medium">
+                <a href="#hero" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">דף הבית</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">הרב זצ"ל והקהילה</a>
+                <a href="#vision" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">החזון שלנו</a>
+                <a href="#gallery" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">גלריה</a>
+                <a href="#prayer-times" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">זמני תפילות</a>
+                <a href="#donations" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">תרומות והנצחה</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block px-3 py-3 rounded-md hover:bg-gold-50 text-base text-stone-800">צור קשר</a>
+                <div class="pt-4 px-4">
+                    <a href="#donations" onclick="toggleMobileMenu()" class="block w-full bg-gradient-to-r from-gold-500 to-gold-600 text-white font-bold py-3 rounded-lg shadow-md text-center">
+                        <i class="fa-solid fa-heart-half-stroke ml-1.5"></i> שותפות ותרומה
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-pattern pt-32 pb-20 md:pt-44 md:pb-32 text-stone-800 relative overflow-hidden flex items-center justify-center min-h-[90vh]">
+        <!-- Light radiant overlays for spiritual atmosphere -->
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-white/50 to-stone-50 pointer-events-none"></div>
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-gold-200/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-gold-100/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <!-- Badge -->
+            <div class="hero-anim inline-flex items-center space-x-reverse space-x-2 bg-white/90 border border-gold-500/30 rounded-full py-1.5 px-4 mb-6 shadow-sm animate-float" style="animation-delay: 0.05s;">
+                <span class="w-2.5 h-2.5 rounded-full bg-gold-500 animate-pulse"></span>
+                <span class="text-xs sm:text-sm font-bold text-gold-700">בית של תורה, תפילה, חסד ואחדות</span>
+            </div>
+
+            <!-- Main Heading -->
+            <h1 class="hero-anim text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-4 text-stone-900 leading-tight" style="animation-delay: 0.15s;">
+                בית הכנסת <br class="sm:hidden"><span class="text-gradient">"אהבת ישראל"</span>
+            </h1>
+
+            <!-- Memorial Name -->
+            <p class="hero-anim text-base sm:text-xl md:text-2xl font-bold text-gold-700 mb-6 tracking-wide" style="animation-delay: 0.3s;">
+                על שם הרב יורם מיכאל אברג'יל זצ"ל
+            </p>
+
+            <!-- Subtitle -->
+            <p class="hero-anim text-lg sm:text-xl text-stone-600 max-w-3xl mx-auto mb-4 font-light leading-relaxed" style="animation-delay: 0.45s;">
+                בית הכנסת נוסד מתוך שאיפה להמשיך ולהאיר את דרכו של הרב יורם מיכאל אברג'יל זצ"ל – דרך של אהבת ישראל ללא תנאי, קירוב לבבות, אמונה פשוטה, לימוד תורה ועשיית חסד.
+            </p>
+            <p class="hero-anim text-base sm:text-lg text-stone-600 max-w-3xl mx-auto mb-10 font-light leading-relaxed" style="animation-delay: 0.55s;">
+                אנו מאמינים כי כל יהודי הוא חלק בלתי נפרד מעם ישראל, ודלתות בית הכנסת פתוחות בפני כל אדם המבקש להתפלל, ללמוד תורה ולהתחזק ברוח ובאמונה.
+            </p>
+
+            <!-- Buttons -->
+            <div class="hero-anim flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto" style="animation-delay: 0.7s;">
+                <a href="#prayer-times" class="w-full sm:w-auto bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-bold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 active:scale-[0.98] text-center flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-clock text-lg"></i> לוח זמני תפילות
+                </a>
+                <a href="#gallery" class="w-full sm:w-auto bg-white hover:bg-stone-50 text-gold-700 hover:text-gold-800 border border-gold-500/30 font-bold px-8 py-4 rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] text-center flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-images text-lg"></i> רגעים מהקהילה
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll-down indicator -->
+        <a href="#vision" aria-label="גלול למטה" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-gold-600/70 hover:text-gold-700 transition-colors animate-float hidden sm:block">
+            <i class="fa-solid fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
+
+    <!-- QUICK INFO BAR -->
+    <div class="bg-white text-stone-800 py-4 shadow-sm border-y border-gold-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <!-- Date Display -->
+            <div class="flex items-center space-x-reverse space-x-3 text-sm md:text-base">
+                <span class="bg-gold-500/10 text-gold-700 p-2 rounded-lg border border-gold-200/50">
+                    <i class="fa-regular fa-calendar-days text-lg"></i>
+                </span>
+                <div>
+                    <span class="font-bold text-stone-800">היום אצלנו:</span>
+                    <span id="gregorian-date" class="mx-1 text-stone-600 font-medium">טוען תאריך...</span> | 
+                    <span id="hebrew-date" class="font-bold text-gold-700">טוען תאריך עברי...</span>
+                </div>
+            </div>
+
+            <!-- Daily Quote/Message -->
+            <div class="hidden lg:flex items-center space-x-reverse space-x-2 text-sm text-stone-600 italic font-medium">
+                <i class="fa-solid fa-quote-right text-gold-500/50"></i>
+                <span>"ואהבת לרעך כמוך" אינה רק מצווה – היא דרך חיים.</span>
+            </div>
+
+            <!-- Current Halachic Info -->
+            <div class="flex items-center space-x-reverse space-x-2 bg-gold-50 border border-gold-500/20 px-3 py-1.5 rounded-full text-xs text-gold-700 font-bold animate-pulse">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span>בית הכנסת פעיל בסופ"ש וימי חג</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABOUT & COMMUNITY SECTION -->
+    <section id="about" class="py-20 md:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <!-- Left Side: Content -->
+            <div>
+                <span class="text-gold-600 font-bold uppercase tracking-wider text-sm block mb-2">הכירו אותנו</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-850 mb-6">הקהילה שלנו - משפחה אחת גדולה</h2>
+                <p class="text-stone-600 text-lg leading-relaxed mb-6 font-medium">
+                    קהילת "אהבת ישראל" היא משפחה אחת גדולה. יחד אנו שמחים בשמחות, תומכים בשעות קושי, לומדים יחד, מתפללים יחד ופועלים למען הכלל מתוך ערבות הדדית.
+                </p>
+                <p class="text-stone-600 text-lg leading-relaxed mb-8 font-medium">
+                    דלתות בית הכנסת פתוחות תמיד לכל יהודי באשר הוא. ברוכים הבאים למשפחת אהבת ישראל.
+                </p>
+
+                <!-- Key Values -->
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gold-200 text-center">
+                        <span class="block text-2xl text-gold-600 mb-2"><i class="fa-solid fa-book-open"></i></span>
+                        <span class="text-sm text-stone-700 font-bold">תורה ותפילה</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gold-200 text-center">
+                        <span class="block text-2xl text-gold-600 mb-2"><i class="fa-solid fa-hands-holding-circle"></i></span>
+                        <span class="text-sm text-stone-700 font-bold">חסד ונתינה</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gold-200 text-center">
+                        <span class="block text-2xl text-gold-600 mb-2"><i class="fa-solid fa-heart"></i></span>
+                        <span class="text-sm text-stone-700 font-bold">אחדות ואהבה</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Rabbi Image Card & Message -->
+            <div class="relative">
+                <!-- Decorative background elements -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-gold-300/10 to-gold-400/20 rounded-3xl transform rotate-3"></div>
+                
+                <!-- Main Card: Memorial for Rav Yoram Michael Abergel zt"l -->
+                <div class="relative bg-white p-8 md:p-10 rounded-3xl shadow-md border border-gold-200 text-center lg:text-right flex flex-col md:flex-row items-center gap-8">
+                    <div class="w-36 h-36 rounded-full overflow-hidden border-4 border-gold-300 shadow-sm shrink-0 bg-gold-50 flex items-center justify-center">
+                        <img src="hrav.png" alt="הרב יורם מיכאל אברג'יל זצ&quot;ל" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                             onerror="this.onerror=null; this.src='https://placehold.co/400x400/fcfaf2/b39021?text=%D7%94%D7%A8%D7%91+%D7%99%D7%95%D7%A8%D7%9D';">
+                    </div>
+                    <div>
+                        <span class="text-gold-600 text-xs font-bold uppercase tracking-wider block mb-1">לזכרו ולאורו</span>
+                        <h3 class="text-2xl font-bold text-stone-800 mb-2">הרב יורם מיכאל אברג'יל זצ"ל</h3>
+                        <p class="text-stone-600 text-sm leading-relaxed mb-3 font-medium">
+                            בית הכנסת קרוי על שמו של הרב יורם מיכאל אברג'יל זצ"ל, מגדולי מזכי הרבים בדורנו, שפעל במשך שנים רבות להפצת תורה, לחיזוק האמונה ולאהבת כל יהודי.
+                        </p>
+                        <p class="text-stone-600 text-sm leading-relaxed mb-4 font-medium">
+                            מורשתו ממשיכה להאיר את דרכנו ומלווה את פעילות בית הכנסת בכל תחומי החיים – תורה, חסד, נתינה, ענווה ואחדות.
+                        </p>
+                        <span class="inline-flex items-center space-x-reverse space-x-2 text-xs text-gold-800 font-bold bg-gold-100 py-1.5 px-3 rounded-full border border-gold-200">
+                            <i class="fa-solid fa-star-of-david text-gold-600"></i>
+                            <span>זכותו תגן עלינו ועל כל ישראל</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VISION SECTION -->
+    <section id="vision" class="bg-white py-20 md:py-24 border-b border-gold-500/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <span class="text-gold-600 font-bold uppercase tracking-wider text-sm block mb-2">הדרך שלנו</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-800 mb-4">החזון שלנו</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-gold-400 to-gold-600 mx-auto rounded-full mb-6"></div>
+                <p class="text-stone-600 max-w-2xl mx-auto text-lg font-medium">
+                    להקים קהילה חמה ומאוחדת, שבה כל אדם ירגיש שייך, אהוב ורצוי.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 p-6 text-center hover:border-gold-500 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-4"><i class="fa-solid fa-book-open"></i></span>
+                    <h3 class="font-bold text-stone-900 text-sm leading-snug">להרבות תורה ויראת שמים</h3>
+                </div>
+                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 p-6 text-center hover:border-gold-500 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-4"><i class="fa-solid fa-heart"></i></span>
+                    <h3 class="font-bold text-stone-900 text-sm leading-snug">לחזק את ערך אהבת ישראל</h3>
+                </div>
+                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 p-6 text-center hover:border-gold-500 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-4"><i class="fa-solid fa-hands-holding-circle"></i></span>
+                    <h3 class="font-bold text-stone-900 text-sm leading-snug">לעודד חסד ועזרה הדדית</h3>
+                </div>
+                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 p-6 text-center hover:border-gold-500 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-4"><i class="fa-solid fa-handshake"></i></span>
+                    <h3 class="font-bold text-stone-900 text-sm leading-snug">לקרב לבבות מתוך כבוד ושמחה</h3>
+                </div>
+                <div class="bg-stone-50 rounded-2xl border border-gold-200/60 p-6 text-center hover:border-gold-500 hover:-translate-y-1 hover:shadow-md transition-all duration-300">
+                    <span class="text-gold-600 bg-gold-400/10 p-3 rounded-xl text-2xl inline-block mb-4"><i class="fa-solid fa-people-roof"></i></span>
+                    <h3 class="font-bold text-stone-900 text-sm leading-snug">מקום של קדושה למשפחות, לילדים ולדור הצעיר</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY SECTION -->
+    <!-- כדי לעדכן: שים את הקבצים a1.png עד a10.png באותה תיקייה של הקובץ, -->
+    <!-- ועדכן את הכותרות בתוך תגיות ה-figcaption וה-alt של כל תמונה למטה. -->
+    <!-- תמונה שהקובץ שלה חסר תוסתר אוטומטית ולא תופיע שבורה. -->
+    <section id="gallery" class="bg-white py-20 md:py-28 border-y border-gold-500/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <span class="text-gold-600 font-bold uppercase tracking-wider text-sm block mb-2">הקהילה בתמונות</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-900 mb-4">רגעים מהקהילה</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-gold-400 to-gold-600 mx-auto rounded-full mb-6"></div>
+                <p class="text-stone-600 max-w-2xl mx-auto text-lg font-medium">
+                    הצצה לרגעים של תורה, תפילה, שמחה וחסד מחיי הקהילה שלנו.
+                </p>
+            </div>
+
+            <!-- Carousel stage (slides are generated by the script from the galleryData list) -->
+            <div id="gallery-carousel" class="relative rounded-3xl overflow-hidden shadow-xl border border-gold-200 bg-stone-900 aspect-[16/10] sm:aspect-[16/9] mb-8"
+                 onmouseenter="carouselHover(true)" onmouseleave="carouselHover(false)">
+
+                <div id="carousel-slides" class="absolute inset-0"></div>
+
+                <!-- Progress bar -->
+                <div class="absolute top-0 right-0 left-0 h-1 bg-white/20 z-10">
+                    <div id="carousel-progress" class="h-full bg-gold-400" style="width: 0%"></div>
+                </div>
+
+                <!-- Arrows -->
+                <button onclick="carouselNav(1)" aria-label="התמונה הבאה" class="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/15 hover:bg-white/30 backdrop-blur-sm text-white w-11 h-11 rounded-full transition-all flex items-center justify-center">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+                <button onclick="carouselNav(-1)" aria-label="התמונה הקודמת" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/15 hover:bg-white/30 backdrop-blur-sm text-white w-11 h-11 rounded-full transition-all flex items-center justify-center">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+                <!-- Play/Pause + counter -->
+                <div class="absolute top-4 left-4 z-10 flex items-center gap-2">
+                    <button id="carousel-play" onclick="carouselTogglePlay()" aria-label="הפעלה/עצירה" class="bg-white/15 hover:bg-white/30 backdrop-blur-sm text-white w-9 h-9 rounded-full transition-all flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-pause"></i>
+                    </button>
+                    <span id="carousel-counter" class="bg-stone-900/50 backdrop-blur-sm text-white/90 text-xs font-bold px-2.5 py-1.5 rounded-full"></span>
+                </div>
+
+                <!-- Dots -->
+                <div id="carousel-dots" class="absolute bottom-4 right-0 left-0 z-10 flex items-center justify-center gap-2"></div>
+            </div>
+
+            <!-- Shown only if no images were found -->
+            <div id="gallery-empty" class="hidden bg-stone-50 border-2 border-dashed border-gold-300 rounded-3xl p-12 text-center mb-8">
+                <i class="fa-regular fa-images text-gold-400 text-5xl mb-4"></i>
+                <p class="text-stone-600 font-bold text-lg">כאן תופיע קרוסלת התמונות</p>
+                <p class="text-stone-500 text-sm mt-2">שים את הקבצים a1.png עד a10.png באותה תיקייה של קובץ האתר, והקרוסלה תופיע אוטומטית.</p>
+            </div>
+
+            <!-- Thumbnail grid: click opens the full-size lightbox -->
+            <div id="gallery-thumbs" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"></div>
+        </div>
+    </section>
+
+    <!-- PRAYER TIMES SECTION -->
+    <section id="prayer-times" class="py-20 md:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-800 mb-4">זמני תפילות בשבת קודש</h2>
+            <div class="w-24 h-1 bg-gradient-to-r from-gold-400 to-gold-600 mx-auto rounded-full mb-6"></div>
+            <p class="text-stone-600 max-w-2xl mx-auto text-lg font-medium">
+                אנו מקיימים מנייני תפילה בשבתות ובימי חג, באווירה חמה ומסבירת פנים. בואו להתפלל איתנו.
+            </p>
+        </div>
+
+        <div id="tab-shabbat" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Kabbalat Shabbat -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gold-200/50 hover:shadow-md transition-all duration-300 overflow-hidden group">
+                <div class="bg-gradient-to-r from-gold-100/40 to-gold-200/30 border-b border-gold-200/60 p-6 text-center relative">
+                    <span class="text-3xl text-gold-700 mb-2 inline-block">🕯️🕯️</span>
+                    <h3 class="text-xl font-bold text-stone-800">ערב שבת</h3>
+                </div>
+                <div class="p-6 divide-y divide-stone-100">
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">הדלקת נרות שבת</span>
+                        <span class="bg-gold-50 text-gold-700 px-3 py-1 rounded-full font-bold text-sm border border-gold-200/60">זמן באר שבע</span>
+                    </div>
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">מנחה</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">בכניסת שבת</span>
+                    </div>
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">קבלת שבת וערבית</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">לאחר תפילת מנחה</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shabbat Morning -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gold-200/50 hover:shadow-md transition-all duration-300 overflow-hidden group">
+                <div class="bg-gradient-to-r from-gold-100/40 to-gold-200/30 border-b border-gold-200/60 p-6 text-center relative">
+                    <span class="text-3xl text-gold-700 mb-2 inline-block"><i class="fa-solid fa-wine-bottle"></i> <i class="fa-solid fa-wine-glass"></i></span>
+                    <h3 class="text-xl font-bold text-stone-800">יום השבת</h3>
+                </div>
+                <div class="p-6 divide-y divide-stone-100">
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">תפילת שחרית</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">בשעה 8:00 הודו</span>
+                    </div>
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">שיעור תורה</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">45 דק' לפני מנחה</span>
+                    </div>
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">מנחה</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">לאחר שיעור תורה</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mincha & Motzei Shabbat -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gold-200/50 hover:shadow-md transition-all duration-300 overflow-hidden group">
+                <div class="bg-gradient-to-r from-gold-100/40 to-gold-200/30 border-b border-gold-200/60 p-6 text-center relative">
+                    <span class="text-gold-700 mb-2 inline-block">
+                        <i class="fa-solid fa-star text-lg"></i>
+                        <i class="fa-solid fa-star text-2xl mx-1.5 -mt-2 inline-block align-top"></i>
+                        <i class="fa-solid fa-star text-lg"></i>
+                    </span>
+                    <h3 class="text-xl font-bold text-stone-800">סעודה שלישית וערבית צאת השבת</h3>
+                </div>
+                <div class="p-6 divide-y divide-stone-100">
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">סעודה שלישית</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">לאחר תפילת מנחה</span>
+                    </div>
+                    <div class="flex justify-between py-4 items-center">
+                        <span class="font-bold text-stone-700">ערבית של מוצ"ש</span>
+                        <span class="bg-stone-50 text-stone-800 px-3 py-1 rounded-full font-bold text-sm border border-stone-200">בזמן צאת השבת</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DONATION SECTION -->
+    <section id="donations" class="bg-gold-50/50 py-20 md:py-28 border-t border-gold-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                
+                <!-- Left: Text Info -->
+                <div class="lg:col-span-5">
+                    <span class="text-gold-600 font-bold uppercase tracking-wider text-sm block mb-2">שותפות נצח</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-stone-850 mb-6">תרומות</h2>
+                    <p class="text-stone-600 text-lg leading-relaxed mb-6 font-medium">
+                        ניתן לקחת חלק בפעילות בית הכנסת במגוון דרכים. כל תרומה מסייעת בהמשך קיום פעילות התורה, התפילה והחסד של הקהילה.
+                    </p>
+
+                </div>
+
+                <!-- Right: Donation Form Card -->
+                <div class="lg:col-span-7 bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-gold-200 relative">
+                    <h3 class="text-2xl font-bold text-stone-850 mb-6 text-center lg:text-right">טופס תרומה קל ומהיר</h3>
+                    
+                    <form id="donation-form" onsubmit="handleDonationSubmit(event)" class="space-y-6">
+                        <!-- Amount Quick Selection -->
+                        <div>
+                            <label class="block text-sm font-bold text-stone-700 mb-2">בחרו סכום תרומה (ש"ח)</label>
+                            <div class="grid grid-cols-4 gap-2">
+                                <button type="button" onclick="setDonationAmount(54, this)" class="amount-btn border border-stone-200 py-3 rounded-lg text-stone-700 font-bold hover:bg-gold-50 hover:border-gold-300 transition-all text-sm">54 ₪ <span class="block text-[10px] font-normal text-stone-400">ג' פעמים ח"י</span></button>
+                                <button type="button" onclick="setDonationAmount(180, this)" class="amount-btn border border-stone-200 py-3 rounded-lg text-stone-700 font-bold hover:bg-gold-50 hover:border-gold-300 transition-all text-sm">180 ₪ <span class="block text-[10px] font-normal text-stone-400">שותף חודשי</span></button>
+                                <button type="button" onclick="setDonationAmount(360, this)" class="amount-btn border border-stone-200 py-3 rounded-lg text-stone-700 font-bold hover:bg-gold-50 hover:border-gold-300 transition-all text-sm">360 ₪ <span class="block text-[10px] font-normal text-slate-400">חבר קהילה</span></button>
+                                <button type="button" id="custom-amount-trigger" onclick="focusCustomAmount()" class="border border-stone-200 py-3 rounded-lg text-stone-700 font-bold hover:bg-gold-50 hover:border-gold-300 transition-all text-sm">סכום אחר</button>
+                            </div>
+                        </div>
+
+                        <!-- Custom Amount Input -->
+                        <div id="custom-amount-wrapper" class="hidden">
+                            <label class="block text-sm font-bold text-stone-700 mb-2">הזינו סכום בהתאמה אישית</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-0 pr-4 flex items-center text-stone-500 font-bold">₪</span>
+                                <input type="number" id="custom-amount-val" min="1" placeholder="סכום בשקלים" class="block w-full pr-10 pl-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all">
+                            </div>
+                        </div>
+
+                        <!-- Contact Details -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-stone-700 mb-1">שם מלא</label>
+                                <input type="text" id="donor-name" required placeholder="ישראל ישראלי" class="block w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-stone-700 mb-1">דוא"ל לקבלת קבלה</label>
+                                <input type="email" id="donor-email" required placeholder="israel@example.com" class="block w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl focus:bg-white focus:border-gold-500 focus:ring-1 focus:ring-gold-500 outline-none transition-all">
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="w-full bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-extrabold py-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 active:scale-[0.98] text-center flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-credit-card"></i> מעבר לתרומה
+                        </button>
+                    </form>
+
+                    <!-- Custom Success Modal inside Card (instead of alert) -->
+                    <div id="donation-success-modal" class="hidden absolute inset-0 bg-white rounded-3xl p-8 flex flex-col justify-center items-center text-center animate-fadeIn z-20">
+                        <div class="bg-emerald-50 text-emerald-500 p-4 rounded-full text-5xl mb-6 border border-emerald-200">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-stone-850 mb-2">תודה רבה ותזכו למצוות!</h4>
+                        <p class="text-stone-600 max-w-sm mb-6 font-medium">
+                            תרומתכם בסך <span id="success-amount" class="font-bold text-gold-700"></span> ש"ח נקלטה בהצלחה. קבלה תישלח אל <span id="success-email" class="font-bold text-stone-800"></span>.
+                        </p>
+                        <button onclick="resetDonationForm()" class="bg-gold-600 hover:bg-gold-700 text-white font-bold py-2.5 px-6 rounded-lg transition-colors shadow-sm">תרומה נוספת</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DIVREI CHIZUK SECTION -->
+    <section id="chizuk" class="bg-white py-16 md:py-20 border-y border-gold-500/10 relative overflow-hidden">
+        <i class="fa-solid fa-star-of-david absolute -top-10 -right-10 text-gold-100 text-[220px] pointer-events-none select-none" aria-hidden="true"></i>
+        <i class="fa-solid fa-star-of-david absolute -bottom-16 -left-16 text-gold-50 text-[260px] pointer-events-none select-none" aria-hidden="true"></i>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <span class="text-gold-500 text-4xl mb-6 inline-block"><i class="fa-solid fa-quote-right"></i></span>
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-stone-900 leading-snug mb-6">
+                "ואהבת לרעך כמוך" אינה רק מצווה – <span class="text-gradient">היא דרך חיים.</span>
+            </h2>
+            <p class="text-stone-600 text-lg font-medium max-w-2xl mx-auto">
+                מתוך אהבת ישראל, כבוד הדדי ואמונה בבורא עולם, נוכל לבנות קהילה חזקה, מאוחדת ומלאת אור.
+            </p>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-20 md:py-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white text-stone-800 rounded-3xl shadow-sm overflow-hidden border border-gold-200">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                
+                <!-- Contact Details (Light Textured Side) -->
+                <div class="p-8 md:p-12 lg:p-16 flex flex-col justify-between relative bg-stone-50/50 border-b lg:border-b-0 lg:border-l border-gold-200">
+                    <div class="absolute inset-0 bg-[radial-gradient(rgba(44,95,138,0.05)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
+                    <div>
+                        <span class="text-gold-600 font-bold uppercase tracking-wider text-sm block mb-2">מוזמנים תמיד</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-stone-900 mb-6">צרו קשר</h2>
+                        <p class="text-stone-600 font-medium mb-4 max-w-md">
+                            נשמח לעמוד לרשותכם בכל שאלה, בקשה או הצעה. דלתות בית הכנסת פתוחות תמיד לכל יהודי באשר הוא.
+                        </p>
+                        <p class="text-gold-700 font-bold mb-8 max-w-md">
+                            ברוכים הבאים למשפחת אהבת ישראל.
+                        </p>
+
+                        <!-- Contact items -->
+                        <div class="space-y-6">
+                            <a href="https://maps.google.com/?q=בשמת 40, מיתר" target="_blank" rel="noopener" class="flex items-center space-x-reverse space-x-4 group">
+                                <span class="bg-white text-gold-600 p-3 rounded-xl border border-gold-200 shadow-sm group-hover:bg-gold-500 group-hover:text-white transition-colors"><i class="fa-solid fa-location-dot"></i></span>
+                                <div>
+                                    <span class="block text-xs text-stone-500 font-bold">כתובת בית הכנסת</span>
+                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors">צקלג פינת בשמת, מיתר <i class="fa-solid fa-arrow-up-left text-[10px] text-stone-400 mr-1"></i></span>
+                                    <span class="block text-xs text-stone-500 font-medium mt-0.5">מקלט מאחורי מתחם בתי הכנסת (הכניסה מרחוב בשמת 40)</span>
+                                </div>
+                            </a>
+                            <a href="tel:0546666434" class="flex items-center space-x-reverse space-x-4 group">
+                                <span class="bg-white text-gold-600 p-3 rounded-xl border border-gold-200 shadow-sm group-hover:bg-gold-500 group-hover:text-white transition-colors"><i class="fa-solid fa-phone"></i></span>
+                                <div>
+                                    <span class="block text-xs text-stone-500 font-bold">טלפון המשרד והרב</span>
+                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors" dir="ltr">054-6666434</span>
+                                </div>
+                            </a>
+                            <a href="mailto:Norsimatan@gmail.com" class="flex items-center space-x-reverse space-x-4 group">
+                                <span class="bg-white text-gold-600 p-3 rounded-xl border border-gold-200 shadow-sm group-hover:bg-gold-500 group-hover:text-white transition-colors"><i class="fa-solid fa-envelope"></i></span>
+                                <div>
+                                    <span class="block text-xs text-stone-500 font-bold">דואר אלקטרוני</span>
+                                    <span class="font-bold text-stone-800 group-hover:text-gold-700 transition-colors" dir="ltr">Norsimatan@gmail.com</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form (Golden / Off-white elegant Form) -->
+                <div class="bg-white p-8 md:p-12 lg:p-16">
+                    <h3 class="text-xl font-bold text-gold-700 mb-6">השאירו הודעה</h3>
+                    <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-5">
+                        <div>
+                            <label class="block text-xs text-stone-600 mb-1.5 font-bold">שם מלא</label>
+                            <input type="text" id="contact-name" name="שם מלא" required placeholder="ישראל ישראלי" class="block w-full px-4 py-3 bg-stone-50 border border-stone-200 hover:border-gold-300 rounded-xl focus:border-gold-500 focus:bg-white focus:ring-1 focus:ring-gold-500 outline-none text-stone-900 transition-all text-sm">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs text-stone-600 mb-1.5 font-bold">מספר טלפון</label>
+                                <input type="tel" id="contact-phone" name="טלפון" required placeholder="050-1234567" class="block w-full px-4 py-3 bg-stone-50 border border-stone-200 hover:border-gold-300 rounded-xl focus:border-gold-500 focus:bg-white focus:ring-1 focus:ring-gold-500 outline-none text-stone-900 transition-all text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-stone-600 mb-1.5 font-bold">כתובת אימייל</label>
+                                <input type="email" id="contact-email" name="אימייל" required placeholder="israel@gmail.com" class="block w-full px-4 py-3 bg-stone-50 border border-stone-200 hover:border-gold-300 rounded-xl focus:border-gold-500 focus:bg-white focus:ring-1 focus:ring-gold-500 outline-none text-stone-900 transition-all text-sm">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-stone-600 mb-1.5 font-bold">נושא הפנייה</label>
+                            <select id="contact-subject" name="נושא הפנייה" class="block w-full px-4 py-3 bg-stone-50 border border-stone-200 hover:border-gold-300 rounded-xl focus:border-gold-500 focus:bg-white focus:ring-1 focus:ring-gold-500 outline-none text-stone-700 transition-all text-sm">
+                                <option>שאלה כללית</option>
+                                <option>מכירת מושבים לחגים</option>
+                                <option>רישום לשיעורי תורה</option>
+                                <option>תרומה, הנצחה או יארצייט</option>
+                                <option>תיאום שמחה (ברית, בר מצווה)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-stone-600 mb-1.5 font-bold">תוכן ההודעה</label>
+                            <textarea id="contact-message" name="תוכן ההודעה" required rows="4" placeholder="כתבו כאן את פנייתכם ונדאג לחזור אליכם בהקדם..." class="block w-full px-4 py-3 bg-stone-50 border border-stone-200 hover:border-gold-300 rounded-xl focus:border-gold-500 focus:bg-white focus:ring-1 focus:ring-gold-500 outline-none text-stone-900 transition-all text-sm resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-extrabold py-3.5 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> שליחת הודעה בוואטסאפ
+                        </button>
+                    </form>
+
+                    <!-- Contact Success Alert inside Card -->
+                    <div id="contact-success-modal" class="hidden mt-4 bg-emerald-50 border border-emerald-300/50 p-4 rounded-xl text-emerald-700 flex items-start gap-3 animate-fadeIn">
+                        <i class="fa-solid fa-circle-check text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-stone-850 text-sm">וואטסאפ נפתח עם ההודעה שלך</h4>
+                            <p class="text-xs text-stone-600 mt-1">נשאר רק ללחוץ על כפתור השליחה בוואטסאפ, ונחזור אליך בהקדם.</p>
+                        </div>
+                    </div>
+
+                    <!-- Contact Error Alert -->
+                    <div id="contact-error-modal" class="hidden mt-4 bg-red-50 border border-red-300/50 p-4 rounded-xl text-red-700 flex items-start gap-3 animate-fadeIn">
+                        <i class="fa-solid fa-circle-exclamation text-xl mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-stone-850 text-sm">לא הצלחנו לפתוח את וואטסאפ</h4>
+                            <p class="text-xs text-stone-600 mt-1">אפשר לכתוב לנו ישירות בוואטסאפ למספר <a href="https://wa.me/972546666434" target="_blank" rel="noopener" class="font-bold underline" dir="ltr">054-6666434</a> או במייל <a href="mailto:Norsimatan@gmail.com" class="font-bold underline" dir="ltr">Norsimatan@gmail.com</a></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-stone-100 text-stone-600 pt-16 pb-8 border-t border-gold-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                
+                <!-- Col 1: Logo & Vision -->
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center space-x-reverse space-x-3 text-stone-900">
+                        <img src="reka.png" alt="לוגו בית הכנסת" id="footer-logo-img"
+                             class="hidden w-12 h-12 rounded-full object-cover shadow-sm border-2 border-gold-300"
+                             onload="this.classList.remove('hidden'); document.getElementById('footer-logo-default').classList.add('hidden');">
+                        <div id="footer-logo-default" class="bg-gold-500 p-1.5 rounded-full">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="block text-xl font-bold text-gradient">אהבת ישראל</span>
+                            <span class="block text-xs text-gold-600 font-medium">ע"ש הרב יורם מיכאל אברג'יל זצ"ל</span>
+                        </div>
+                    </div>
+                    <p class="text-stone-600 text-sm font-medium leading-relaxed max-w-sm">
+                        בית של תורה, תפילה, חסד ואחדות. בית הכנסת ממשיך ומאיר את דרכו של הרב יורם מיכאל אברג'יל זצ"ל – דרך של אהבת ישראל ללא תנאי, קירוב לבבות, אמונה פשוטה, לימוד תורה ועשיית חסד.
+                    </p>
+                    <div class="text-xs text-stone-500 pt-2 font-bold">
+                        <span>דלתות בית הכנסת פתוחות תמיד לכל יהודי באשר הוא</span>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation Links -->
+                <div>
+                    <h4 class="text-stone-900 font-bold text-sm mb-4 tracking-wider uppercase border-b border-gold-500/20 pb-2">קישורים מהירים</h4>
+                    <ul class="space-y-2 text-sm font-semibold">
+                        <li><a href="#hero" class="hover:text-gold-600 transition-colors">דף הבית</a></li>
+                        <li><a href="#about" class="hover:text-gold-600 transition-colors">הרב זצ"ל והקהילה</a></li>
+                        <li><a href="#vision" class="hover:text-gold-600 transition-colors">החזון שלנו</a></li>
+                        <li><a href="#gallery" class="hover:text-gold-600 transition-colors">גלריה</a></li>
+                        <li><a href="#prayer-times" class="hover:text-gold-600 transition-colors">זמני תפילות</a></li>
+                        <li><a href="#donations" class="hover:text-gold-600 transition-colors">תרומות והנצחות</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Useful Info -->
+                <div>
+                    <h4 class="text-stone-900 font-bold text-sm mb-4 tracking-wider uppercase border-b border-gold-500/20 pb-2">מזכירות ועזרה</h4>
+                    <ul class="space-y-2 text-sm font-semibold">
+                        <li><span>ימים א'-ה': 09:00 - 13:00</span></li>
+                        <li><span>יום ו': 09:00 - 12:00</span></li>
+                        <li><a href="#contact" class="hover:text-gold-600 transition-colors">בקשה לאזכרה</a></li>
+                        <li><a href="#contact" class="hover:text-gold-600 transition-colors">רכישת עליות לתורה</a></li>
+                        <li><a href="#contact" class="hover:text-gold-600 transition-colors">תיאום שימוש באולם השמחות</a></li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="border-t border-stone-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-bold text-stone-500">
+                <p>© כל הזכויות שמורות לבית הכנסת אהבת ישראל. עוצב ופותח בחסדי ה'.</p>
+                <div class="flex space-x-reverse space-x-4">
+                    <button onclick="openModal('privacy-modal')" class="hover:text-stone-700 transition-colors">מדיניות פרטיות</button>
+                    <span>|</span>
+                    <button onclick="openModal('terms-modal')" class="hover:text-stone-700 transition-colors">תנאי שימוש</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GALLERY LIGHTBOX -->
+    <div id="lightbox" role="dialog" aria-modal="true" class="hidden fixed inset-0 z-[110] items-center justify-center p-4" onclick="if(event.target === this) closeLightbox()">
+        <div class="absolute inset-0 bg-stone-900/90 backdrop-blur-sm"></div>
+        <button onclick="closeLightbox()" aria-label="סגירה" class="absolute top-5 left-5 z-20 text-white/80 hover:text-white text-3xl transition-colors">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <button onclick="lightboxNav(1)" aria-label="התמונה הבאה" class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 w-11 h-11 rounded-full transition-all flex items-center justify-center">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        <button onclick="lightboxNav(-1)" aria-label="התמונה הקודמת" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 text-white/70 hover:text-white bg-white/10 hover:bg-white/20 w-11 h-11 rounded-full transition-all flex items-center justify-center">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <figure class="modal-card relative z-10 max-w-4xl w-full text-center">
+            <img id="lightbox-img" src="" alt="" class="max-h-[75vh] w-auto mx-auto rounded-2xl shadow-2xl">
+            <figcaption class="mt-4">
+                <span id="lightbox-title" class="text-white font-bold text-lg block"></span>
+                <span id="lightbox-counter" class="text-white/60 text-sm font-medium"></span>
+            </figcaption>
+        </figure>
+    </div>
+
+    <!-- BACK TO TOP -->
+    <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="חזרה לראש העמוד"
+            class="hidden fixed bottom-6 left-6 z-[60] bg-gold-500 hover:bg-gold-600 text-white w-12 h-12 rounded-full shadow-lg shadow-gold-500/30 transition-all duration-300 items-center justify-center">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- PRIVACY POLICY MODAL -->
+    <div id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="if(event.target === this) closeModal('privacy-modal')">
+        <div class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm"></div>
+        <div class="modal-card relative bg-white rounded-3xl shadow-xl border border-gold-200 max-w-2xl w-full max-h-[85vh] overflow-y-auto p-8 md:p-10">
+            <button onclick="closeModal('privacy-modal')" class="absolute top-5 left-5 text-stone-400 hover:text-stone-700 transition-colors text-xl" aria-label="סגירה">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 id="privacy-modal-title" class="text-2xl font-extrabold text-stone-900 mb-2">מדיניות פרטיות</h3>
+            <div class="w-16 h-1 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full mb-6"></div>
+            <div class="space-y-4 text-stone-600 text-sm leading-relaxed font-medium">
+                <p><strong class="text-stone-800">1. כללי:</strong> אתר בית הכנסת "אהבת ישראל" ע"ש הרב יורם מיכאל אברג'יל זצ"ל מכבד את פרטיות המבקרים בו. מדיניות זו מפרטת כיצד אנו אוספים ומשתמשים במידע הנמסר לנו.</p>
+                <p><strong class="text-stone-800">2. איסוף מידע:</strong> המידע היחיד שנאסף באתר הוא המידע שאתם מוסרים מרצונכם באמצעות טופס יצירת הקשר וטופס התרומות – שם, מספר טלפון, כתובת דוא"ל ותוכן הפנייה.</p>
+                <p><strong class="text-stone-800">3. שימוש במידע:</strong> המידע משמש אך ורק לצורך מענה לפנייתכם, טיפול בתרומות והנצחות, ותיאום בקשות לאזכרה. לא ייעשה במידע כל שימוש אחר.</p>
+                <p><strong class="text-stone-800">4. מסירת מידע לצד שלישי:</strong> בית הכנסת אינו מעביר, מוכר או משתף את פרטיכם האישיים עם גורם שלישי כלשהו, למעט אם הדבר נדרש על פי דין.</p>
+                <p><strong class="text-stone-800">5. אבטחת מידע:</strong> אנו נוקטים אמצעים סבירים לשמירה על המידע הנמסר לנו, אולם אין באפשרותנו להבטיח חסינות מוחלטת מפני גישה בלתי מורשית.</p>
+                <p><strong class="text-stone-800">6. פנייה בנושא פרטיות:</strong> בכל שאלה או בקשה בנוגע למידע שנמסר, לרבות בקשה למחיקתו, ניתן לפנות אלינו באמצעות פרטי הקשר המופיעים באתר.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TERMS OF USE MODAL -->
+    <div id="terms-modal" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4" onclick="if(event.target === this) closeModal('terms-modal')">
+        <div class="absolute inset-0 bg-stone-900/60 backdrop-blur-sm"></div>
+        <div class="modal-card relative bg-white rounded-3xl shadow-xl border border-gold-200 max-w-2xl w-full max-h-[85vh] overflow-y-auto p-8 md:p-10">
+            <button onclick="closeModal('terms-modal')" class="absolute top-5 left-5 text-stone-400 hover:text-stone-700 transition-colors text-xl" aria-label="סגירה">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 id="terms-modal-title" class="text-2xl font-extrabold text-stone-900 mb-2">תנאי שימוש</h3>
+            <div class="w-16 h-1 bg-gradient-to-r from-gold-400 to-gold-600 rounded-full mb-6"></div>
+            <div class="space-y-4 text-stone-600 text-sm leading-relaxed font-medium">
+                <p><strong class="text-stone-800">1. הסכמה לתנאים:</strong> הגלישה והשימוש באתר בית הכנסת "אהבת ישראל" מהווים הסכמה לתנאי שימוש אלה. אם אינכם מסכימים לתנאים, אנא הימנעו משימוש באתר.</p>
+                <p><strong class="text-stone-800">2. מטרת האתר:</strong> האתר נועד למסירת מידע על פעילות בית הכנסת – זמני תפילות, שיעורים, אירועים, תרומות והנצחות – וליצירת קשר עם הנהלת בית הכנסת.</p>
+                <p><strong class="text-stone-800">3. זמני תפילות ופעילויות:</strong> הזמנים והמועדים המופיעים באתר עשויים להשתנות מעת לעת. יש להתעדכן מול בית הכנסת לפני הגעה.</p>
+                <p><strong class="text-stone-800">4. תרומות:</strong> תרומות לבית הכנסת מתבצעות מרצון חופשי. בכל שאלה בנוגע לתרומה, הנצחה או קבלה – ניתן לפנות להנהלת בית הכנסת.</p>
+                <p><strong class="text-stone-800">5. קניין רוחני:</strong> כל התכנים באתר, לרבות טקסטים, עיצוב ותמונות, שייכים לבית הכנסת "אהבת ישראל" ואין להעתיקם או לעשות בהם שימוש ללא אישור מראש ובכתב.</p>
+                <p><strong class="text-stone-800">6. הגבלת אחריות:</strong> המידע באתר נמסר כשירות לציבור. בית הכנסת לא יישא באחריות לכל נזק ישיר או עקיף הנובע מהסתמכות על המידע באתר.</p>
+                <p><strong class="text-stone-800">7. שינויים בתנאים:</strong> בית הכנסת רשאי לעדכן תנאים אלה מעת לעת. התנאים המעודכנים יפורסמו בעמוד זה.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Modals: Privacy & Terms
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal('privacy-modal');
+                closeModal('terms-modal');
+            }
+        });
+
+        // === Gallery: Carousel + Thumbnails ===
+        // כאן עורכים את כותרות התמונות. שנה רק את הטקסט של title.
+        const galleryData = [
+            { src: 'a1.png',  title: 'טו׳ בשבט בקהילה' },
+            { src: 'a2.png',  title: 'סיום מסכת פסח 2026'},
+            { src: 'a3.png',  title: 'סיור מערת המכפלה 2019'},
+            { src: 'a4.png',  title: 'סיור סליחות מערת המכפלה 2022'},
+            { src: 'a5.png',  title: 'סיור סליחות מערת המכפלה 2015'},
+            { src: 'a6.png',  title: 'בית הכנסת אהבת ישראל'},
+            { src: 'a7.png',  title: 'בית הכנסת אהבת ישראל'},
+            { src: 'a8.png',  title: ''},
+            { src: 'a9.png',  title: ''},
+            { src: 'a10.png', title: ''},
+        ];
+
+        const CAROUSEL_INTERVAL = 3000;
+        let carouselIndex = 0, carouselTimer = null, carouselPaused = false, carouselPlaying = true;
+        let carouselProgressStart = null, carouselRaf = null;
+
+        (function buildGallery() {
+            const slidesWrap = document.getElementById('carousel-slides');
+            const dotsWrap = document.getElementById('carousel-dots');
+            const thumbsWrap = document.getElementById('gallery-thumbs');
+
+            galleryData.forEach((item, i) => {
+                // Slide
+                const fig = document.createElement('figure');
+                fig.className = 'carousel-slide';
+                fig.innerHTML = `
+                    <img src="${item.src}" alt="${item.title}" class="w-full h-full object-cover" loading="${i === 0 ? 'eager' : 'lazy'}">
+                    <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-900/85 via-stone-900/40 to-transparent px-6 sm:px-8 pt-16 pb-12 text-right">
+                        <span class="text-white font-bold text-lg sm:text-2xl block">${item.title}</span>
+                    </figcaption>`;
+                slidesWrap.appendChild(fig);
+
+                // Thumbnail (opens the existing lightbox)
+                const thumb = document.createElement('figure');
+                thumb.className = 'gallery-item relative rounded-xl overflow-hidden border border-gold-200/60 shadow-sm group cursor-pointer aspect-square';
+                thumb.setAttribute('onclick', 'openLightbox(this)');
+                thumb.innerHTML = `
+                    <img src="${item.src}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <figcaption class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-900/80 to-transparent px-2.5 pt-6 pb-2 text-white font-bold text-xs truncate">${item.title}</figcaption>`;
+                thumbsWrap.appendChild(thumb);
+
+                // If the file is missing, remove both silently
+                fig.querySelector('img').onerror = () => {
+                    fig.remove();
+                    thumb.remove();
+                    carouselIndex = 0;
+                    carouselRender();
+                };
+            });
+            carouselRender();
+            carouselStart();
+
+            // If nothing loaded at all, show the friendly placeholder instead
+            window.addEventListener('load', () => {
+                if (!carouselSlides().length) {
+                    document.getElementById('gallery-carousel').classList.add('hidden');
+                    document.getElementById('gallery-thumbs').classList.add('hidden');
+                    document.getElementById('gallery-empty').classList.remove('hidden');
+                    carouselStop();
+                }
+            });
+        })();
+
+        function carouselSlides() {
+            return Array.from(document.querySelectorAll('#carousel-slides .carousel-slide'));
+        }
+        function carouselRender() {
+            const slides = carouselSlides();
+            const dotsWrap = document.getElementById('carousel-dots');
+            if (!slides.length) return;
+            if (carouselIndex >= slides.length) carouselIndex = 0;
+            slides.forEach((s, i) => s.classList.toggle('active', i === carouselIndex));
+            // Rebuild dots to match current slide count
+            dotsWrap.innerHTML = '';
+            slides.forEach((_, i) => {
+                const d = document.createElement('button');
+                d.className = 'carousel-dot' + (i === carouselIndex ? ' active' : '');
+                d.setAttribute('aria-label', 'תמונה ' + (i + 1));
+                d.onclick = () => { carouselIndex = i; carouselRender(); carouselRestart(); };
+                dotsWrap.appendChild(d);
+            });
+            document.getElementById('carousel-counter').textContent = (carouselIndex + 1) + ' / ' + slides.length;
+        }
+        function carouselNext() {
+            const n = carouselSlides().length;
+            if (!n) return;
+            carouselIndex = (carouselIndex + 1) % n;
+            carouselRender();
+            carouselProgressReset();
+        }
+        function carouselNav(dir) {
+            const n = carouselSlides().length;
+            if (!n) return;
+            carouselIndex = (carouselIndex + dir + n) % n;
+            carouselRender();
+            carouselRestart();
+        }
+        function carouselProgressTick(ts) {
+            if (!carouselProgressStart) carouselProgressStart = ts;
+            const pct = Math.min(((ts - carouselProgressStart) / CAROUSEL_INTERVAL) * 100, 100);
+            document.getElementById('carousel-progress').style.width = pct + '%';
+            if (carouselPlaying && !carouselPaused) carouselRaf = requestAnimationFrame(carouselProgressTick);
+        }
+        function carouselProgressReset() {
+            carouselProgressStart = null;
+            cancelAnimationFrame(carouselRaf);
+            if (carouselPlaying && !carouselPaused) carouselRaf = requestAnimationFrame(carouselProgressTick);
+        }
+        function carouselStart() {
+            carouselStop();
+            carouselTimer = setInterval(() => { if (!carouselPaused) carouselNext(); }, CAROUSEL_INTERVAL);
+            carouselProgressReset();
+        }
+        function carouselStop() {
+            clearInterval(carouselTimer);
+            cancelAnimationFrame(carouselRaf);
+        }
+        function carouselRestart() {
+            if (carouselPlaying) carouselStart(); else carouselProgressReset();
+        }
+        function carouselHover(isOver) {
+            carouselPaused = isOver;
+            if (!isOver && carouselPlaying) carouselProgressReset();
+            else cancelAnimationFrame(carouselRaf);
+        }
+        function carouselTogglePlay() {
+            carouselPlaying = !carouselPlaying;
+            document.querySelector('#carousel-play i').className = carouselPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+            if (carouselPlaying) carouselStart(); else carouselStop();
+        }
+        // Swipe support on the carousel
+        (function() {
+            const car = document.getElementById('gallery-carousel');
+            let touchX = null;
+            car.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; carouselPaused = true; }, { passive: true });
+            car.addEventListener('touchend', e => {
+                if (touchX === null) return;
+                const dx = e.changedTouches[0].clientX - touchX;
+                if (Math.abs(dx) > 40) carouselNav(dx > 0 ? 1 : -1);
+                touchX = null;
+                carouselPaused = false;
+            }, { passive: true });
+        })();
+
+        // === Gallery Lightbox ===
+        let lightboxIndex = 0;
+        function visibleGalleryItems() {
+            return Array.from(document.querySelectorAll('.gallery-item')).filter(f => f.style.display !== 'none');
+        }
+        function openLightbox(figEl) {
+            const items = visibleGalleryItems();
+            lightboxIndex = items.indexOf(figEl);
+            if (lightboxIndex < 0) return;
+            showLightboxItem();
+            document.getElementById('lightbox').classList.remove('hidden');
+            document.getElementById('lightbox').classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        function showLightboxItem() {
+            const items = visibleGalleryItems();
+            if (!items.length) return;
+            const fig = items[lightboxIndex];
+            const img = fig.querySelector('img');
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox-img').alt = img.alt;
+            document.getElementById('lightbox-title').textContent = fig.querySelector('figcaption').textContent.trim();
+            document.getElementById('lightbox-counter').textContent = (lightboxIndex + 1) + ' / ' + items.length;
+        }
+        function lightboxNav(dir) {
+            const items = visibleGalleryItems();
+            lightboxIndex = (lightboxIndex + dir + items.length) % items.length;
+            showLightboxItem();
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+            document.getElementById('lightbox').classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', (e) => {
+            const lb = document.getElementById('lightbox');
+            if (lb.classList.contains('hidden')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') lightboxNav(1);
+            if (e.key === 'ArrowLeft') lightboxNav(-1);
+        });
+
+        // === UX Enhancements ===
+
+        // Scroll-reveal: fade sections in as they enter the viewport
+        (function() {
+            const sections = document.querySelectorAll('section:not(#hero) > div, #chizuk > div');
+            if (!('IntersectionObserver' in window)) return;
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+            sections.forEach(el => {
+                el.classList.add('reveal');
+                observer.observe(el);
+                // Stagger cards inside grids for a cascading entrance
+                el.querySelectorAll(':scope .grid').forEach(grid => {
+                    Array.from(grid.children).forEach((card, i) => {
+                        card.style.transitionDelay = `${Math.min(i * 70, 420)}ms`;
+                        card.classList.add('reveal');
+                        observer.observe(card);
+                    });
+                });
+            });
+        })();
+
+        // Back-to-top button + navbar shadow on scroll
+        (function() {
+            const backToTop = document.getElementById('back-to-top');
+            const nav = document.getElementById('main-nav');
+            window.addEventListener('scroll', () => {
+                const scrolled = window.scrollY > 500;
+                backToTop.classList.toggle('hidden', !scrolled);
+                backToTop.classList.toggle('flex', scrolled);
+                if (nav) nav.classList.toggle('shadow-md', window.scrollY > 10);
+            }, { passive: true });
+        })();
+
+        // Scrollspy: highlight the current section in the navbar
+        (function() {
+            const navLinks = document.querySelectorAll('nav .hidden.md\\:flex a[href^="#"]');
+            const targets = [];
+            navLinks.forEach(link => {
+                const section = document.querySelector(link.getAttribute('href'));
+                if (section) targets.push({ link, section });
+            });
+            if (!targets.length) return;
+            window.addEventListener('scroll', () => {
+                const pos = window.scrollY + 120;
+                let current = null;
+                targets.forEach(t => { if (t.section.offsetTop <= pos) current = t; });
+                targets.forEach(t => {
+                    t.link.classList.toggle('text-gold-600', t === current);
+                    t.link.classList.toggle('font-extrabold', t === current);
+                });
+            }, { passive: true });
+        })();
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.add('hidden');
+        }
+
+        // 3. Dynamic Gregorian & Hebrew Dates
+        function initDates() {
+            const today = new Date();
+            
+            // Format Gregorian
+            const dayNames = ['יום ראשון', 'יום שני', 'יום שלישי', 'יום רביעי', 'יום חמישי', 'יום שישי', 'שבת קודש'];
+            const formattedGregorian = `${dayNames[today.getDay()]}, ${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+            document.getElementById('gregorian-date').innerText = formattedGregorian;
+
+            // Fetch Hebrew Date from Hebcal API
+            const gy = today.getFullYear();
+            const gm = today.getMonth() + 1;
+            const gd = today.getDate();
+            
+            fetch(`https://www.hebcal.com/converter?cfg=json&gy=${gy}&gm=${gm}&gd=${gd}&g2h=1`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data && data.hebrew) {
+                        document.getElementById('hebrew-date').innerText = data.hebrew;
+                    } else {
+                        document.getElementById('hebrew-date').innerText = "תאריך עברי לא זמין";
+                    }
+                })
+                .catch(error => {
+                    console.error("Hebcal API error:", error);
+                    // Hebrew fallback for simulation
+                    document.getElementById('hebrew-date').innerText = "ט' בתמוז ה'תשפ\"ו";
+                });
+        }
+
+        // 4. Donation Calculator Logic
+        let currentDonationAmount = 0;
+
+        function setDonationAmount(amount, btnEl) {
+            currentDonationAmount = amount;
+
+            // Reset all amount buttons
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-white', 'border-gold-500', 'shadow-md');
+                btn.classList.add('border-stone-200', 'text-stone-700');
+                btn.querySelectorAll('span').forEach(s => s.classList.remove('text-gold-100'));
+            });
+
+            // Highlight the selected button
+            if (btnEl) {
+                btnEl.classList.remove('border-stone-200', 'text-stone-700');
+                btnEl.classList.add('bg-gold-500', 'text-white', 'border-gold-500', 'shadow-md');
+                btnEl.querySelectorAll('span').forEach(s => s.classList.add('text-gold-100'));
+            }
+
+            // Hide custom input initially unless requested
+            document.getElementById('custom-amount-wrapper').classList.add('hidden');
+        }
+
+        function focusCustomAmount() {
+            document.getElementById('custom-amount-wrapper').classList.remove('hidden');
+            document.getElementById('custom-amount-val').focus();
+            
+            // Reset predefined button highlight
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-white', 'border-gold-500');
+                btn.classList.add('border-stone-200', 'text-stone-700');
+            });
+        }
+
+        // 5. Submit Event Handlers
+        function handleDonationSubmit(event) {
+            event.preventDefault();
+
+            // Calculate final amount
+            const customVal = document.getElementById('custom-amount-val').value;
+            const finalAmount = customVal && !document.getElementById('custom-amount-wrapper').classList.contains('hidden') 
+                ? parseInt(customVal) 
+                : currentDonationAmount;
+
+            if (!finalAmount || finalAmount <= 0) {
+                const customWrapper = document.getElementById('custom-amount-wrapper');
+                customWrapper.classList.remove('hidden');
+                document.getElementById('custom-amount-val').focus();
+                document.getElementById('custom-amount-val').placeholder = "אנא הזינו סכום תקין מעל 1 ש\"ח";
+                return;
+            }
+
+            const donorName = document.getElementById('donor-name').value;
+            const donorEmail = document.getElementById('donor-email').value;
+            
+            // Fill success view
+            document.getElementById('success-amount').innerText = finalAmount;
+            document.getElementById('success-email').innerText = donorEmail;
+
+            // Show success modal inside form card
+            document.getElementById('donation-success-modal').classList.remove('hidden');
+        }
+
+        function resetDonationForm() {
+            document.getElementById('donation-form').reset();
+            document.getElementById('donation-success-modal').classList.add('hidden');
+            document.getElementById('custom-amount-wrapper').classList.add('hidden');
+            currentDonationAmount = 0;
+            // Clear buttons selection visual
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.classList.remove('bg-gold-500', 'text-white', 'border-gold-500');
+                btn.classList.add('border-stone-200', 'text-stone-700');
+            });
+        }
+
+        function handleContactSubmit(event) {
+            event.preventDefault();
+
+            const form = document.getElementById('contact-form');
+            const successAlert = document.getElementById('contact-success-modal');
+            const errorAlert = document.getElementById('contact-error-modal');
+            successAlert.classList.add('hidden');
+            errorAlert.classList.add('hidden');
+
+            // Build the WhatsApp message
+            const lines = [
+                'שלום הגעתי מהאתר של בית הכנסת אהבת ישראל',
+                '',
+                'שם: ' + document.getElementById('contact-name').value,
+                'טלפון: ' + document.getElementById('contact-phone').value,
+                'אימייל: ' + document.getElementById('contact-email').value,
+                'נושא: ' + document.getElementById('contact-subject').value,
+                '',
+                document.getElementById('contact-message').value
+            ];
+            const waUrl = 'https://wa.me/972546666434?text=' + encodeURIComponent(lines.join('\n'));
+
+            const win = window.open(waUrl, '_blank');
+            if (win) {
+                successAlert.classList.remove('hidden');
+                form.reset();
+                setTimeout(() => successAlert.classList.add('hidden'), 10000);
+            } else {
+                errorAlert.classList.remove('hidden');
+            }
+        }
+
+        // Initialize Page on Load
+        window.onload = function() {
+            initDates();
+        };
+    </script>
+</body>
+</html>
