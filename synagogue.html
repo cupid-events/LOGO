@@ -67,10 +67,26 @@
             background-position: 0 0, 20px 20px;
         }
         .text-gradient {
-            background: linear-gradient(135deg, #3a74a5 0%, #18364f 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #2c5f8a; /* Brand blue (logo navy) */
         }
+        /* Gold heading over the flag: white halo like the rest of the hero text */
+        #hero .text-gradient {
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.95),
+                0 0 8px rgba(255, 255, 255, 0.9),
+                0 0 20px rgba(255, 255, 255, 0.8),
+                0 0 36px rgba(255, 255, 255, 0.6);
+        }
+        /* White halo so hero text stays crisp over the waving flag */
+        #hero h1, #hero p, #hero .hero-anim span {
+            text-shadow:
+                0 1px 0 rgba(255, 255, 255, 0.95),
+                0 0 8px rgba(255, 255, 255, 0.9),
+                0 0 20px rgba(255, 255, 255, 0.8),
+                0 0 36px rgba(255, 255, 255, 0.6);
+        }
+        /* Buttons keep their own colors — no halo needed */
+        #hero a, #hero a * { text-shadow: none; }
 
         /* fadeIn was referenced but never defined */
         @keyframes fadeIn {
@@ -308,10 +324,10 @@
             </p>
 
             <!-- Subtitle -->
-            <p class="hero-anim text-lg sm:text-xl text-stone-600 max-w-3xl mx-auto mb-4 font-light leading-relaxed" style="animation-delay: 0.45s;">
+            <p class="hero-anim text-lg sm:text-xl text-stone-700 max-w-3xl mx-auto mb-4 font-normal leading-relaxed" style="animation-delay: 0.45s;">
                 בית הכנסת נוסד מתוך שאיפה להמשיך ולהאיר את דרכו של הרב יורם מיכאל אברג'יל זצ"ל – דרך של אהבת ישראל ללא תנאי, קירוב לבבות, אמונה פשוטה, לימוד תורה ועשיית חסד.
             </p>
-            <p class="hero-anim text-base sm:text-lg text-stone-600 max-w-3xl mx-auto mb-10 font-light leading-relaxed" style="animation-delay: 0.55s;">
+            <p class="hero-anim text-base sm:text-lg text-stone-700 max-w-3xl mx-auto mb-10 font-normal leading-relaxed" style="animation-delay: 0.55s;">
                 אנו מאמינים כי כל יהודי הוא חלק בלתי נפרד מעם ישראל, ודלתות בית הכנסת פתוחות בפני כל אדם המבקש להתפלל, ללמוד תורה ולהתחזק ברוח ובאמונה.
             </p>
 
