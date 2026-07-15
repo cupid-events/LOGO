@@ -485,7 +485,10 @@ button:active{transform:scale(.96)}
 @media(max-width:768px){
   .ppop-overlay{padding:2rem 0 0;align-items:flex-end}
   .ppop{max-width:100%;border-radius:20px 20px 0 0;max-height:85vh}
-  .dpop{min-width:88vw;max-width:94vw;left:50%!important;transform:translateX(-50%)!important;top:auto!important;bottom:85px}
+  .dpop-overlay{align-items:flex-end;padding:0}
+  .dpop{min-width:0;width:100%;max-width:100%;border-radius:20px 20px 0 0;max-height:88vh;animation:dpopUp .25s ease}
+  @keyframes dpopUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .dpop-foot{padding-bottom:calc(12px + env(safe-area-inset-bottom))}
 }
 
 /* FAB */
@@ -806,6 +809,205 @@ button:active{transform:scale(.96)}
   .sc-info .sc-val{font-size:24px}
   .gc-filters select{font-size:11px;padding:7px 9px}
 }
+
+/* ===== VIEW TOGGLE (שבוע/חודש) – מוצג בכל המסכים ===== */
+.mobile-view-toggle{display:flex;gap:8px;padding:12px 12px 0}
+.mvt-btn{
+  flex:1;background:var(--surface);color:var(--navy);
+  border:1.5px solid var(--border2);border-radius:var(--rsm);
+  padding:10px;font-size:13px;font-weight:700;font-family:'Heebo',sans-serif;
+  box-shadow:var(--sh);transition:all .2s;cursor:pointer;
+}
+.mvt-btn.on{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;border-color:transparent;box-shadow:var(--sh2);
+}
+
+/* ===== MONTH VIEW ===== */
+.month-view{display:none;padding:12px}
+.month-view.on{display:block}
+.month-title{
+  text-align:center;font-size:15px;font-weight:800;color:var(--navy);
+  padding:2px 0 10px;
+}
+.month-day-names{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.month-day-name{text-align:center;font-size:11px;font-weight:800;color:var(--muted);padding:4px 0}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.month-cell{
+  background:var(--surface);border:1px solid var(--border);border-radius:8px;
+  min-height:62px;padding:4px 3px;cursor:pointer;overflow:hidden;
+  transition:border-color .15s,transform .1s;
+}
+.month-cell:active{transform:scale(.97);border-color:var(--navy)}
+.month-cell-num{font-size:12px;font-weight:800;color:var(--navy);text-align:center;margin-bottom:3px}
+.month-cell.other-month{opacity:.35;pointer-events:none}
+.month-cell.weekend-cell .month-cell-num{color:#dc2626}
+.month-cell.today-cell{border:2px solid var(--navy);background:var(--surface2)}
+.month-cell.today-cell .month-cell-num{
+  background:var(--navy);color:#fff;border-radius:6px;
+  width:20px;height:20px;line-height:20px;margin:0 auto 3px;
+}
+.month-ev{
+  color:#fff;border-radius:5px;font-size:9px;font-weight:700;
+  padding:2px 4px;margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;
+}
+.month-more{font-size:9px;font-weight:800;color:var(--muted);text-align:center}
+@media(min-width:769px){
+  .mobile-view-toggle{max-width:320px}
+  .month-view{padding:16px}
+  .month-cell{min-height:110px;padding:6px 5px}
+  .month-cell:hover{border-color:var(--navy);box-shadow:var(--sh)}
+  .month-cell-num{font-size:13px}
+  .month-ev{font-size:11px;padding:3px 7px;border-radius:6px;margin-bottom:3px}
+  .month-title{font-size:18px;padding-bottom:12px}
+  .month-more{font-size:10px}
+}
+
+/* ===== MOBILE PREVIEW (תצוגת מובייל במחשב) ===== */
+.btn-mob-preview{display:inline-flex}
+.mob-preview-overlay{
+  display:none;position:fixed;inset:0;z-index:9000;
+  background:rgba(8,15,35,.75);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;flex-direction:column;gap:16px;
+}
+.mob-preview-overlay.on{display:flex}
+.mob-preview-label{
+  color:#fff;font-size:14px;font-weight:800;letter-spacing:.5px;
+  display:flex;align-items:center;gap:8px;
+}
+.mob-preview-frame{
+  width:430px;height:min(932px,86vh);
+  background:#000;border-radius:48px;padding:12px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 2px rgba(255,255,255,.08);
+  position:relative;
+}
+.mob-preview-notch{
+  position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  width:120px;height:24px;background:#000;border-radius:0 0 16px 16px;z-index:2;
+}
+.mob-preview-frame iframe{
+  width:100%;height:100%;border:none;border-radius:32px;background:#fff;
+}
+.mob-preview-close{
+  background:#fff;color:var(--navy);border:none;border-radius:24px;
+  padding:12px 28px;font-size:14px;font-weight:800;font-family:'Heebo',sans-serif;
+  cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.35);
+}
+.mob-preview-close:hover{transform:translateY(-1px)}
+@media(max-width:768px){
+  .btn-mob-preview{display:none}
+}
+
+/* ===== GUIDED TOUR (הדרכה) ===== */
+.tour-backdrop{
+  display:none;position:fixed;inset:0;z-index:9500;pointer-events:auto;
+}
+.tour-backdrop.on{display:block}
+.tour-hl{
+  position:fixed;z-index:9501;border-radius:14px;pointer-events:none;
+  box-shadow:0 0 0 4px rgba(96,165,250,.9),0 0 0 9999px rgba(4,10,32,.78);
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+}
+.tour-tip{
+  position:fixed;z-index:9502;width:min(340px,92vw);
+  background:linear-gradient(180deg,#fff,#f6f9ff);
+  border-radius:16px;padding:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  transition:all .35s cubic-bezier(.4,0,.2,1);
+  font-family:'Heebo',sans-serif;
+}
+.tour-tip-step{
+  font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:1px;margin-bottom:6px;
+}
+.tour-tip-title{font-size:16px;font-weight:900;color:var(--navy);margin-bottom:6px}
+.tour-tip-txt{font-size:13px;line-height:1.6;color:#3b4763;margin-bottom:14px}
+.tour-tip-btns{display:flex;align-items:center;gap:8px}
+.tour-btn{
+  border:none;border-radius:10px;padding:9px 16px;
+  font-size:12.5px;font-weight:800;font-family:'Heebo',sans-serif;cursor:pointer;
+  transition:all .18s;
+}
+.tour-btn-next{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;flex:1;
+  box-shadow:var(--sh2);
+}
+.tour-btn-next:hover{transform:translateY(-1px)}
+.tour-btn-prev{background:#eef2fb;color:var(--navy)}
+.tour-btn-skip{background:transparent;color:var(--muted);padding:9px 8px;font-weight:700}
+.tour-btn-skip:hover{color:#dc2626}
+.tour-dots{display:flex;gap:5px;justify-content:center;margin-bottom:12px}
+.tour-dot{width:7px;height:7px;border-radius:50%;background:#d7dfef;transition:all .25s}
+.tour-dot.on{background:var(--navy);width:20px;border-radius:4px}
+
+
+/* ===== HOLO FLOOR POPUP (פרטי קומה) ===== */
+.holo-floor{cursor:pointer}
+.hfp-overlay{
+  display:none;position:fixed;inset:0;z-index:8600;
+  background:rgba(2,6,28,.7);backdrop-filter:blur(4px);
+  align-items:center;justify-content:center;padding:16px;
+}
+.hfp-overlay.on{display:flex}
+.hfp-box{
+  width:100%;max-width:460px;max-height:82vh;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,rgba(10,20,64,.97),rgba(5,10,40,.99));
+  border:1px solid rgba(90,150,255,.28);border-radius:18px;
+  box-shadow:0 0 60px rgba(50,110,255,.35),0 24px 60px rgba(0,0,0,.6);
+  overflow:hidden;animation:holoIn .3s cubic-bezier(.34,1.4,.64,1);
+}
+.hfp-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px;border-bottom:1px solid rgba(80,140,255,.15);
+  background:rgba(8,16,55,.6);flex-shrink:0;
+}
+.hfp-title{
+  font-size:16px;font-weight:900;
+  background:linear-gradient(135deg,#a8d4ff,#7eb8ff,#c4e0ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hfp-sub{font-size:11px;color:rgba(120,180,255,.55);margin-top:3px;font-weight:600}
+.hfp-close{
+  background:rgba(80,140,255,.1);border:1px solid rgba(80,140,255,.2);
+  color:rgba(140,200,255,.85);border-radius:8px;width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  cursor:pointer;transition:all .18s;flex-shrink:0;
+}
+.hfp-close:hover{background:rgba(80,140,255,.25);color:#fff}
+.hfp-body{padding:14px 16px;overflow-y:auto}
+.hfp-group-title{
+  font-size:12px;font-weight:800;color:rgba(140,200,255,.75);
+  letter-spacing:1px;margin:10px 2px 8px;display:flex;align-items:center;gap:8px;
+}
+.hfp-group-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(80,150,255,.3),transparent)}
+.hfp-item{
+  background:rgba(18,34,100,.5);border:1px solid rgba(80,140,255,.16);
+  border-radius:12px;padding:11px 13px;margin-bottom:8px;
+  transition:all .18s;
+}
+.hfp-item:hover{border-color:rgba(120,190,255,.4);background:rgba(25,48,135,.55)}
+.hfp-item.past{opacity:.72}
+.hfp-item-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.hfp-date{font-size:13.5px;font-weight:800;color:#dceaff}
+.hfp-rel{font-size:10.5px;font-weight:700;color:rgba(140,200,255,.6)}
+.hfp-status{
+  font-size:10px;font-weight:800;color:#fff;
+  border-radius:12px;padding:3px 10px;white-space:nowrap;
+}
+.hfp-item-meta{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  margin-top:7px;font-size:11px;color:rgba(160,205,255,.8);font-weight:600;
+}
+.hfp-tag{
+  background:rgba(80,140,255,.12);border:1px solid rgba(80,140,255,.2);
+  border-radius:10px;padding:2px 9px;
+}
+.hfp-empty{
+  text-align:center;color:rgba(140,190,255,.45);
+  padding:2.2rem 1rem;font-size:13px;font-weight:600;
+}
+
+
 </style>
 </head>
 <body>
@@ -856,6 +1058,8 @@ button:active{transform:scale(.96)}
   </div>
   <div class="hdr-end">
     <div class="status-chip"><div class="sdot" id="sdot"></div><span id="stxt">טוען...</span></div>
+    <button class="btn-hdr" id="tourBtn" onclick="startTour()" title="הדרכה על המערכת">❓ הדרכה</button>
+    <button class="btn-hdr btn-mob-preview" onclick="toggleMobilePreview()" title="תצוגה מקדימה כמו במובייל">📱 מובייל</button>
     <button class="btn-hdr" onclick="syncData()">↻ רענון</button>
     <button class="btn-new btn-hdr-new admin-only" onclick="openModal()">＋ בדיקה חדשה</button>
   </div>
@@ -877,7 +1081,7 @@ button:active{transform:scale(.96)}
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <button class="btn-period" onclick="showPeriod('day')">📆 היום</button>
       <button class="btn-period" onclick="showPeriod('week')">🗓️ השבוע</button>
-      <button class="btn-period" onclick="showPeriod('month')">📋 החודש</button>
+      <button class="btn-period" onclick="openMonthCalendar()">📆 החודש</button>
       <button class="btn-holo" onclick="showHolo()">🔮 אולוגרמה</button>
     </div>
   </div>
@@ -908,9 +1112,9 @@ button:active{transform:scale(.96)}
           <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
             <div class="gc-title" id="gTitle"></div>
             <div class="gc-nav">
-              <button onclick="prevW()">‹ שבוע קודם</button>
+              <button id="navPrev" onclick="prevW()">‹ שבוע קודם</button>
               <button onclick="goToday()" style="font-size:11px;padding:0 12px;width:auto">היום</button>
-              <button onclick="nextW()">שבוע הבא ›</button>
+              <button id="navNext" onclick="nextW()">שבוע הבא ›</button>
             </div>
           </div>
           <div class="gc-filters">
@@ -990,7 +1194,7 @@ button:active{transform:scale(.96)}
     </div>
     <div class="mfooter">
       <button class="btn-cancel" onclick="closeModal()">ביטול</button>
-      <button class="btn-save" onclick="submit()">✓ שמור ושלח זימון</button>
+      <button class="btn-save" id="saveBtn" onclick="submit()" style="display:flex;align-items:center;justify-content:center;gap:8px"><div class="btn-spinner" style="border-top-color:#fff"></div><span id="saveBtnTxt">✓ שמור ושלח זימון</span></button>
     </div>
   </div>
 </div>
@@ -1076,7 +1280,7 @@ button:active{transform:scale(.96)}
     </div>
     <div class="mfooter">
       <button class="btn-cancel" onclick="document.getElementById('editOverlay').classList.remove('on');document.body.style.overflow=''">ביטול</button>
-      <button class="btn-save" id="editSaveBtn" onclick="saveEdit()" style="display:flex;align-items:center;justify-content:center;gap:8px"><div class="btn-spinner" style="border-top-color:#fff"></div>✓ שמור שינויים</button>
+      <button class="btn-save" id="editSaveBtn" onclick="saveEdit()" style="display:flex;align-items:center;justify-content:center;gap:8px"><div class="btn-spinner" style="border-top-color:#fff"></div><span id="editSaveBtnTxt">✓ שמור שינויים</span></button>
     </div>
   </div>
 </div>
@@ -1096,6 +1300,19 @@ button:active{transform:scale(.96)}
   </div>
 </div>
 
+<div class="hfp-overlay" id="hfpOverlay" onclick="if(event.target===this)closeHoloFloor()">
+  <div class="hfp-box">
+    <div class="hfp-hdr">
+      <div>
+        <div class="hfp-title" id="hfpTitle"></div>
+        <div class="hfp-sub" id="hfpSub"></div>
+      </div>
+      <button class="hfp-close" onclick="closeHoloFloor()">✕</button>
+    </div>
+    <div class="hfp-body" id="hfpBody"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <footer class="credit-footer">
@@ -1111,7 +1328,7 @@ button:active{transform:scale(.96)}
 
 <script>
 // ============================================================
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6EjncHPjNqgF8rJADq5Ps0izTx8t1s1KqVti8B6vd5Jjc31gRIClBF9Lda2tiH2Fg/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwLVBS4Za79GUgLam0-JXBRLbmsCfpe6x95HFn-CSlwNjR6FrECllCxIglA4WaG60TP/exec';
 // ============================================================
 
 
@@ -1121,6 +1338,12 @@ function parseLocalDate(str){
   // Date object מגיליון – מגיע כ-UTC, ממיר למקומי
   if(str instanceof Date){
     return new Date(str.getUTCFullYear(), str.getUTCMonth(), str.getUTCDate());
+  }
+  // ISO עם שעה (למשל 2026-07-01T21:00:00.000Z) – מעגל ליום המקומי הנכון
+  if(typeof str==='string'&&str.includes('T')){
+    const dt=new Date(str);
+    dt.setUTCHours(dt.getUTCHours()+12);
+    return new Date(dt.getUTCFullYear(), dt.getUTCMonth(), dt.getUTCDate());
   }
   // פורמט YYYY-MM-DD (מ-input date)
   if(typeof str==='string'&&str.match(/^\d{4}-\d{2}-\d{2}/)){
@@ -1478,6 +1701,25 @@ function setMobileView(v,el){
   const mv=document.getElementById('monthView');
   if(v==='month'){mv.classList.add('on');renderMonth();}
   else mv.classList.remove('on');
+  // עדכון תוויות הניווט (מובייל + מחשב) בהתאם לתצוגה
+  const navBtns=document.querySelectorAll('.mobile-week-nav .mwn-btn');
+  if(navBtns.length===2){
+    navBtns[0].textContent=v==='month'?'‹ חודש קודם':'‹ שבוע קודם';
+    navBtns[1].textContent=v==='month'?'חודש הבא ›':'שבוע הבא ›';
+  }
+  const np=document.getElementById('navPrev'),nn=document.getElementById('navNext');
+  if(np) np.textContent=v==='month'?'‹ חודש קודם':'‹ שבוע קודם';
+  if(nn) nn.textContent=v==='month'?'חודש הבא ›':'שבוע הבא ›';
+}
+
+// כפתור "החודש" – מעבר ללוח שנה חודשי (מחשב + מובייל)
+function openMonthCalendar(){
+  if(!document.getElementById('tcG').classList.contains('on')){
+    switchTab('G',document.querySelector('.tab'));
+  }
+  const monthBtn=document.querySelectorAll('.mvt-btn')[1];
+  setMobileView('month',monthBtn);
+  document.getElementById('monthView').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function renderMonth(){
@@ -1493,7 +1735,8 @@ function renderMonth(){
     map[k].push(c);
   });
   const dayNames=['א','ב','ג','ד','ה','ו','ש'];
-  let h='<div class="month-day-names">'+dayNames.map(d=>`<div class="month-day-name">${d}</div>`).join('')+'</div>';
+  let h='<div class="month-title">'+HM[M]+' '+Y+'</div>';
+  h+='<div class="month-day-names">'+dayNames.map(d=>`<div class="month-day-name">${d}</div>`).join('')+'</div>';
   h+='<div class="month-grid">';
   // prev month days
   const prevDim=new Date(Y,M,0).getDate();
@@ -1534,8 +1777,20 @@ function getWeekStart(date){
   return d;
 }
 
-function prevW(){weekStart=new Date(weekStart);weekStart.setDate(weekStart.getDate()-7);renderG();}
-function nextW(){weekStart=new Date(weekStart);weekStart.setDate(weekStart.getDate()+7);renderG();}
+function prevW(){
+  if(mobileView==='month'&&document.getElementById('monthView').classList.contains('on')){
+    M--;if(M<0){M=11;Y--;}
+    renderMonth();renderCal();return;
+  }
+  weekStart=new Date(weekStart);weekStart.setDate(weekStart.getDate()-7);renderG();
+}
+function nextW(){
+  if(mobileView==='month'&&document.getElementById('monthView').classList.contains('on')){
+    M++;if(M>11){M=0;Y++;}
+    renderMonth();renderCal();return;
+  }
+  weekStart=new Date(weekStart);weekStart.setDate(weekStart.getDate()+7);renderG();
+}
 
 function getF(){
   const b=document.getElementById('fBld').value;
@@ -1675,7 +1930,7 @@ function renderHoloBlds(){
       const crewHtml=hasCheck&&uniqCrew.length?
         '<div class="hf-crew">'+uniqCrew.map(n=>`<span class="hf-crew-tag">👤 ${n}</span>`).join('')+'</div>':'';
       const badge=hasCheck?`<span class="hf-check-badge">✓ ${domain}</span>`:'';
-      return`<div class="holo-floor ${hasCheck?'has-check':''}">
+      return`<div class="holo-floor ${hasCheck?'has-check':''}" onclick="showHoloFloor('${String(bld).replace(/'/g,"\\'")}','${String(fl).replace(/'/g,"\\'")}')">
         <div class="hf-main">
           <span class="hf-num">${fl}</span>
           <span class="hf-domain">קומה ${fl}</span>
@@ -1684,7 +1939,7 @@ function renderHoloBlds(){
       </div>`;
     }).join('');
     return`<div class="holo-bld">
-      <div class="holo-bld-name">🏢 מבנה ${bld}</div>
+      <div class="holo-bld-name" style="cursor:pointer" onclick="showHoloFloor('${String(bld).replace(/'/g,"\\'")}',null)" title="לחץ לכל בדיקות המבנה">🏢 מבנה ${bld}</div>
       <div class="holo-bld-wrap">
         <div class="holo-floors">${floorsHtml}</div>
         <div class="holo-scan"></div>
@@ -1695,6 +1950,61 @@ function renderHoloBlds(){
     </div>`;
   }).join('');
 }
+
+// ===== HOLO POPUP – פרטי בדיקות של קומה או מבנה שלם =====
+function showHoloFloor(bld,fl){
+  const wholeBld=(fl===null||fl===undefined||fl==='');
+  const flChecks=checks.filter(c=>c.building===bld&&(wholeBld||String(c.floor)===String(fl)))
+    .filter(c=>c.date);
+  document.getElementById('hfpTitle').textContent=wholeBld
+    ? `🏢 מבנה ${bld} | כל הקומות`
+    : `🏢 מבנה ${bld} | קומה ${fl}`;
+  document.getElementById('hfpSub').textContent=flChecks.length
+    ? flChecks.length+(wholeBld?' בדיקות במבנה זה':' בדיקות בקומה זו')
+    : 'אין בדיקות רשומות';
+
+  const today=new Date();today.setHours(0,0,0,0);
+  const future=flChecks.filter(c=>c.date>=today).sort((a,b)=>a.date-b.date);
+  const past  =flChecks.filter(c=>c.date< today).sort((a,b)=>b.date-a.date);
+
+  const relTxt=d=>{
+    const diff=Math.round((d-today)/(1000*60*60*24));
+    if(diff===0) return 'היום';
+    if(diff===1) return 'מחר';
+    if(diff===-1) return 'אתמול';
+    return diff>0?('בעוד '+diff+' ימים'):('לפני '+Math.abs(diff)+' ימים');
+  };
+
+  const itemHtml=(c,isPast)=>{
+    const idx=checks.indexOf(c);
+    const dateStr=c.date.toLocaleDateString('he-IL',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+    const crewNames=[...new Set(c.crew.map(p=>p.name))];
+    const floorTag=wholeBld?`<span class="hfp-tag">🏬 קומה ${c.floor}</span>`:'';
+    return `<div class="hfp-item ${isPast?'past':''}" onclick="closeHoloFloor();closeHolo();showDpop(event,${idx})">
+      <div class="hfp-item-top">
+        <div>
+          <div class="hfp-date">📅 ${dateStr}</div>
+          <div class="hfp-rel">${relTxt(c.date)}</div>
+        </div>
+        <span class="hfp-status" style="background:${statusColor(c.status)}">${c.status||'ללא סטטוס'}</span>
+      </div>
+      <div class="hfp-item-meta">
+        ${floorTag}
+        <span class="hfp-tag">🔧 ${c.domain||'ללא תחום'}</span>
+        ${crewNames.map(n=>`<span class="hfp-tag">👤 ${n}</span>`).join('')}
+      </div>
+    </div>`;
+  };
+
+  let h='';
+  if(future.length) h+='<div class="hfp-group-title">🔜 בדיקות מתוכננות</div>'+future.map(c=>itemHtml(c,false)).join('');
+  if(past.length)   h+='<div class="hfp-group-title">✅ בדיקות שהתקיימו</div>'+past.map(c=>itemHtml(c,true)).join('');
+  if(!h) h='<div class="hfp-empty">🔍 לא נמצאו בדיקות לקומה זו<br>אפשר להוסיף בדיקה חדשה מהמסך הראשי</div>';
+
+  document.getElementById('hfpBody').innerHTML=h;
+  document.getElementById('hfpOverlay').classList.add('on');
+}
+function closeHoloFloor(){document.getElementById('hfpOverlay').classList.remove('on');}
 
 // DETAIL POPUP
 let _dpopCheck=null,_dpopIdx=-1;
@@ -1746,7 +2056,6 @@ async function deleteCheck(idx){
   if(!isAdmin()){toast("אין הרשאה למחיקה","err");return;}
   const c=checks[idx];if(!c) return;
   if(!confirm(`למחוק בדיקה ב${c.building} קומה ${c.floor}?`)) return;
-  closeDpop();
 
   if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'&&c.rowIndex){
     try{
@@ -1759,15 +2068,21 @@ async function deleteCheck(idx){
       const j=await r.json();
       console.log('תשובת מחיקה:',j);
       setLoading('dpdelbtn',false);
-      if(j.ok) toast('🗑️ הבדיקה נמחקה','warn');
+      closeDpop();
+      if(j.ok) toast(j.calendarCancelled?'🗑️ הבדיקה נמחקה והזימון בוטל ביומן':'🗑️ הבדיקה נמחקה','warn');
       else toast('⚠️ שגיאה: '+(j.error||''),'warn');
       ss('ok','מחובר');
+      await sync();   // טעינה מחדש מהשיטס – מספרי שורות מדויקים
+      return;
     }catch(e){
       setLoading('dpdelbtn',false);
+      closeDpop();
       console.error('שגיאת מחיקה:',e);
-      ss('err','שגיאה');
+      ss('err','שגיאה');toast('שגיאת רשת - הבדיקה לא נמחקה','warn');
+      return;
     }
   } else {
+    closeDpop();
     toast('🗑️ נמחק (דוגמה)','warn');
   }
   checks.splice(idx,1);
@@ -1876,8 +2191,10 @@ async function saveEdit(){
   const emailStr=editSel.map(s=>s.email).join(', ');
 
   if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+    const editTxt=document.getElementById('editSaveBtnTxt');
     try{
       setLoading('editSaveBtn',true);
+      if(editTxt) editTxt.textContent='שומר ומעדכן זימון...';
       ss('loading','שומר שינויים...');
       const data=JSON.stringify({
         rowIndex: oldCheck.rowIndex,
@@ -1889,14 +2206,21 @@ async function saveEdit(){
       const r=await fetch(SCRIPT_URL+'?action=updateRow&data='+encodeURIComponent(data));
       const j=await r.json();
       console.log('תשובת updateRow:', j);
-      if(j.ok) toast('✅ הבדיקה עודכנה','ok');
+      if(j.ok) toast(j.calendarUpdated?'✅ הבדיקה עודכנה וזימון חדש נשלח ליומן':'✅ הבדיקה עודכנה','ok');
       else toast('⚠️ שגיאה: '+(j.error||''),'warn');
       setLoading('editSaveBtn',false);
+      if(editTxt) editTxt.textContent='✓ שמור שינויים';
       ss('ok','מחובר');
+      document.getElementById('editOverlay').classList.remove('on');
+      document.body.style.overflow='';
+      await sync();   // טעינה מחדש מהשיטס – מספרי שורות מדויקים
+      return;
     }catch(e){
       setLoading('editSaveBtn',false);
+      if(editTxt) editTxt.textContent='✓ שמור שינויים';
       console.error('שגיאת עריכה:',e);
-      ss('err','שגיאה');toast('שגיאת רשת','warn');
+      ss('err','שגיאה');toast('שגיאת רשת - השינויים לא נשמרו','warn');
+      return;
     }
   } else {
     toast('✅ הבדיקה עודכנה (דוגמה)','ok');
@@ -1911,15 +2235,18 @@ async function saveEdit(){
 async function resendDpop(){
   if(!_dpopCheck) return;
   const c=_dpopCheck;
+  const btn=document.getElementById('dpinvbtn');
   const date=c.date?(()=>{const _d=c.date;return _d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0')})():'';
   const name=c.crew.map(s=>s.name).join(', ');
   const email=c.crew.map(s=>s.email).join(', ');
   try{
+    btn.classList.add('btn-spinning');
     ss('loading','שולח...');
     const data=JSON.stringify({date,building:c.building,floor:c.floor,domain:c.domain,name,email});
     await fetch(SCRIPT_URL+'?action=addRow&data='+encodeURIComponent(data));
     ss('ok','מחובר');toast('✅ זימון נשלח!','ok');closeDpop();
   }catch(ex){ss('err','שגיאה');toast('שגיאה','err');}
+  finally{btn.classList.remove('btn-spinning');}
 }
 
 function closeDpop(){document.getElementById('dpopOverlay').classList.remove('on');document.removeEventListener('click',closeDpopOut);}
@@ -2016,6 +2343,7 @@ function nextM(){M++;if(M>11){M=0;Y++;}weekStart=getWeekStart(new Date(Y,M,1));r
 function goToday(){
   const n=new Date();Y=n.getFullYear();M=n.getMonth();selD=n;
   weekStart=getWeekStart(n);renderG();
+  if(document.getElementById('monthView').classList.contains('on')) renderMonth();
 }
 
 // MODAL
@@ -2099,7 +2427,11 @@ async function submit(){
   }
 
   if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+    const saveBtn=document.getElementById('saveBtn');
+    const saveTxt=document.getElementById('saveBtnTxt');
     try{
+      saveBtn.classList.add('btn-spinning');
+      saveTxt.textContent='שומר ושולח זימון...';
       ss('loading','שומר...');
       const data=JSON.stringify({date,building,floor,domain,name,email});
       const url=SCRIPT_URL+'?action=addRow&data='+encodeURIComponent(data);
@@ -2112,6 +2444,14 @@ async function submit(){
         toast(j.calendarSent?'✅ נשמר ונשלח זימון ליומן!':(j.calendarError?'⚠️ נשמר, הזימון נכשל':'✅ נשמר!'),j.calendarError?'warn':'ok');
       } else {toast('שגיאה: '+(j.error||'לא ידוע'),'err');return;}
     }catch(e){ss('err','שגיאה');toast('שגיאה: '+e.message,'err');return;}
+    finally{
+      saveBtn.classList.remove('btn-spinning');
+      saveTxt.textContent='✓ שמור ושלח זימון';
+    }
+    closeModal();
+    document.getElementById('fFloor').value='';
+    await sync();   // טעינה מחדש מהשיטס – מספרי שורות מדויקים
+    return;
   }
 
   checks.push({date:parseLocalDate(date),building,floor,domain,crew:[...sel],status,notes,rowIndex:checks.length+2});
@@ -2182,6 +2522,124 @@ function doLogout(){
 });
 
 init();
+
+// ===== תצוגה מקדימה של מובייל (במחשב) =====
+function toggleMobilePreview(){
+  const ov=document.getElementById('mobPreview');
+  const fr=document.getElementById('mobPreviewFrame');
+  const on=ov.classList.toggle('on');
+  if(on){ fr.src=window.location.href; }
+  else { fr.src='about:blank'; }
+}
+// בתוך ה-iframe: מסתירים את כפתור המובייל כדי שלא ייפתח מסך בתוך מסך
+if(window.self!==window.top){
+  document.addEventListener('DOMContentLoaded',function(){
+    const b=document.querySelector('.btn-mob-preview');
+    if(b) b.style.display='none';
+  });
+}
+
+// ===== GUIDED TOUR – הדרכה למשתמש =====
+const TOUR_STEPS=[
+  {sel:'.logo', title:'👋 ברוך הבא ליואב!', txt:'מערכת לניהול בדיקות מבנים. בוא נעשה סיור קצר של דקה — אפשר לדלג בכל שלב.'},
+  {sel:'.stats', title:'📊 מבט־על', txt:'הכרטיסיות למעלה מציגות תמונת מצב חיה: סה"כ בדיקות, בדיקות החודש, מבנים פעילים ותחומים.'},
+  {sel:'.btn-hdr-new', title:'＋ יצירת בדיקה חדשה', txt:'בוחרים תאריך, מבנה, קומה, תחום וצוות — והמערכת שומרת בשיטס ושולחת זימון ליומן של הצוות אוטומטית.'},
+  {sel:'.mobile-view-toggle', title:'📅 שבוע או 📆 חודש', txt:'מחליפים בין תצוגת לוח שבועית לחודשית בלחיצה. כפתורי הניווט מתאימים את עצמם לתצוגה.'},
+  {sel:'#weekCal', title:'🗓️ הלוח הראשי', txt:'לחיצה על ＋ ביום מוסיפה בדיקה לאותו תאריך. לחיצה על כרטיסיית בדיקה פותחת את הפרטים — משם אפשר לערוך, למחוק או לשלוח זימון מחדש.'},
+  {sel:'.btn-holo', title:'🔮 תצוגת אולוגרמה', txt:'תצוגה חיה של כל המבנים והקומות. לחיצה על קומה מציגה את הבדיקות שלה, ולחיצה על שם המבנה — את כל בדיקות המבנה, עבר ועתיד.'},
+  {sel:'.mcal', title:'🗓️ לוח מיני', txt:'ניווט מהיר בין חודשים. נקודה כחולה מתחת ליום מסמנת שיש בו בדיקות, ו"חזרה להיום" מחזירה אותך מיד.'},
+  {sel:'#tourBtn', title:'❓ צריך תזכורת?', txt:'ההדרכה הזו זמינה תמיד בכפתור הזה. בהצלחה! 🎉'}
+];
+let _tourIdx=0;
+
+function startTour(){
+  _tourIdx=0;
+  document.getElementById('tourBackdrop').classList.add('on');
+  tourStep(0,1);
+}
+
+function tourStep(i,dir){
+  dir=dir||1;
+  // דילוג על שלבים שהאלמנט שלהם מוסתר (למשל לוח מיני במובייל)
+  while(i>=0&&i<TOUR_STEPS.length){
+    const el=document.querySelector(TOUR_STEPS[i].sel);
+    if(el&&el.offsetParent!==null) break;
+    i+=dir;
+  }
+  if(i<0) i=0;
+  if(i>=TOUR_STEPS.length){endTour();return;}
+  _tourIdx=i;
+  const step=TOUR_STEPS[i];
+  const el=document.querySelector(step.sel);
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(()=>positionTour(el,step,i),380);
+}
+
+function positionTour(el,step,i){
+  const r=el.getBoundingClientRect();
+  const hl=document.getElementById('tourHl');
+  const pad=6;
+  hl.style.top=(r.top-pad)+'px';
+  hl.style.left=(r.left-pad)+'px';
+  hl.style.width=(r.width+pad*2)+'px';
+  hl.style.height=(r.height+pad*2)+'px';
+
+  const dots=TOUR_STEPS.map((_,d)=>`<div class="tour-dot ${d===i?'on':''}"></div>`).join('');
+  const isLast=i===TOUR_STEPS.length-1;
+  const tip=document.getElementById('tourTip');
+  tip.innerHTML=`
+    <div class="tour-dots">${dots}</div>
+    <div class="tour-tip-step">שלב ${i+1} מתוך ${TOUR_STEPS.length}</div>
+    <div class="tour-tip-title">${step.title}</div>
+    <div class="tour-tip-txt">${step.txt}</div>
+    <div class="tour-tip-btns">
+      ${i>0?'<button class="tour-btn tour-btn-prev" onclick="tourStep(_tourIdx-1,-1)">‹ הקודם</button>':''}
+      <button class="tour-btn tour-btn-next" onclick="${isLast?'endTour()':'tourStep(_tourIdx+1,1)'}">${isLast?'סיים ✓':'הבא ›'}</button>
+      ${!isLast?'<button class="tour-btn tour-btn-skip" onclick="endTour()">דלג</button>':''}
+    </div>`;
+
+  // מיקום הטיפ – מתחת לאלמנט, ואם אין מקום אז מעליו
+  const tw=Math.min(340,window.innerWidth*.92);
+  let top=r.bottom+14;
+  const tipH=tip.offsetHeight||220;
+  if(top+tipH>window.innerHeight-10) top=Math.max(10,r.top-tipH-14);
+  let left=r.left+r.width/2-tw/2;
+  left=Math.max(10,Math.min(left,window.innerWidth-tw-10));
+  tip.style.top=top+'px';
+  tip.style.left=left+'px';
+}
+
+function endTour(){
+  document.getElementById('tourBackdrop').classList.remove('on');
+  try{localStorage.setItem('yoavTourDone','1');}catch(e){}
+}
+
+// הפעלה אוטומטית בכניסה ראשונה (לא בתוך תצוגת המובייל המקדימה)
+window.addEventListener('load',()=>{
+  if(window.self!==window.top) return;
+  let done=false;
+  try{done=!!localStorage.getItem('yoavTourDone');}catch(e){}
+  if(!done) setTimeout(startTour,1600);
+});
+window.addEventListener('resize',()=>{
+  if(document.getElementById('tourBackdrop').classList.contains('on')){
+    const step=TOUR_STEPS[_tourIdx];
+    const el=document.querySelector(step.sel);
+    if(el) positionTour(el,step,_tourIdx);
+  }
+});
 </script>
+<div class="tour-backdrop" id="tourBackdrop">
+  <div class="tour-hl" id="tourHl"></div>
+  <div class="tour-tip" id="tourTip"></div>
+</div>
+<div class="mob-preview-overlay" id="mobPreview">
+  <div class="mob-preview-label">📱 iPhone 15 Plus</div>
+  <div class="mob-preview-frame">
+    <div class="mob-preview-notch"></div>
+    <iframe id="mobPreviewFrame" title="תצוגת מובייל"></iframe>
+  </div>
+  <button class="mob-preview-close" onclick="toggleMobilePreview()">✕ סגירת תצוגה</button>
+</div>
 </body>
 </html>
