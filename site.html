@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תכנון כלכלי לבית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Secular+One&family=Assistant:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F3F5F9;
+    --card:#FFFFFF;
+    --ink:#0F1B30;
+    --ink-soft:#33415E;
+    --muted:#75809A;
+    --line:#E5E9F1;
+    --green:#149E6E;
+    --green-soft:#E2F5EE;
+    --red:#E15A41;
+    --red-soft:#FCEBE7;
+    --gold:#DE9A1F;
+    --gold-soft:#FBF3E1;
+    --blue:#3B6FDB;
+    --blue-soft:#E8EEFB;
+    --purple:#7A5AE0;
+    --purple-soft:#EFEAFC;
+    --radius:18px;
+    --shadow:0 1px 2px rgba(15,27,48,.05), 0 8px 24px -12px rgba(15,27,48,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Assistant',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .num{font-family:'Secular One',sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.2px}
+
+  /* ================= סרגל עליון ================= */
+  .topbar{
+    position:sticky;top:0;z-index:20;
+    background:rgba(243,245,249,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-in{
+    max-width:1180px;margin:0 auto;padding:12px 16px;
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand .logo{
+    width:38px;height:38px;border-radius:12px;flex:none;
+    background:var(--ink);color:#fff;display:grid;place-items:center;
+    font-family:'Secular One';font-size:1.2rem;
+  }
+  .brand h1{font-family:'Secular One';font-weight:400;font-size:1.2rem;line-height:1}
+  .brand .sub{font-size:.75rem;color:var(--muted);margin-top:2px}
+
+  /* טאבים ראשיים — החלקים */
+  .sections{
+    display:flex;background:#E7EBF3;border-radius:999px;padding:4px;
+    margin-inline-start:auto;
+  }
+  .section-tab{
+    border:none;background:transparent;cursor:pointer;
+    font-family:'Assistant';font-weight:700;font-size:.92rem;color:var(--muted);
+    padding:9px 20px;border-radius:999px;transition:all .18s;
+    display:flex;align-items:center;gap:7px;
+  }
+  .section-tab.active{color:#fff;box-shadow:var(--shadow)}
+  .section-tab.active[data-sec="house"]{background:linear-gradient(135deg,#1B2C4F,#3B6FDB)}
+  .section-tab.active[data-sec="monthly"]{background:linear-gradient(135deg,#0C4B3A,#149E6E)}
+  .section-tab:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+  .iconbtn{
+    border:1px solid var(--line);background:var(--card);cursor:pointer;
+    height:40px;border-radius:12px;display:grid;place-items:center;
+    font-size:1rem;color:var(--ink-soft);padding:0 12px;
+    font-family:'Assistant';font-weight:700;
+  }
+  .iconbtn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+  #refreshBtn{width:40px;padding:0;transition:transform .3s}
+  #refreshBtn:hover{transform:rotate(90deg)}
+  #phoneBtn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  @media(max-width:640px){
+    #phoneBtn{display:none}
+    .sections{display:none}   /* במובייל — הבורר עובר לתוך הדף */
+    .topbar-in{padding:10px 12px;gap:8px}
+    .brand h1{font-size:1.05rem}
+  }
+
+  /* ================= "מכשיר" — המכל הרספונסיבי ================= */
+  #device{container-type:inline-size;container-name:app}
+  body.phone-mode{background:#DDE3EE}
+  body.phone-mode #device{
+    width:401px;max-width:calc(100vw - 24px);
+    height:min(78vh, 780px);
+    margin:26px auto;
+    background:var(--bg);
+    border:11px solid #0F1B30;
+    border-radius:40px;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    box-shadow:0 34px 70px -24px rgba(15,27,48,.45);
+  }
+  body.phone-mode #device::-webkit-scrollbar{width:0}
+  .phone-caption{
+    display:none;text-align:center;color:var(--muted);font-size:.85rem;
+    font-weight:600;margin-top:-8px;padding-bottom:26px;
+  }
+  body.phone-mode .phone-caption{display:block}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 18px 60px}
+
+  /* טאבים משניים — דשבורד/טבלאות */
+  .viewtabs{display:flex;gap:8px;margin-bottom:18px}
+  .viewtab{
+    border:1px solid var(--line);background:var(--card);cursor:pointer;
+    font-family:'Assistant';font-weight:700;font-size:.88rem;color:var(--muted);
+    padding:8px 22px;border-radius:999px;transition:all .15s;
+  }
+  .viewtab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .viewtab:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+  /* בורר חלקים בתוך הדף — מופיע כשהתצוגה צרה (מובייל אמיתי או תצוגת 📱) */
+  .section-switch{
+    display:none;
+    background:#E7EBF3;border-radius:16px;padding:5px;gap:5px;
+    margin-bottom:14px;
+  }
+  .section-switch .section-tab{
+    flex:1;justify-content:center;padding:12px 10px;border-radius:12px;
+    font-size:.95rem;
+  }
+  @container app (max-width:640px){
+    .section-switch{display:flex}
+  }
+
+  /* ================= הירו ================= */
+  .hero{
+    color:#fff;border-radius:24px;padding:28px 28px 24px;
+    box-shadow:var(--shadow);margin-bottom:20px;
+    position:relative;overflow:hidden;
+  }
+  .hero.h-house{background:linear-gradient(135deg,#0F1B30 0%,#1B2C4F 55%,#2C55B0 100%)}
+  .hero.h-monthly{background:linear-gradient(135deg,#07281F 0%,#0C4B3A 55%,#128A61 100%)}
+  .hero::after{
+    content:'';position:absolute;inset-inline-end:-70px;top:-70px;
+    width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.09),transparent 70%);
+  }
+  .hero .eyebrow{font-size:.85rem;font-weight:600;color:rgba(255,255,255,.65);margin-bottom:4px}
+  .hero .big{font-size:clamp(2rem,6cqi,3.1rem);line-height:1.1}
+  .hero .big small{font-size:.45em;color:rgba(255,255,255,.65);font-family:'Assistant';font-weight:600}
+  .flow{margin-top:20px}
+  .flowbar{
+    display:flex;height:18px;border-radius:999px;overflow:hidden;
+    background:rgba(255,255,255,.14);
+  }
+  .flowbar div{height:100%;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+  .flow .legend{
+    display:flex;gap:12px 18px;flex-wrap:wrap;margin-top:12px;font-size:.85rem;color:rgba(255,255,255,.8);
+  }
+  .flow .legend b{color:#fff;font-family:'Secular One';font-weight:400;margin-inline-start:5px}
+  .swatch{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:6px}
+
+  /* ================= KPI ================= */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px}
+  .kpis.three{grid-template-columns:repeat(3,1fr)}
+  .kpi{
+    background:var(--card);border-radius:var(--radius);padding:16px 18px;
+    box-shadow:var(--shadow);display:flex;gap:13px;align-items:center;
+  }
+  .kpi .icon{
+    width:44px;height:44px;border-radius:13px;display:grid;place-items:center;
+    font-size:1.25rem;flex:none;
+  }
+  .kpi .label{font-size:.8rem;font-weight:600;color:var(--muted)}
+  .kpi .value{font-size:1.4rem;margin-top:2px}
+  .kpi .delta{font-size:.75rem;font-weight:700;margin-top:2px;color:var(--muted)}
+
+  /* ================= רשת כרטיסים ================= */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:15px}
+  .card{
+    background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:20px;grid-column:span 12;min-width:0;
+  }
+  .card h2{
+    font-family:'Secular One';font-weight:400;font-size:1.05rem;
+    display:flex;align-items:center;gap:9px;margin-bottom:4px;
+  }
+  .card .hint{font-size:.8rem;color:var(--muted);margin-bottom:14px}
+  .dot{width:10px;height:10px;border-radius:3px;flex:none}
+  .chartbox{position:relative;height:280px}
+
+  /* מד תקציב */
+  .gauge .row{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin:10px 0 6px}
+  .gauge .row b{color:var(--ink);font-family:'Secular One';font-weight:400;font-size:1rem}
+  .gauge .track{height:22px;border-radius:999px;background:#EDF0F6;overflow:hidden}
+  .gauge .fill{height:100%;border-radius:999px;background:var(--blue);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+  .gauge .fill.over{background:var(--red)}
+  .gauge .verdict{margin-top:12px;font-weight:700;font-size:.95rem;padding:10px 14px;border-radius:12px}
+  .gauge .verdict.ok{background:var(--green-soft);color:var(--green)}
+  .gauge .verdict.bad{background:var(--red-soft);color:var(--red)}
+
+  /* ================= טבלאות ================= */
+  .tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+  .tcard{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;align-self:start}
+  .tcard h2{
+    font-family:'Secular One';font-weight:400;font-size:1.05rem;
+    padding:16px 18px 12px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  }
+  .tcard .badge{
+    margin-inline-start:auto;font-family:'Secular One';font-size:.95rem;
+    padding:3px 13px;border-radius:999px;white-space:nowrap;
+  }
+  table{width:100%;border-collapse:collapse;font-size:.93rem}
+  tbody tr{transition:background .12s}
+  tbody tr:hover{background:#F7F9FC}
+  td{padding:10px 18px;border-top:1px solid var(--line);vertical-align:middle}
+  td.amt{text-align:left;white-space:nowrap;width:104px;font-family:'Secular One';font-size:.95rem}
+  .rowbar{height:5px;border-radius:3px;margin-top:6px;background:#EFF2F7;overflow:hidden;max-width:230px}
+  .rowbar span{display:block;height:100%;border-radius:3px}
+  .pct{font-size:.72rem;color:var(--muted);font-weight:600;margin-inline-start:8px}
+
+  /* ================= רספונסיביות (לפי רוחב המכל) ================= */
+  @container app (max-width:900px){
+    .kpis,.kpis.three{grid-template-columns:repeat(2,1fr)}
+    .card.span6,.card.span4,.card.span8{grid-column:span 12}
+    .tgrid{grid-template-columns:1fr}
+  }
+  @container app (min-width:901px){
+    .span6{grid-column:span 6}
+    .span4{grid-column:span 4}
+    .span8{grid-column:span 8}
+  }
+  @container app (max-width:520px){
+    .wrap{padding:14px 12px 48px}
+    .hero{padding:20px 18px;border-radius:20px}
+    .flow .legend{font-size:.78rem;gap:8px 14px}
+    .kpis,.kpis.three{grid-template-columns:repeat(2,1fr);gap:10px}
+    .kpi{padding:13px 14px;gap:10px;flex-direction:column;align-items:flex-start}
+    .kpi .icon{width:36px;height:36px;font-size:1rem;border-radius:10px}
+    .kpi .value{font-size:1.2rem}
+    .card{padding:16px 14px}
+    .chartbox{height:250px}
+    td{padding:9px 14px}
+    td.amt{width:86px;font-size:.88rem}
+    .tcard h2{padding:14px 14px 10px}
+    .rowbar{max-width:150px}
+    .viewtab{padding:7px 16px;font-size:.83rem}
+  }
+
+  /* ================= טעינה / שגיאה ================= */
+  #loading,#error{text-align:center;padding:60px 20px;color:var(--muted);font-size:1.05rem}
+  #error{display:none}
+  #error .msg{color:var(--red);font-weight:700;margin-bottom:14px}
+  .retry{
+    font-family:'Assistant';font-weight:700;border:none;cursor:pointer;
+    background:var(--ink);color:#fff;padding:11px 30px;border-radius:999px;font-size:.95rem;
+  }
+  .sk{
+    background:linear-gradient(90deg,#E9EDF4 25%,#F3F5F9 50%,#E9EDF4 75%);
+    background-size:400% 100%;animation:shimmer 1.4s infinite;border-radius:var(--radius);
+  }
+  @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+  @media (prefers-reduced-motion:reduce){
+    .sk{animation:none}
+    .flowbar div,.gauge .fill{transition:none}
+  }
+  #app{display:none}
+  footer{margin-top:32px;text-align:center;font-size:.8rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#35D493" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="2 17 8.5 10.5 13.5 15.5 22 7"/>
+          <polyline points="16 7 22 7 22 13"/>
+        </svg>
+      </div>
+      <div>
+        <h1>תכנון כלכלי לבית</h1>
+        <div class="sub">עודכן: <span id="updatedAt">—</span></div>
+      </div>
+    </div>
+    <div class="sections" role="tablist" aria-label="חלקים">
+      <button class="section-tab active" data-sec="house" role="tab" aria-selected="true" onclick="switchSection('house')">🏠 קניית הבית</button>
+      <button class="section-tab" data-sec="monthly" role="tab" aria-selected="false" onclick="switchSection('monthly')">📅 תזרים חודשי</button>
+    </div>
+    <button class="iconbtn" id="phoneBtn" onclick="togglePhone()" title="תצוגת מובייל">📱 מובייל</button>
+    <button class="iconbtn" id="refreshBtn" onclick="load()" title="רענון נתונים" aria-label="רענון נתונים">⟳</button>
+  </div>
+</div>
+
+<div id="device">
+  <div id="loading">
+    <div style="max-width:1180px;margin:0 auto;padding:24px 18px 20px">
+      <div class="sk" style="height:180px;margin-bottom:15px"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:15px">
+        <div class="sk" style="height:80px"></div><div class="sk" style="height:80px"></div>
+        <div class="sk" style="height:80px"></div><div class="sk" style="height:80px"></div>
+      </div>
+      <div class="sk" style="height:280px"></div>
+    </div>
+    טוען נתונים מהגיליון…
+  </div>
+
+  <div id="error">
+    <div class="msg">לא הצלחנו לטעון את הנתונים מהגיליון</div>
+    <div style="margin-bottom:18px">בדקו שהפריסה מוגדרת לגישה של "כל מי שיש לו את הקישור"</div>
+    <button class="retry" onclick="load()">נסו שוב</button>
+  </div>
+
+  <div id="app">
+    <div class="wrap">
+
+      <div class="section-switch" role="tablist" aria-label="חלקים">
+        <button class="section-tab active" data-sec="house" role="tab" aria-selected="true" onclick="switchSection('house')">🏠 קניית הבית</button>
+        <button class="section-tab" data-sec="monthly" role="tab" aria-selected="false" onclick="switchSection('monthly')">📅 תזרים חודשי</button>
+      </div>
+
+      <div class="viewtabs" role="tablist" aria-label="תצוגה">
+        <button class="viewtab active" id="vtDash" role="tab" aria-selected="true" onclick="switchView('dash')">📊 דשבורד</button>
+        <button class="viewtab" id="vtTables" role="tab" aria-selected="false" onclick="switchView('tables')">📋 טבלאות</button>
+      </div>
+
+      <!-- ============================================================
+           חלק 1 — קניית הבית
+      ============================================================ -->
+      <div id="sec-house">
+
+        <div id="house-dash">
+          <section class="hero h-house" aria-label="מצב תקציב קניית הבית">
+            <div class="eyebrow">🏠 קניית הבית · תקציב מול הוצאות חד־פעמיות</div>
+            <div class="big num" id="houseHero">—</div>
+            <div class="flow">
+              <div class="flowbar" id="houseFlowBar"></div>
+              <div class="legend" id="houseFlowLegend"></div>
+            </div>
+          </section>
+
+          <section class="kpis three" id="houseKpis" aria-label="מספרי מפתח — קניית הבית"></section>
+
+          <div class="grid">
+            <div class="card span6">
+              <h2><span class="dot" style="background:var(--red)"></span>ההוצאות הגדולות של הבית</h2>
+              <div class="hint">הוצאות חד־פעמיות, מהגדולה לקטנה</div>
+              <div class="chartbox"><canvas id="chHouseExpenses"></canvas></div>
+            </div>
+
+            <div class="card span6">
+              <h2><span class="dot" style="background:var(--blue)"></span>מאיפה מגיע התקציב</h2>
+              <div class="hint">מקורות הכסף לרכישת הבית</div>
+              <div class="chartbox"><canvas id="chHouseBudget"></canvas></div>
+            </div>
+
+            <div class="card span6 gauge">
+              <h2><span class="dot" style="background:var(--ink)"></span>כיסוי ההוצאות</h2>
+              <div class="hint">כמה מסך ההוצאות מכוסה על ידי התקציב</div>
+              <div class="row"><span>תקציב <b id="gBudget">—</b></span><span>הוצאות <b id="gExpenses">—</b></span></div>
+              <div class="track"><div class="fill" id="gFill"></div></div>
+              <div class="verdict" id="gVerdict"></div>
+            </div>
+
+            <div class="card span6">
+              <h2><span class="dot" style="background:var(--purple)"></span>הוצאה מול תקציב — במבט אחד</h2>
+              <div class="hint">שתי העמודות זו מול זו</div>
+              <div class="chartbox"><canvas id="chHouseCompare"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="house-tables" style="display:none">
+          <div class="tgrid" id="houseTables"></div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           חלק 2 — תזרים חודשי
+      ============================================================ -->
+      <div id="sec-monthly" style="display:none">
+
+        <div id="monthly-dash">
+          <section class="hero h-monthly" aria-label="השורה התחתונה החודשית">
+            <div class="eyebrow">📅 תזרים חודשי · כמה נשאר כל חודש אחרי הכל</div>
+            <div class="big num" id="monthlyHero">—</div>
+            <div class="flow">
+              <div class="flowbar" id="monthlyFlowBar"></div>
+              <div class="legend" id="monthlyFlowLegend"></div>
+            </div>
+          </section>
+
+          <section class="kpis" id="monthlyKpis" aria-label="מספרי מפתח — תזרים חודשי"></section>
+
+          <div class="grid">
+            <div class="card span6">
+              <h2><span class="dot" style="background:var(--gold)"></span>לאן הולך הכסף כל חודש</h2>
+              <div class="hint">פילוח ההוצאות החודשיות הקבועות</div>
+              <div class="chartbox"><canvas id="chMonthly"></canvas></div>
+            </div>
+
+            <div class="card span6">
+              <h2><span class="dot" style="background:var(--purple)"></span>תקציב הוצאות מתוכנן</h2>
+              <div class="hint">ההוצאות המשתנות שתכננתם לחודש</div>
+              <div class="chartbox"><canvas id="chPlanned"></canvas></div>
+            </div>
+
+            <div class="card span6">
+              <h2><span class="dot" style="background:var(--green)"></span>ממה מורכבת ההכנסה</h2>
+              <div class="hint">מקורות ההכנסה החודשית</div>
+              <div class="chartbox"><canvas id="chIncome"></canvas></div>
+            </div>
+
+            <div class="card span6">
+              <h2><span class="dot" style="background:var(--ink)"></span>הכנסות מול הוצאות</h2>
+              <div class="hint">סך ההכנסה מול כל ההוצאות החודשיות</div>
+              <div class="chartbox"><canvas id="chMonthlyCompare"></canvas></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="monthly-tables" style="display:none">
+          <div class="tgrid" id="monthlyTables"></div>
+        </div>
+      </div>
+
+      <footer>הנתונים נשאבים ישירות מהגיליון · לחצו ⟳ לרענון</footer>
+    </div>
+  </div>
+</div>
+<div class="phone-caption">ככה האתר נראה במובייל 📱 · לחצו שוב על הכפתור לחזרה</div>
+
+<script>
+/* ▼▼▼ הקישור של הפריסה שלך ▼▼▼ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbwox9Bo3b5NaBUKZLKYmHE0HY-Y3U74O2pQ4zx9c__Wf0xnX-q4AOsM9T_tH_gvH23moQ/exec';
+
+const nis  = n => '₪' + Math.round(n).toLocaleString('he-IL');
+const C = {
+  green:'#149E6E', red:'#E15A41', gold:'#DE9A1F', blue:'#3B6FDB',
+  purple:'#7A5AE0', ink:'#0F1B30', teal:'#0FA3A3', pink:'#D65596',
+  sky:'#4FA6E8', olive:'#8FA31E', brown:'#A9713C', slate:'#5D6B8A',
+};
+const PALETTE = [C.gold, C.blue, C.red, C.teal, C.purple, C.pink, C.sky, C.olive, C.brown, C.slate, C.green, '#B0B9CC'];
+let charts = {};
+let lastData = null;
+let section = 'house';   // house | monthly
+let view = 'dash';       // dash | tables
+
+if (window.Chart){
+  Chart.defaults.font.family = 'Assistant';
+  Chart.defaults.font.size   = 12.5;
+  Chart.defaults.color       = '#5D6B8A';
+}
+
+const isNarrow = () => document.getElementById('device').clientWidth < 560;
+
+/* ---------- טעינה: עובד גם בתוך Apps Script וגם כקובץ עצמאי ---------- */
+function load(){
+  show('loading');
+  const ok  = d => { lastData = d; render(d); };
+  const bad = () => show('error');
+  if (typeof google !== 'undefined' && google.script && google.script.run){
+    google.script.run.withSuccessHandler(ok).withFailureHandler(bad).getData();
+  } else {
+    fetch(API_URL + '?action=data')
+      .then(r => { if(!r.ok) throw 0; return r.json(); })
+      .then(ok).catch(bad);
+  }
+}
+function show(which){
+  document.getElementById('loading').style.display = which==='loading' ? 'block':'none';
+  document.getElementById('error').style.display   = which==='error'   ? 'block':'none';
+  document.getElementById('app').style.display     = which==='app'     ? 'block':'none';
+}
+
+/* ---------- ניווט ---------- */
+function switchSection(s){
+  section = s;
+  document.getElementById('sec-house').style.display   = s==='house'   ? 'block':'none';
+  document.getElementById('sec-monthly').style.display = s==='monthly' ? 'block':'none';
+  document.querySelectorAll('.section-tab').forEach(b => {
+    const on = b.dataset.sec === s;
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on);
+  });
+  applyView();
+  if (lastData) requestAnimationFrame(() => renderCharts(lastData));
+}
+function switchView(v){
+  view = v;
+  document.getElementById('vtDash').classList.toggle('active', v==='dash');
+  document.getElementById('vtTables').classList.toggle('active', v==='tables');
+  document.getElementById('vtDash').setAttribute('aria-selected', v==='dash');
+  document.getElementById('vtTables').setAttribute('aria-selected', v==='tables');
+  applyView();
+  if (v==='dash' && lastData) requestAnimationFrame(() => renderCharts(lastData));
+}
+function applyView(){
+  const dash = view==='dash';
+  document.getElementById('house-dash').style.display     = dash ? 'block':'none';
+  document.getElementById('house-tables').style.display   = dash ? 'none':'block';
+  document.getElementById('monthly-dash').style.display   = dash ? 'block':'none';
+  document.getElementById('monthly-tables').style.display = dash ? 'none':'block';
+}
+
+/* ---------- תצוגת מובייל ---------- */
+function togglePhone(){
+  const on = document.body.classList.toggle('phone-mode');
+  const btn = document.getElementById('phoneBtn');
+  btn.classList.toggle('on', on);
+  btn.textContent = on ? '🖥️ מחשב' : '📱 מובייל';
+  if (lastData) requestAnimationFrame(() => setTimeout(() => renderCharts(lastData), 60));
+}
+
+/* ---------- ציור ---------- */
+function render(d){
+  document.getElementById('updatedAt').textContent = d.updatedAt || '—';
+
+  /* ===== חלק קניית הבית ===== */
+  const gap = d.savingsVsBudget; // תקציב פחות הוצאות
+  document.getElementById('houseHero').innerHTML = gap >= 0
+    ? nis(gap) + ' <small>יתרה בתקציב</small>'
+    : 'מינוס ' + nis(Math.abs(gap)) + ' <small>חסר להשלמת ההוצאות</small>';
+
+  const houseMax = Math.max(d.expensesTotal, d.budgetTotal, 1);
+  const covered  = Math.min(d.budgetTotal, d.expensesTotal);
+  const hsegs = gap >= 0
+    ? [ {label:'הוצאות', val:d.expensesTotal, color:C.sky}, {label:'יתרה', val:gap, color:C.green} ]
+    : [ {label:'מכוסה על ידי התקציב', val:covered, color:C.sky}, {label:'חסר', val:Math.abs(gap), color:C.red} ];
+  document.getElementById('houseFlowBar').innerHTML = hsegs.map(s =>
+    `<div style="width:${(s.val/houseMax*100).toFixed(1)}%;background:${s.color}" title="${s.label}"></div>`).join('');
+  document.getElementById('houseFlowLegend').innerHTML =
+    `<span><span class="swatch" style="background:#ffffff40"></span>תקציב<b class="num">${nis(d.budgetTotal)}</b></span>` +
+    hsegs.map(s => `<span><span class="swatch" style="background:${s.color}"></span>${s.label}<b class="num">${nis(s.val)}</b></span>`).join('');
+
+  const coverPct = d.expensesTotal ? Math.round(d.budgetTotal / d.expensesTotal * 100) : 0;
+  document.getElementById('houseKpis').innerHTML =
+      kpi('🧾','סה״כ הוצאות חד־פעמיות', nis(d.expensesTotal), d.expenses.length + ' סעיפים', C.red)
+    + kpi('💼','סה״כ תקציב', nis(d.budgetTotal), d.budget.length + ' מקורות', C.blue)
+    + kpi(gap>=0?'✅':'⚠️', gap>=0?'יתרה בתקציב':'פער לסגירה', nis(Math.abs(gap)), coverPct + '% כיסוי', gap>=0?C.green:C.red);
+
+  /* מד כיסוי */
+  document.getElementById('gBudget').textContent   = nis(d.budgetTotal);
+  document.getElementById('gExpenses').textContent = nis(d.expensesTotal);
+  const fill = document.getElementById('gFill');
+  fill.style.width = Math.min(d.budgetTotal / Math.max(d.expensesTotal,1), 1) * 100 + '%';
+  fill.classList.toggle('over', gap < 0);
+  const v = document.getElementById('gVerdict');
+  v.textContent = gap >= 0
+    ? 'התקציב מכסה את הכל, ונשארת יתרה של ' + nis(gap)
+    : 'חסרים ' + nis(Math.abs(gap)) + ' — התקציב מכסה ' + coverPct + '% מההוצאות';
+  v.className = 'verdict ' + (gap >= 0 ? 'ok' : 'bad');
+
+  /* טבלאות — קניית הבית */
+  document.getElementById('houseTables').innerHTML =
+    tcard('הוצאות (חד־פעמיות)', C.red,  'var(--red-soft)',  d.expenses, d.expensesTotal) +
+    tcard('תקציב — מקורות כסף', C.blue, 'var(--blue-soft)', d.budget,   d.budgetTotal);
+
+  /* ===== חלק תזרים חודשי ===== */
+  const remaining = d.remainingVsPlanned;
+  document.getElementById('monthlyHero').innerHTML =
+    (remaining < 0 ? 'מינוס ' : '') + nis(Math.abs(remaining)) + ' <small>נשאר בחודש</small>';
+
+  const inc = Math.max(d.incomeTotal, 1);
+  const msegs = [
+    { label:'הוצאות קבועות', val:d.monthlyTotal,  color:C.gold },
+    { label:'תקציב מתוכנן',  val:d.plannedTotal,  color:C.purple },
+    { label:'נשאר',          val:Math.max(remaining,0), color:'#7FE3BC' },
+  ];
+  document.getElementById('monthlyFlowBar').innerHTML = msegs.map(s =>
+    `<div style="width:${(s.val/inc*100).toFixed(1)}%;background:${s.color}" title="${s.label}"></div>`).join('');
+  document.getElementById('monthlyFlowLegend').innerHTML =
+    `<span><span class="swatch" style="background:#ffffff40"></span>הכנסות<b class="num">${nis(d.incomeTotal)}</b></span>` +
+    msegs.map(s => `<span><span class="swatch" style="background:${s.color}"></span>${s.label}<b class="num">${nis(s.val)}</b></span>`).join('');
+
+  const savePct = d.incomeTotal ? Math.round(remaining / d.incomeTotal * 100) : 0;
+  document.getElementById('monthlyKpis').innerHTML =
+      kpi('💰','הכנסות חודשיות', nis(d.incomeTotal),'', C.green)
+    + kpi('🏠','הוצאות קבועות', nis(d.monthlyTotal), Math.round(d.monthlyTotal/inc*100)+'% מההכנסה', C.gold)
+    + kpi('🛒','תקציב מתוכנן', nis(d.plannedTotal), Math.round(d.plannedTotal/inc*100)+'% מההכנסה', C.purple)
+    + kpi('✨','נשאר בחודש', nis(remaining), savePct+'% מההכנסה', remaining>=0 ? C.green : C.red);
+
+  /* טבלאות — תזרים חודשי */
+  document.getElementById('monthlyTables').innerHTML =
+    tcard('הכנסות',              C.green,  'var(--green-soft)',  d.income,  d.incomeTotal) +
+    tcard('הוצאות חודשיות',      C.gold,   'var(--gold-soft)',   d.monthly, d.monthlyTotal) +
+    tcard('תקציב הוצאות מתוכנן', C.purple, 'var(--purple-soft)', d.planned, d.plannedTotal);
+
+  show('app');
+  renderCharts(d);
+}
+
+/* מציירים רק את הגרפים של החלק הפעיל (canvas מוסתר לא מצויר טוב) */
+function renderCharts(d){
+  if (view !== 'dash') return;
+  if (section === 'house'){
+    hbar('chHouseExpenses', [...d.expenses].sort((a,b)=>b.amount-a.amount), C.red);
+    donut('chHouseBudget', d.budget);
+    vbar('chHouseCompare',
+      ['תקציב','הוצאות'],
+      [d.budgetTotal, d.expensesTotal],
+      [C.blue, C.red]);
+  } else {
+    donut('chMonthly', d.monthly);
+    hbar('chPlanned', [...d.planned].sort((a,b)=>b.amount-a.amount), C.purple);
+    donut('chIncome', d.income);
+    vbar('chMonthlyCompare',
+      ['הכנסות','הוצאות קבועות','תקציב מתוכנן','נשאר'],
+      [d.incomeTotal, d.monthlyTotal, d.plannedTotal, Math.max(d.remainingVsPlanned,0)],
+      [C.green, C.gold, C.purple, C.teal]);
+  }
+}
+
+function kpi(icon,label,value,delta,color){
+  return `<div class="kpi">
+    <div class="icon" style="background:${color}1A">${icon}</div>
+    <div>
+      <div class="label">${label}</div>
+      <div class="value num" style="color:${color}">${value}</div>
+      ${delta ? `<div class="delta">${delta}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function donut(id, rows){
+  destroy(id);
+  const narrow = isNarrow();
+  charts[id] = new Chart(document.getElementById(id), {
+    type:'doughnut',
+    data:{
+      labels: rows.map(r=>r.name),
+      datasets:[{ data: rows.map(r=>r.amount), backgroundColor: PALETTE, borderWidth:2, borderColor:'#fff' }]
+    },
+    options:{
+      maintainAspectRatio:false, cutout:'62%',
+      plugins:{
+        legend:{
+          position: narrow ? 'bottom' : 'left',
+          rtl:true, textDirection:'rtl',
+          labels:{boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true,padding:narrow?7:9,font:{size:narrow?11:12.5}}
+        },
+        tooltip:{ rtl:true, textDirection:'rtl', callbacks:{ label: c => ' ' + c.label + ': ' + nis(c.parsed) } }
+      }
+    }
+  });
+}
+
+function hbar(id, rows, color){
+  destroy(id);
+  const narrow = isNarrow();
+  charts[id] = new Chart(document.getElementById(id), {
+    type:'bar',
+    data:{
+      labels: rows.map(r=>r.name),
+      datasets:[{ data: rows.map(r=>r.amount), backgroundColor: color+'CC', hoverBackgroundColor: color, borderRadius:6, barThickness:'flex', maxBarThickness:22 }]
+    },
+    options:{
+      indexAxis:'y', maintainAspectRatio:false,
+      scales:{
+        x:{ position:'top', grid:{color:'#EDF0F6'},
+            ticks:{ maxTicksLimit: narrow?4:7, callback:v=>'₪'+Number(v).toLocaleString('he-IL') } },
+        y:{ grid:{display:false}, ticks:{autoSkip:false, font:{size:narrow?10.5:12.5},
+            callback:function(val){ const l=this.getLabelForValue(val); return narrow && l.length>14 ? l.slice(0,13)+'…' : l; } } }
+      },
+      plugins:{
+        legend:{display:false},
+        tooltip:{ rtl:true, textDirection:'rtl', callbacks:{ label: c => ' ' + nis(c.parsed.x) } }
+      }
+    }
+  });
+}
+
+function vbar(id, labels, values, colors){
+  destroy(id);
+  const narrow = isNarrow();
+  charts[id] = new Chart(document.getElementById(id), {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{ data: values, backgroundColor: colors.map(c=>c+'CC'), hoverBackgroundColor: colors, borderRadius:8, maxBarThickness:70 }]
+    },
+    options:{
+      maintainAspectRatio:false,
+      scales:{
+        y:{ grid:{color:'#EDF0F6'}, ticks:{ maxTicksLimit: narrow?5:7, callback:v=>'₪'+Number(v).toLocaleString('he-IL') } },
+        x:{ grid:{display:false}, ticks:{font:{size:narrow?10.5:12.5}} }
+      },
+      plugins:{
+        legend:{display:false},
+        tooltip:{ rtl:true, textDirection:'rtl', callbacks:{ label: c => ' ' + nis(c.parsed.y) } }
+      }
+    }
+  });
+}
+function destroy(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
+
+function tcard(title, color, soft, rows, total){
+  const max = Math.max(...rows.map(r=>r.amount), 1);
+  const body = rows.map(r => `
+    <tr>
+      <td>${r.name}<span class="pct">${(r.amount/Math.max(total,1)*100).toFixed(0)}%</span>
+        <div class="rowbar"><span style="width:${(r.amount/max*100).toFixed(1)}%;background:${color}"></span></div>
+      </td>
+      <td class="amt">${nis(r.amount)}</td>
+    </tr>`).join('');
+  return `<div class="tcard">
+    <h2><span class="dot" style="background:${color}"></span>${title}
+      <span class="badge num" style="background:${soft};color:${color}">${nis(total)}</span>
+    </h2>
+    <table><tbody>${body}</tbody></table>
+  </div>`;
+}
+
+load();
+</script>
+</body>
+</html>
